@@ -2,12 +2,13 @@
 
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Hairstyle, HairColor, Background, ViewAngle, GenerationResult } from '@/types';
+import type { Hairstyle, HairColor, Background, ViewAngle, GenerationResult, MultiAnglePhotos } from '@/types';
 import { backgrounds } from '@/data/backgrounds';
 
 interface AppState {
   // Current session
-  currentPhoto: string | null;
+  currentPhoto: string | null; // 向后兼容：单张照片
+  multiAnglePhotos: MultiAnglePhotos | null; // V1.5: 多角度照片
   selectedStyle: Hairstyle | null;
   selectedColor: HairColor | null;
   selectedBackground: Background;
@@ -23,7 +24,8 @@ interface AppState {
   history: GenerationResult[];
   
   // Actions
-  setPhoto: (photo: string | null) => void;
+  setPhoto: (photo: string | null) => void; // 向后兼容
+  setMultiAnglePhotos: (photos: MultiAnglePhotos | null) => void; // V1.5
   setStyle: (style: Hairstyle | null) => void;
   setColor: (color: HairColor | null) => void;
   setBackground: (background: Background) => void;
@@ -41,6 +43,7 @@ export const useStore = create<AppState>()(
     (set) => ({
       // Initial state
       currentPhoto: null,
+      multiAnglePhotos: null,
       selectedStyle: null,
       selectedColor: null,
       selectedBackground: backgrounds[0],
@@ -56,6 +59,13 @@ export const useStore = create<AppState>()(
       // Actions
       setPhoto: (photo) => set({ 
         currentPhoto: photo,
+        multiAnglePhotos: null, // 使用单张照片时，清除多角度照片
+        generatedResults: { front: null, side: null, back: null },
+      }),
+      
+      setMultiAnglePhotos: (photos) => set({
+        multiAnglePhotos: photos,
+        currentPhoto: photos?.front || null, // 保持向后兼容
         generatedResults: { front: null, side: null, back: null },
       }),
       
@@ -98,6 +108,7 @@ export const useStore = create<AppState>()(
       resetSession: () =>
         set({
           currentPhoto: null,
+          multiAnglePhotos: null,
           selectedStyle: null,
           selectedColor: null,
           selectedViewAngle: 'front',

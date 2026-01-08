@@ -60,7 +60,7 @@ export default function InternalPresentation() {
       content: {
         layout: 'two-column',
         left: {
-          title: '😤 顾客痛点',
+          title: '顾客痛点',
           items: [
             '"我说要层次感，结果剪成狗啃的"',
             '参考图片与实际效果差异大',
@@ -69,7 +69,7 @@ export default function InternalPresentation() {
           ],
         },
         right: {
-          title: '😰 沙龙痛点',
+          title: '沙龙痛点',
           items: [
             '咨询时间长 (30-60分钟)',
             '沟通失败导致客户流失',
@@ -371,7 +371,7 @@ CRITICAL REQUIREMENTS:
         layout: 'features',
         items: [
           { icon: '📊', title: '80% 使用率', desc: '友好提醒使用情况' },
-          { icon: '⚠️', title: '95% 使用率', desc: '严重警告，建议升级' },
+          { icon: '⚠', title: '95% 使用率', desc: '严重警告，建议升级' },
           { icon: '💳', title: '超支通知', desc: '说明服务继续，月底结算' },
           { icon: '📧', title: '邮件提醒', desc: '24小时频率控制，避免重复' },
           { icon: '📈', title: '使用统计', desc: '详细的使用数据和成本分析' },
@@ -402,10 +402,11 @@ CRITICAL REQUIREMENTS:
         right: {
           title: '目标市场 (NYC)',
           items: [
-            '总沙龙数: 8,000-10,000',
-            '高端沙龙 ($150+): 500-800',
-            '目标客户 (ICP): 200-300',
-            'SAM: $960K-$1.44M/年',
+            '总沙龙数: 8,000-10,000 (需验证)',
+            '高端沙龙 ($150+): 500-800 (需验证)',
+            '目标客户 (ICP): 200-300 (需验证)',
+            'SAM: $960K-$1.44M/年 (需验证)',
+            '数据来源: 使用 /admin/research 工具验证',
           ],
         },
       },
@@ -441,27 +442,27 @@ CRITICAL REQUIREMENTS:
         layout: 'challenges',
         items: [
           { 
-            challenge: '✅ 问题真实存在', 
+            challenge: '✓ 问题真实存在', 
             solution: '沟通失败在沙龙中确实存在，有数据支持',
             risk: '低',
           },
           { 
-            challenge: '⚠️ 市场规模未验证', 
+            challenge: '⚠ 市场规模未验证', 
             solution: '需要验证73%不满意率等关键假设',
             risk: '中',
           },
           { 
-            challenge: '⚠️ 定价可能过高', 
+            challenge: '⚠ 定价可能过高', 
             solution: '建议启动时使用"创始人定价" $99-$199',
             risk: '中',
           },
           { 
-            challenge: '⚠️ 销售周期较长', 
+            challenge: '⚠ 销售周期较长', 
             solution: 'B2B沙龙销售通常3-6个月，需调整预期',
             risk: '中',
           },
           { 
-            challenge: '✅ 竞争护城河', 
+            challenge: '✓ 竞争护城河', 
             solution: '白标定位是明智的差异化策略',
             risk: '低',
           },
@@ -521,7 +522,32 @@ CRITICAL REQUIREMENTS:
       title: '关键验证需求',
       highlight: '在规模化前必须验证',
       subtitle: '1. 73%不满意率 | 2. 15-20%升级转化率 | 3. $199-499价格接受度',
-      description: '建议: 前3-5个试点客户收集真实数据，验证ROI故事后再扩展',
+      description: '建议: 前3-5个试点客户收集真实数据，验证ROI故事后再扩展。使用 /admin/research 工具收集和验证市场数据。',
+    },
+    {
+      type: 'content',
+      title: '数据验证状态',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '已验证数据',
+          items: [
+            '使用 /admin/research 工具验证',
+            'NYC 沙龙数量（通过 API 查询）',
+            '竞争分析（通过市场研究）',
+          ],
+        },
+        right: {
+          title: '待验证假设',
+          items: [
+            '73% 客户不满意率',
+            '$300+ 颜色修正成本',
+            '6个月等待时间',
+            '市场规模数据',
+            '定价接受度',
+          ],
+        },
+      },
     },
     // 销售策略
     {
@@ -881,9 +907,9 @@ function ContentSlide({ title, content }: SlideData) {
   const contentData = content as Record<string, unknown>;
   
   return (
-    <div className="h-full p-12 flex flex-col">
-      <h2 className="text-3xl font-bold mb-8">{title}</h2>
-      <div className="flex-1">
+    <div className="h-full p-12 flex flex-col overflow-hidden">
+      <h2 className="text-3xl font-bold mb-6">{title}</h2>
+      <div className="flex-1 overflow-auto">
         {contentData.layout === 'two-column' && <TwoColumnLayout content={contentData} />}
         {contentData.layout === 'features' && <FeaturesLayout content={contentData} />}
         {contentData.layout === 'tech-stack' && <TechStackLayout content={contentData} />}
@@ -1115,11 +1141,11 @@ function IcpLayout({ content }: { content: Record<string, unknown> }) {
 function ScriptsLayout({ content }: { content: Record<string, unknown> }) {
   const scripts = content.scripts as { scenario: string; script: string }[];
   return (
-    <div className="space-y-4 overflow-auto max-h-[400px]">
+    <div className="space-y-3 overflow-auto max-h-[450px]">
       {scripts.map((s, i) => (
-        <div key={i} className="p-4 bg-amber-50 rounded-xl border-l-4 border-amber-500">
-          <p className="text-sm font-bold text-amber-700 mb-1">{s.scenario}</p>
-          <p className="text-gray-700 italic">{s.script}</p>
+        <div key={i} className="p-3 bg-amber-50 rounded-xl border-l-4 border-amber-500">
+          <p className="text-xs font-bold text-amber-700 mb-1">{s.scenario}</p>
+          <p className="text-sm text-gray-700 italic">{s.script}</p>
         </div>
       ))}
     </div>

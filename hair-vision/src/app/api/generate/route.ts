@@ -18,7 +18,13 @@ const COST_ESTIMATES: Record<ImageResolution, number> = {
 };
 
 interface GenerateRequestBody {
-  photo: string;
+  photo: string; // 向后兼容：单张照片
+  multiAnglePhotos?: {
+    front: string;
+    left45?: string;
+    right45?: string;
+    back?: string;
+  }; // V1.5: 多角度照片（如果提供，优先使用）
   styleId: string;
   colorId?: string;
   viewAngle: ViewAngle;
@@ -82,7 +88,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body: GenerateRequestBody = await request.json();
-    const { photo, styleId, colorId, viewAngle, backgroundId, resolution, salonId } = body;
+    const { photo, multiAnglePhotos, styleId, colorId, viewAngle, backgroundId, resolution, salonId } = body;
     
     // 获取分辨率设置，优先使用请求参数，其次环境变量，默认1K以节省成本
     const imageResolution: ImageResolution = resolution || 
@@ -124,7 +130,9 @@ export async function POST(request: NextRequest) {
     console.log(`[Cost] API call - Resolution: ${imageResolution}, Estimated cost: $${estimatedCost.toFixed(4)}`);
 
     // Validate required fields
-    if (!photo || !styleId || !viewAngle || !backgroundId) {
+    // V1.5: 支持多角度照片或单张照片
+    const hasValidPhoto = multiAnglePhotos?.front || photo;
+    if (!hasValidPhoto || !styleId || !viewAngle || !backgroundId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -145,8 +153,16 @@ export async function POST(request: NextRequest) {
 
     // 使用统一的生成函数
     // 始终使用 Gemini 3.0 Pro，只有在 API 错误（不可用/配额限制）时才会自动降级到 Flash
+    // V1.5: 如果提供了多角度照片，使用多角度照片；否则使用单张照片（向后兼容）
+    const primaryPhoto = multiAnglePhotos?.front || photo;
     const resultUrl = await generateHairstyle({
-      photoBase64: photo,
+      photoBase64: primaryPhoto,
+      multiAnglePhotos: multiAnglePhotos ? {
+        front: multiAnglePhotos.front,
+        left45: multiAnglePhotos.left45,
+        right45: multiAnglePhotos.right45,
+        back: multiAnglePhotos.back,
+      } : undefined,
       style,
       color: color || undefined,
       viewAngle,

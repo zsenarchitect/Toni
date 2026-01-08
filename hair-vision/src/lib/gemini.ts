@@ -11,7 +11,13 @@ const COST_ESTIMATES: Record<ImageResolution, number> = {
 };
 
 interface GenerateParams {
-  photoBase64: string;
+  photoBase64: string; // 主照片（向后兼容）
+  multiAnglePhotos?: {
+    front: string;
+    left45?: string;
+    right45?: string;
+    back?: string;
+  }; // V1.5: 多角度照片
   style: Hairstyle;
   color?: HairColor;
   viewAngle: ViewAngle;
@@ -33,8 +39,9 @@ interface InlineDataPart {
 }
 
 // 优化的提示词构建函数 - 更简洁以减少token使用
+// V1.5: 支持多角度参考图以提高一致性
 function buildPrompt(params: GenerateParams): string {
-  const { style, color, viewAngle, background } = params;
+  const { style, color, viewAngle, background, multiAnglePhotos } = params;
   
   const viewAngleMap: Record<ViewAngle, string> = {
     front: 'front view',
@@ -51,6 +58,19 @@ function buildPrompt(params: GenerateParams): string {
 
   // 优化后的简洁提示词 - 减少约30%的token使用
   let prompt = `Transform hairstyle, preserve face exactly. Style: ${style.promptDescription} (${style.nameEn}). Angle: ${viewAngleMap[viewAngle]}. Background: ${bgMap[background.value] || background.value}.`;
+
+  // V1.5: 如果提供了多角度参考图，在提示词中说明
+  if (multiAnglePhotos) {
+    const referenceAngles = [];
+    if (multiAnglePhotos.front) referenceAngles.push('front');
+    if (multiAnglePhotos.left45) referenceAngles.push('left 45°');
+    if (multiAnglePhotos.right45) referenceAngles.push('right 45°');
+    if (multiAnglePhotos.back) referenceAngles.push('back');
+    
+    if (referenceAngles.length > 1) {
+      prompt += ` Reference photos provided: ${referenceAngles.join(', ')}. Use these to maintain consistency across angles and accurately capture facial features.`;
+    }
+  }
 
   if (color) {
     prompt += ` Color: ${color.promptDescription} (${color.hexCode}).`;
@@ -102,19 +122,51 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
     
     const fullPrompt = prompt + resolutionPrompt;
     
-    // Extract base64 data from data URL
-    const base64Data = params.photoBase64.split(',')[1];
-    const mimeType = params.photoBase64.split(';')[0].split(':')[1] || 'image/jpeg';
-
-    const result = await model.generateContent([
-      {
+    // V1.5: 构建多角度输入数组
+    const contentParts: Array<{ inlineData: { mimeType: string; data: string } } | string> = [];
+    
+    if (params.multiAnglePhotos) {
+      // 使用多角度照片：按顺序添加所有提供的角度
+      const addPhoto = (photo: string | undefined, label: string) => {
+        if (photo) {
+          const base64Data = photo.includes(',') ? photo.split(',')[1] : photo;
+          const mimeType = photo.includes(';') 
+            ? photo.split(';')[0].split(':')[1] 
+            : 'image/jpeg';
+          contentParts.push({
+            inlineData: {
+              mimeType: mimeType || 'image/jpeg',
+              data: base64Data,
+            },
+          });
+        }
+      };
+      
+      // 按顺序添加：正面（必需）、左侧45度、右侧45度、背面
+      addPhoto(params.multiAnglePhotos.front, 'front');
+      addPhoto(params.multiAnglePhotos.left45, 'left45');
+      addPhoto(params.multiAnglePhotos.right45, 'right45');
+      addPhoto(params.multiAnglePhotos.back, 'back');
+    } else {
+      // 向后兼容：使用单张照片
+      const base64Data = params.photoBase64.includes(',') 
+        ? params.photoBase64.split(',')[1] 
+        : params.photoBase64;
+      const mimeType = params.photoBase64.includes(';')
+        ? params.photoBase64.split(';')[0].split(':')[1]
+        : 'image/jpeg';
+      contentParts.push({
         inlineData: {
-          mimeType,
+          mimeType: mimeType || 'image/jpeg',
           data: base64Data,
         },
-      },
-      fullPrompt,
-    ]);
+      });
+    }
+    
+    // 添加提示词
+    contentParts.push(fullPrompt);
+
+    const result = await model.generateContent(contentParts);
 
     const response = result.response;
     
@@ -159,15 +211,45 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         } as unknown as Record<string, unknown>,
       });
 
-      const fallbackResult = await fallbackModelInstance.generateContent([
-        {
+      // 构建降级模型的输入（使用相同的多角度逻辑）
+      const fallbackContentParts: Array<{ inlineData: { mimeType: string; data: string } } | string> = [];
+      
+      if (params.multiAnglePhotos) {
+        const addPhoto = (photo: string | undefined) => {
+          if (photo) {
+            const base64Data = photo.includes(',') ? photo.split(',')[1] : photo;
+            const mimeType = photo.includes(';') 
+              ? photo.split(';')[0].split(':')[1] 
+              : 'image/jpeg';
+            fallbackContentParts.push({
+              inlineData: {
+                mimeType: mimeType || 'image/jpeg',
+                data: base64Data,
+              },
+            });
+          }
+        };
+        addPhoto(params.multiAnglePhotos.front);
+        addPhoto(params.multiAnglePhotos.left45);
+        addPhoto(params.multiAnglePhotos.right45);
+        addPhoto(params.multiAnglePhotos.back);
+      } else {
+        const base64Data = params.photoBase64.includes(',') 
+          ? params.photoBase64.split(',')[1] 
+          : params.photoBase64;
+        const mimeType = params.photoBase64.includes(';')
+          ? params.photoBase64.split(';')[0].split(':')[1]
+          : 'image/jpeg';
+        fallbackContentParts.push({
           inlineData: {
-            mimeType,
+            mimeType: mimeType || 'image/jpeg',
             data: base64Data,
           },
-        },
-        fullPrompt,
-      ]);
+        });
+      }
+      fallbackContentParts.push(fullPrompt);
+
+      const fallbackResult = await fallbackModelInstance.generateContent(fallbackContentParts);
 
       const fallbackResponse = fallbackResult.response;
       

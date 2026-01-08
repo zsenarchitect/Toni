@@ -33,6 +33,14 @@ export interface Background {
 // 视角类型
 export type ViewAngle = 'front' | 'side' | 'back';
 
+// 多角度照片输入类型 (V1.5)
+export interface MultiAnglePhotos {
+  front: string; // 正面照片（必需）
+  left45?: string; // 左侧45度照片（可选）
+  right45?: string; // 右侧45度照片（可选）
+  back?: string; // 背面照片（可选）
+}
+
 // 图像分辨率类型 (成本优化)
 export type ImageResolution = '1K' | '2K' | '4K';
 
@@ -78,7 +86,8 @@ export interface SubscriptionPlan {
 
 // 生成请求
 export interface GenerateRequest {
-  photo: string; // base64
+  photo: string; // base64 (向后兼容，单张照片)
+  multiAnglePhotos?: MultiAnglePhotos; // V1.5: 多角度照片（如果提供，优先使用）
   styleId: string;
   colorId?: string;
   viewAngle: ViewAngle;

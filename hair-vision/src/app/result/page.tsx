@@ -24,6 +24,7 @@ export default function ResultPage() {
   const router = useRouter();
   const {
     currentPhoto,
+    multiAnglePhotos,
     selectedStyle,
     selectedColor,
     selectedBackground,
@@ -43,16 +44,19 @@ export default function ResultPage() {
 
   // Redirect if missing required data
   useEffect(() => {
-    if (!currentPhoto) {
+    const hasPhoto = currentPhoto || multiAnglePhotos?.front;
+    if (!hasPhoto) {
       router.push('/capture');
     } else if (!selectedStyle) {
       router.push('/styles');
     }
-  }, [currentPhoto, selectedStyle, router]);
+  }, [currentPhoto, multiAnglePhotos, selectedStyle, router]);
 
   // Generate image when needed
   const generateImage = useCallback(async (angle: ViewAngle) => {
-    if (!currentPhoto || !selectedStyle || isGenerating) return;
+    const { currentPhoto, multiAnglePhotos, selectedStyle, selectedColor, selectedBackground, isGenerating, generatedResults, setIsGenerating, setError, setGeneratedResult } = useStore.getState();
+    
+    if ((!currentPhoto && !multiAnglePhotos) || !selectedStyle || isGenerating) return;
     
     // Check if already generated
     if (generatedResults[angle]) return;
@@ -61,16 +65,24 @@ export default function ResultPage() {
     setError(null);
 
     try {
+      const requestBody: any = {
+        styleId: selectedStyle.id,
+        colorId: selectedColor?.id,
+        viewAngle: angle,
+        backgroundId: selectedBackground.id,
+      };
+      
+      // V1.5: 如果有多角度照片，优先使用；否则使用单张照片（向后兼容）
+      if (multiAnglePhotos) {
+        requestBody.multiAnglePhotos = multiAnglePhotos;
+      } else {
+        requestBody.photo = currentPhoto;
+      }
+
       const response = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          photo: currentPhoto,
-          styleId: selectedStyle.id,
-          colorId: selectedColor?.id,
-          viewAngle: angle,
-          backgroundId: selectedBackground.id,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       const data = await response.json();
@@ -85,23 +97,15 @@ export default function ResultPage() {
     } finally {
       setIsGenerating(false);
     }
-  }, [
-    currentPhoto,
-    selectedStyle,
-    selectedColor,
-    selectedBackground,
-    isGenerating,
-    generatedResults,
-    setIsGenerating,
-    setGeneratedResult,
-  ]);
+  }, []);
 
   // Auto-generate front view on mount
   useEffect(() => {
-    if (currentPhoto && selectedStyle && !generatedResults.front && !isGenerating) {
+    const hasPhoto = currentPhoto || multiAnglePhotos?.front;
+    if (hasPhoto && selectedStyle && !generatedResults.front && !isGenerating) {
       generateImage('front');
     }
-  }, [currentPhoto, selectedStyle]); // eslint-disable-line
+  }, [currentPhoto, multiAnglePhotos, selectedStyle, generatedResults.front, isGenerating, generateImage]);
 
   // Handle view angle change
   const handleAngleChange = (angle: ViewAngle) => {

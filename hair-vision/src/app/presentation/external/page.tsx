@@ -44,10 +44,10 @@ export default function ExternalPresentation() {
       type: 'pain-stats',
       title: 'The Cost of Communication Failure',
       stats: [
-        { number: '73%', label: 'of customers have been dissatisfied with results' },
-        { number: '$300+', label: 'average cost of color correction/redo' },
-        { number: '6 months', label: 'wait time to fix a bad haircut' },
-        { number: '1 time', label: 'dissatisfaction = lifetime customer loss' },
+        { number: '73%', label: 'of customers have been dissatisfied with results (需验证)' },
+        { number: '$300+', label: 'average cost of color correction/redo (需验证)' },
+        { number: '6 months', label: 'wait time to fix a bad haircut (需验证)' },
+        { number: '1 time', label: 'dissatisfaction = lifetime customer loss (需验证)' },
       ],
     },
     {
@@ -57,7 +57,7 @@ export default function ExternalPresentation() {
         { icon: '😵', title: 'Vague Language', desc: '"Layers", "volume", "a bit shorter" - everyone interprets differently' },
         { icon: '📱', title: 'Reference Photos Don\'t Work', desc: 'Pinterest photos show people with completely different face shapes and hair textures' },
         { icon: '🤔', title: 'Limited Imagination', desc: 'Customers can\'t visualize how color/perm will actually look' },
-        { icon: '✂️', title: 'Irreversible', desc: 'Once cut, it can\'t grow back. Once colored wrong, months to fix' },
+        { icon: '✂', title: 'Irreversible', desc: 'Once cut, it can\'t grow back. Once colored wrong, months to fix' },
       ],
     },
     {
@@ -251,6 +251,7 @@ export default function ExternalPresentation() {
         return: '3 × $150 = $450 extra revenue',
         conclusion: 'Pays for itself in one week',
       },
+      // chartImage 将在组件中动态生成
     },
     {
       type: 'roi-detailed',
@@ -734,24 +735,56 @@ function PricingSlide({ title, tiers }: SlideData) {
 
 function RoiSlide({ title, calculation }: SlideData) {
   const calc = calculation as { investment: string; scenario: string; return: string; conclusion: string };
+  const [chartImage, setChartImage] = useState<string | null>(null);
+  
+  useEffect(() => {
+    // 动态生成图表
+    if (process.env.NEXT_PUBLIC_ENABLE_AI_CHARTS === 'true') {
+      fetch('/api/presentation/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ promptKey: 'roiChart', resolution: '1K' }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.imageUrl) {
+            setChartImage(data.imageUrl);
+          }
+        })
+        .catch(err => console.error('Failed to generate chart:', err));
+    }
+  }, []);
+  
   return (
     <div className="h-full p-12 flex flex-col items-center justify-center">
-      <h2 className="text-4xl font-bold mb-12">{title as string}</h2>
-      <div className="bg-gray-50 rounded-2xl p-8 max-w-2xl w-full space-y-6">
-        <div className="flex justify-between items-center pb-4 border-b">
-          <span className="text-gray-600">Investment</span>
-          <span className="font-bold text-xl">{calc.investment}</span>
+      <h2 className="text-4xl font-bold mb-8">{title as string}</h2>
+      <div className="grid grid-cols-2 gap-6 w-full max-w-5xl">
+        <div className="bg-gray-50 rounded-2xl p-6 space-y-4">
+          <div className="flex justify-between items-center pb-3 border-b">
+            <span className="text-gray-600">Investment</span>
+            <span className="font-bold text-lg">{calc.investment}</span>
+          </div>
+          <div className="py-3">
+            <p className="text-gray-600 mb-2 text-sm">Break-even Scenario:</p>
+            <p className="font-medium text-sm">{calc.scenario}</p>
+          </div>
+          <div className="flex justify-between items-center py-3 border-t">
+            <span className="text-gray-600">Extra Revenue</span>
+            <span className="font-bold text-lg text-green-600">{calc.return}</span>
+          </div>
+          <div className="bg-amber-500 text-white rounded-xl p-3 text-center">
+            <span className="text-lg font-bold">{calc.conclusion}</span>
+          </div>
         </div>
-        <div className="py-4">
-          <p className="text-gray-600 mb-2">Break-even Scenario:</p>
-          <p className="font-medium">{calc.scenario}</p>
-        </div>
-        <div className="flex justify-between items-center py-4 border-t">
-          <span className="text-gray-600">Extra Revenue</span>
-          <span className="font-bold text-xl text-green-600">{calc.return}</span>
-        </div>
-        <div className="bg-amber-500 text-white rounded-xl p-4 text-center">
-          <span className="text-2xl font-bold">{calc.conclusion}</span>
+        <div className="bg-white rounded-2xl p-4 flex items-center justify-center border-2 border-gray-200">
+          {chartImage ? (
+            <img src={chartImage} alt="ROI Chart" className="max-w-full max-h-full object-contain" />
+          ) : (
+            <div className="text-center text-gray-400">
+              <TrendingUp className="w-16 h-16 mx-auto mb-2" />
+              <p className="text-sm">ROI Chart</p>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -791,14 +824,14 @@ function EndSlide({ title, subtitle, contact }: SlideData) {
 function PainRealQuotesSlide({ title, quotes }: SlideData) {
   const quotesData = quotes as { text: string; source: string }[];
   return (
-    <div className="h-full p-12 flex flex-col bg-red-50">
-      <h2 className="text-4xl font-bold mb-8 text-center">{title as string}</h2>
-      <div className="flex-1 space-y-4 overflow-auto">
+    <div className="h-full p-12 flex flex-col bg-red-50 overflow-hidden">
+      <h2 className="text-4xl font-bold mb-6 text-center">{title as string}</h2>
+      <div className="flex-1 space-y-3 overflow-auto">
         {quotesData.map((q, i) => (
-          <div key={i} className="bg-white rounded-2xl p-6 border-l-4 border-red-500">
-            <Quote className="w-8 h-8 text-red-300 mb-3" />
-            <p className="text-lg text-gray-800 mb-2 italic">"{q.text}"</p>
-            <p className="text-sm text-gray-500">— {q.source}</p>
+          <div key={i} className="bg-white rounded-2xl p-4 border-l-4 border-red-500">
+            <Quote className="w-6 h-6 text-red-300 mb-2" />
+            <p className="text-base text-gray-800 mb-2 italic">"{q.text}"</p>
+            <p className="text-xs text-gray-500">— {q.source}</p>
           </div>
         ))}
       </div>
@@ -897,28 +930,28 @@ function ValueStylistEmpowermentSlide({ title, comparison, keyPoint }: SlideData
 function RoiDetailedSlide({ title, example }: SlideData) {
   const ex = example as { tier: string; assumptions: string[]; calculation: string[]; note: string };
   return (
-    <div className="h-full p-12 flex flex-col">
-      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
-      <div className="flex-1 bg-gray-50 rounded-2xl p-8 max-w-3xl mx-auto w-full">
-        <h3 className="font-bold text-xl mb-6">{ex.tier}</h3>
-        <div className="mb-6">
-          <h4 className="font-semibold mb-2">Assumptions:</h4>
-          <ul className="space-y-1">
+    <div className="h-full p-12 flex flex-col overflow-auto">
+      <h2 className="text-4xl font-bold text-center mb-6">{title as string}</h2>
+      <div className="flex-1 bg-gray-50 rounded-2xl p-6 max-w-3xl mx-auto w-full overflow-auto">
+        <h3 className="font-bold text-lg mb-4">{ex.tier}</h3>
+        <div className="mb-4">
+          <h4 className="font-semibold mb-2 text-sm">Assumptions:</h4>
+          <ul className="space-y-1 text-sm">
             {ex.assumptions.map((a, i) => (
               <li key={i} className="text-gray-700">• {a}</li>
             ))}
           </ul>
         </div>
-        <div className="mb-6">
-          <h4 className="font-semibold mb-2">Calculation:</h4>
-          <div className="bg-white rounded-lg p-4 font-mono text-sm space-y-1">
+        <div className="mb-4">
+          <h4 className="font-semibold mb-2 text-sm">Calculation:</h4>
+          <div className="bg-white rounded-lg p-3 font-mono text-xs space-y-1">
             {ex.calculation.map((c, i) => (
               <div key={i} className={i === ex.calculation.length - 1 ? 'text-green-600 font-bold' : ''}>{c}</div>
             ))}
           </div>
         </div>
-        <div className="bg-amber-500 text-white rounded-xl p-4 text-center">
-          <p className="font-bold">{ex.note}</p>
+        <div className="bg-amber-500 text-white rounded-xl p-3 text-center">
+          <p className="font-bold text-sm">{ex.note}</p>
         </div>
       </div>
     </div>
