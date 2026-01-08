@@ -45,6 +45,36 @@ let selectedModel: string | undefined;
 - 使用有意义的变量名（英文）
 - 复杂逻辑必须添加中文注释说明
 
+## CSS/Tailwind 样式规范
+
+### 边框规则
+
+**禁止使用单边边框（如 border-left, border-right, border-top, border-bottom）**
+
+- ✅ **正确**: 使用完整边框 `border` 或 `border-{size}`
+- ✅ **正确**: 使用无边框 `border-0` 或 `border-none`
+- ❌ **错误**: 使用单边边框如 `border-l-4`, `border-r-2`, `border-t-1`, `border-b-8`
+
+**原因**: 单边边框会导致视觉不一致，影响设计系统的统一性。如果需要强调某一边，应该使用其他设计元素（如背景色、阴影、分隔线等）。
+
+**示例**:
+```tsx
+// ❌ 错误 - 使用 border-left
+<div className="border-l-4 border-red-500">...</div>
+
+// ✅ 正确 - 使用完整边框
+<div className="border-2 border-red-500">...</div>
+
+// ✅ 正确 - 使用无边框 + 其他视觉元素
+<div className="border-0 bg-red-50 pl-4">...</div>
+
+// ✅ 正确 - 使用分隔线元素
+<div className="flex items-center gap-2">
+  <div className="h-full w-1 bg-red-500"></div>
+  <div>...</div>
+</div>
+```
+
 ## 文档
 
 - README 文件可以使用中英文双语
