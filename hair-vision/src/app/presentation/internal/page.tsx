@@ -314,6 +314,71 @@ CRITICAL REQUIREMENTS:
       subtitle: '每月只需3个客户因"看到效果"而升级染发，即可回本',
       description: '客户升级率提升20%，平均+$150 → 每月$15,000+额外收入 (以400客户/月计算)',
     },
+    {
+      type: 'content',
+      title: '信用系统与定价策略',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '订阅套餐',
+          items: [
+            'Essential: $199/月 (200次)',
+            'Professional: $499/月 (500次)',
+            'Enterprise: $999/月 (2000次)',
+            '主要收入来源：订阅',
+          ],
+        },
+        right: {
+          title: '按需付费',
+          items: [
+            '接近成本价：$0.13-$0.15/次',
+            '目的：鼓励升级套餐',
+            '订阅更划算：节省74-86%',
+            '服务永不中断（允许超支）',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '服务质量保证',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '一致的服务质量',
+          items: [
+            '始终使用 Gemini 3.0 Pro',
+            '不因信用问题降级',
+            '客户体验一致',
+            '高质量输出保证',
+          ],
+        },
+        right: {
+          title: '业务安全方案',
+          items: [
+            '仅在 API 错误时降级',
+            '配额限制自动切换',
+            '服务不中断',
+            '技术问题自动处理',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '自动使用提醒',
+      content: {
+        layout: 'features',
+        items: [
+          { icon: '📊', title: '80% 使用率', desc: '友好提醒使用情况' },
+          { icon: '⚠️', title: '95% 使用率', desc: '严重警告，建议升级' },
+          { icon: '💳', title: '超支通知', desc: '说明服务继续，月底结算' },
+          { icon: '📧', title: '邮件提醒', desc: '24小时频率控制，避免重复' },
+          { icon: '📈', title: '使用统计', desc: '详细的使用数据和成本分析' },
+          { icon: '🔄', title: '月度重置', desc: '基础信用每月自动重置' },
+        ],
+      },
+    },
     // 市场研究
     {
       type: 'section',
