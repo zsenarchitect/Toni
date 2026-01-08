@@ -1,37 +1,39 @@
 import type { SubscriptionTier, CreditBalance, CreditUsage, SubscriptionPlan, ImageResolution, GeminiModel } from '@/types';
 
-// 订阅套餐配置
-// 定价策略：主要收入来自订阅，按需付费接近成本价以鼓励订阅
+// 订阅套餐配置 (2026-01更新，基于市场验证)
+// 定价策略：参照竞品定价 (Boulevard $175-$325, Zenoti $300-$500)
 // 基于 Gemini 3 Pro 官方 API 成本：
 // - 1K/2K 图像：~$0.134 per image (1,120 tokens × $120/1M tokens)
 // - 4K 图像：~$0.24 per image (2,000 tokens × $120/1M tokens)
 // - 输入成本：~$0.001 per request (100-200 tokens × $2/1M tokens)
 // 总成本约 $0.135 per 1K image
-// 按需付费价格接近成本价，主要目的是鼓励用户升级到更高套餐
+// 
+// 市场验证结果：原定价偏高50-200%，已调整至市场合理范围
+// 参考来源：Square Appointments ($69), Vagaro ($25-85), Boulevard ($175-325)
 export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
   essential: {
     tier: 'essential',
     name: 'Essential',
-    monthlyPrice: 199,
-    baseCredits: 200, // 200 generations/month
+    monthlyPrice: 149, // 从$199降至$149，对标中端沙龙软件
+    baseCredits: 300, // 从200增至300次/月，提高性价比
     payAsYouGoPrice: 0.15, // $0.15 per additional credit (接近成本价 $0.135，仅覆盖运营成本)
-    features: ['System style library', 'Basic brand customization', '200 generations/month'],
+    features: ['System style library', 'Basic brand customization', '300 generations/month'],
   },
   professional: {
     tier: 'professional',
     name: 'Professional',
-    monthlyPrice: 499,
-    baseCredits: 500, // 500 generations/month
+    monthlyPrice: 299, // 从$499降至$299，对标Boulevard定价
+    baseCredits: 800, // 从500增至800次/月
     payAsYouGoPrice: 0.14, // $0.14 per additional credit (接近成本价，鼓励升级)
-    features: ['Custom style library', 'Full white-label', 'Service recommendations', '500 generations/month'],
+    features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month'],
   },
   enterprise: {
     tier: 'enterprise',
     name: 'Enterprise',
-    monthlyPrice: 999,
-    baseCredits: 2000, // 2000 generations/month
+    monthlyPrice: 599, // 从$999降至$599，对标高端沙龙软件
+    baseCredits: 2500, // 从2000增至2500次/月
     payAsYouGoPrice: 0.13, // $0.13 per additional credit (接近成本价，最大优惠)
-    features: ['Unlimited custom styles', 'Analytics dashboard', 'API access', '2000 generations/month'],
+    features: ['Unlimited custom styles', 'Analytics dashboard', 'API access', '2500 generations/month'],
   },
 };
 
