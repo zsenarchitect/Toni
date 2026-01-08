@@ -4,6 +4,9 @@ import { getHairstyleById } from '@/data/hairstyles';
 import { getColorById } from '@/data/colors';
 import { getBackgroundById } from '@/data/backgrounds';
 import type { ViewAngle, ImageResolution } from '@/types';
+import { selectModel, useCredits, getCreditStats } from '@/lib/credits';
+import { getCreditBalance, updateCreditBalance, recordCreditUsage } from '@/lib/credit-storage';
+import { generateHairstyle } from '@/lib/gemini';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -21,6 +24,7 @@ interface GenerateRequestBody {
   viewAngle: ViewAngle;
   backgroundId: string;
   resolution?: ImageResolution; // 可选分辨率参数
+  salonId?: string; // 可选：沙龙ID，用于信用管理。如果不提供，则跳过信用检查（向后兼容）
 }
 
 // 优化的提示词构建 - 更简洁以减少token成本
@@ -78,12 +82,39 @@ export async function POST(request: NextRequest) {
     }
 
     const body: GenerateRequestBody = await request.json();
-    const { photo, styleId, colorId, viewAngle, backgroundId, resolution } = body;
+    const { photo, styleId, colorId, viewAngle, backgroundId, resolution, salonId } = body;
     
     // 获取分辨率设置，优先使用请求参数，其次环境变量，默认1K以节省成本
     const imageResolution: ImageResolution = resolution || 
       (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
       '1K';
+    
+    // 信用检查和模型选择（如果提供了salonId）
+    // 注意：永远不拒绝请求 - 允许超支，服务不中断
+    let selectedModel: string | undefined;
+    let creditsRequired = 0;
+    let creditBalance = null;
+    let isOverage = false;
+    
+    if (salonId) {
+      try {
+        creditBalance = await getCreditBalance(salonId);
+        const modelSelection = selectModel(creditBalance, imageResolution);
+        selectedModel = modelSelection.model;
+        creditsRequired = modelSelection.creditsRequired;
+        isOverage = modelSelection.isOverage;
+        
+        const stats = getCreditStats(creditBalance);
+        console.log(`[Credits] Salon ${salonId}: Available: ${stats.displayAvailable}, Required: ${creditsRequired}, Model: ${selectedModel}, Overage: ${isOverage}`);
+        
+        if (isOverage) {
+          console.log(`[Credits] Overage mode - service continues, will be billed later. Overage: ${stats.overage} credits ($${stats.overageCost.toFixed(2)})`);
+        }
+      } catch (error) {
+        // 即使信用检查失败，也继续服务（使用默认模型）
+        console.warn(`[Credits] Credit check failed for salon ${salonId}, continuing with default model:`, error);
+      }
+    }
     
     // 记录成本估算
     const estimatedCost = COST_ESTIMATES[imageResolution];
@@ -109,58 +140,51 @@ export async function POST(request: NextRequest) {
     const color = colorId ? getColorById(colorId) : null;
     const background = getBackgroundById(backgroundId) || { id: 'studio', name: 'Studio', value: 'studio' };
 
-    // Build prompt with resolution
-    const prompt = buildPrompt(style, color, viewAngle, background, imageResolution);
-
-    // Initialize Gemini model with image generation capability
-    const model = genAI.getGenerativeModel({
-      model: 'gemini-3.0-pro-image-generation',
-      generationConfig: {
-        responseModalities: ['Text', 'Image'],
-      } as Record<string, unknown>,
+    // 使用统一的生成函数（支持模型选择）
+    const resultUrl = await generateHairstyle({
+      photoBase64: photo,
+      style,
+      color: color || undefined,
+      viewAngle,
+      background,
+      resolution: imageResolution,
+      model: selectedModel as any, // 如果提供了salonId，使用信用系统选择的模型
     });
 
-    // Extract base64 data from data URL
-    const base64Match = photo.match(/^data:([^;]+);base64,(.+)$/);
-    if (!base64Match) {
-      return NextResponse.json(
-        { error: 'Invalid image format' },
-        { status: 400 }
-      );
-    }
-
-    const mimeType = base64Match[1];
-    const base64Data = base64Match[2];
-
-    // Generate image
-    const result = await model.generateContent([
-      {
-        inlineData: {
-          mimeType,
-          data: base64Data,
-        },
-      },
-      prompt,
-    ]);
-
-    const response = result.response;
-
-    // Extract generated image from response
-    if (response.candidates && response.candidates[0]?.content?.parts) {
-      for (const part of response.candidates[0].content.parts) {
-        const imagePart = part as { inlineData?: { mimeType: string; data: string } };
-        if (imagePart.inlineData) {
-          const resultUrl = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
-          console.log(`[Cost] Image generated successfully at ${imageResolution}`);
-          return NextResponse.json({
-            success: true,
-            resultUrl,
-            resolution: imageResolution,
-            estimatedCost: estimatedCost,
-          });
-        }
+    // 如果生成成功，扣除信用
+    if (salonId && creditBalance && creditsRequired > 0) {
+      try {
+        const updatedBalance = useCredits(creditBalance, creditsRequired);
+        await updateCreditBalance(updatedBalance);
+        
+        // 记录使用历史
+        await recordCreditUsage({
+          id: `usage-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          salonId,
+          creditsUsed: creditsRequired,
+          model: selectedModel as any,
+          resolution: imageResolution,
+          timestamp: new Date(),
+          cost: estimatedCost,
+        });
+        
+        console.log(`[Credits] Deducted ${creditsRequired} credits from salon ${salonId}. Remaining: ${getCreditStats(updatedBalance).available}`);
+      } catch (error) {
+        console.error(`[Credits] Failed to update credits for salon ${salonId}:`, error);
+        // 即使信用更新失败，也返回生成的图片（避免用户体验问题）
       }
     }
+
+    // 返回结果（不包含信用信息给客户 - 只在admin端显示）
+    // 客户永远看不到信用错误或限制
+    return NextResponse.json({
+      success: true,
+      resultUrl,
+      resolution: imageResolution,
+      estimatedCost: estimatedCost,
+      // 不返回信用信息给前端客户界面
+      // 信用信息只在admin API中可见
+    });
 
     // If no image was generated, return error
     return NextResponse.json(

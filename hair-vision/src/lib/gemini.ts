@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { Hairstyle, HairColor, ViewAngle, Background, ImageResolution } from '@/types';
+import type { Hairstyle, HairColor, ViewAngle, Background, ImageResolution, GeminiModel } from '@/types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
@@ -17,6 +17,7 @@ interface GenerateParams {
   viewAngle: ViewAngle;
   background: Background;
   resolution?: ImageResolution; // 分辨率控制，用于成本优化
+  model?: GeminiModel; // 可选：指定使用的模型，如果不提供则根据信用自动选择
 }
 
 // Extended types for Gemini image generation (not yet in official types)
@@ -69,12 +70,15 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
       (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
       '1K';
     
+    // 获取模型，如果未指定则使用默认的Pro模型
+    const modelName: GeminiModel = params.model || 'gemini-3.0-pro-image-generation';
+    
     // 记录成本估算
     const estimatedCost = COST_ESTIMATES[resolution];
-    console.log(`[Cost] Generating ${resolution} image, estimated cost: $${estimatedCost.toFixed(4)}`);
+    console.log(`[Cost] Generating ${resolution} image with ${modelName}, estimated cost: $${estimatedCost.toFixed(4)}`);
 
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-3.0-pro-image-generation',
+      model: modelName,
       generationConfig: {
         responseModalities: ['Text', 'Image'],
         // 注意: media_resolution 参数可能需要根据实际API文档调整
@@ -115,7 +119,7 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         const imagePart = part as InlineDataPart;
         if (imagePart.inlineData) {
           const imageData = imagePart.inlineData;
-          console.log(`[Cost] Image generated successfully at ${resolution}, actual cost may vary`);
+          console.log(`[Cost] Image generated successfully at ${resolution} with ${modelName}, actual cost may vary`);
           return `data:${imageData.mimeType};base64,${imageData.data}`;
         }
       }

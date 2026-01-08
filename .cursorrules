@@ -1,0 +1,59 @@
+# Cursor Rules for Toni Project
+
+## 代码注释语言规范
+
+**主要语言：中文（简体）**
+
+- 所有代码注释、文档字符串、函数说明应使用中文（简体）
+- 变量名、函数名、类名等标识符可以使用英文（保持代码可读性）
+- 错误消息和日志可以使用中文
+- 用户界面文本根据目标用户群体决定（中文或英文）
+
+## 注释规范
+
+### 函数注释示例
+```typescript
+/**
+ * 生成发型预览图片
+ * @param params 生成参数，包含照片、发型、颜色等信息
+ * @returns 返回生成的图片数据URL
+ */
+export async function generateHairstyle(params: GenerateParams): Promise<string> {
+  // 实现代码...
+}
+```
+
+### 行内注释示例
+```typescript
+// 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
+const resolution: ImageResolution = params.resolution || 
+  (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
+  '1K';
+```
+
+### 复杂逻辑注释
+```typescript
+// 信用检查和模型选择（如果提供了salonId）
+// 注意：永远不拒绝请求 - 允许超支，服务不中断
+let selectedModel: string | undefined;
+```
+
+## 代码风格
+
+- 使用 TypeScript 严格模式
+- 遵循 ESLint 规则
+- 使用有意义的变量名（英文）
+- 复杂逻辑必须添加中文注释说明
+
+## 文档
+
+- README 文件可以使用中英文双语
+- API 文档注释使用中文
+- 技术文档优先使用中文
+
+## 例外情况
+
+- 第三方库的 API 调用可以使用英文注释（如果库文档是英文）
+- 标准算法和设计模式的注释可以使用英文术语
+- 与外部系统集成的代码可以使用英文注释（便于团队协作）
+

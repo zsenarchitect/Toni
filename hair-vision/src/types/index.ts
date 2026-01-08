@@ -36,6 +36,46 @@ export type ViewAngle = 'front' | 'side' | 'back';
 // 图像分辨率类型 (成本优化)
 export type ImageResolution = '1K' | '2K' | '4K';
 
+// 订阅套餐类型
+export type SubscriptionTier = 'essential' | 'professional' | 'enterprise';
+
+// 模型类型 (用于降级策略)
+export type GeminiModel = 'gemini-3.0-pro-image-generation' | 'gemini-2.0-flash-preview-image-generation';
+
+// 信用系统
+export interface CreditBalance {
+  salonId: string;
+  subscriptionTier: SubscriptionTier;
+  baseCredits: number; // 套餐包含的基础信用
+  usedCredits: number; // 已使用的信用
+  purchasedCredits: number; // 额外购买的信用
+  overageCredits: number; // 超出的信用（负数余额，用于后续计费）
+  resetDate: Date; // 信用重置日期 (通常是每月1号)
+  lastUpdated: Date;
+}
+
+// 信用使用记录
+export interface CreditUsage {
+  id: string;
+  salonId: string;
+  generationId?: string;
+  creditsUsed: number;
+  model: GeminiModel;
+  resolution: ImageResolution;
+  timestamp: Date;
+  cost: number; // 实际成本
+}
+
+// 订阅套餐配置
+export interface SubscriptionPlan {
+  tier: SubscriptionTier;
+  name: string;
+  monthlyPrice: number;
+  baseCredits: number; // 每月包含的信用
+  payAsYouGoPrice: number; // 超出后的单价 (每信用)
+  features: string[];
+}
+
 // 生成请求
 export interface GenerateRequest {
   photo: string; // base64
