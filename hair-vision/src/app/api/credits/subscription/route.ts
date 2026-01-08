@@ -23,9 +23,10 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const balance = await updateSubscription(salonId, tier);
+    const validatedTier = tier as SubscriptionTier;
+    const balance = await updateSubscription(salonId, validatedTier);
     const stats = getCreditStats(balance);
-    const plan = SUBSCRIPTION_PLANS[tier];
+    const plan = SUBSCRIPTION_PLANS[validatedTier];
 
     return NextResponse.json({
       success: true,
