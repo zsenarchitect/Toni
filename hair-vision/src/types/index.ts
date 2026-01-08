@@ -82,6 +82,7 @@ export interface SubscriptionPlan {
   baseCredits: number; // 每月包含的信用
   payAsYouGoPrice: number; // 超出后的单价 (每信用)
   features: string[];
+  freeTrialDays: number; // 免费试用天数
 }
 
 // 生成请求

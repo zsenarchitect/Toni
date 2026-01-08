@@ -50,7 +50,7 @@ export async function POST(request: NextRequest) {
 
       // Extract links from email body and create tracked versions
       const linkRegex = /https?:\/\/[^\s<>"{}|\\^`\[\]]+/g;
-      const links: string[] = draft.body.match(linkRegex) || [];
+      const links = draft.body.match(linkRegex) || [];
       const trackingLinks = links.map((link: string) => ({
         original: link,
         tracked: generateTrackedLink(link, `click_${Date.now()}_${Math.random().toString(36).substring(2, 9)}`),
