@@ -1,5 +1,5 @@
 // Web scraping utilities for extracting contact information
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import type { ScrapedContactData, BusinessType } from '@/types/outreach';
 
 /**

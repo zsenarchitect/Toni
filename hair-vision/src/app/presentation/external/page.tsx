@@ -814,8 +814,8 @@ function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints 
     <div className="h-full p-8 flex flex-col bg-gradient-to-br from-amber-50 to-white">
       <div className="text-center mb-4">
         <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
-        {subtitle && (
-          <p className="text-lg text-amber-600 font-semibold">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-amber-600 font-semibold">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
@@ -847,8 +847,8 @@ function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints 
           ))}
         </div>
       </div>
-      {description && (
-        <p className="text-center text-gray-600 text-sm px-4">{description as string}</p>
+      {typeof description === 'string' && description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description}</p>
       )}
     </div>
   );
@@ -884,8 +884,8 @@ function ExperienceIpadMirrorSlide({ title, subtitle, description, valuePoints }
     <div className="h-full p-8 flex flex-col bg-gradient-to-br from-blue-50 to-white">
       <div className="text-center mb-4">
         <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
-        {subtitle && (
-          <p className="text-lg text-blue-600 font-semibold">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-blue-600 font-semibold">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
@@ -917,8 +917,8 @@ function ExperienceIpadMirrorSlide({ title, subtitle, description, valuePoints }
           ))}
         </div>
       </div>
-      {description && (
-        <p className="text-center text-gray-600 text-sm px-4">{description as string}</p>
+      {typeof description === 'string' && description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description}</p>
       )}
     </div>
   );
@@ -1075,8 +1075,8 @@ function DataSourcesSlide({ title, subtitle, sources }: SlideData) {
     <div className="h-full p-10 flex flex-col bg-gradient-to-br from-gray-50 to-white">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2">{title as string}</h2>
-        {subtitle && (
-          <p className="text-lg text-gray-600">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 space-y-4 overflow-auto">
@@ -1243,8 +1243,8 @@ function ROICalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitle && (
-          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">
@@ -1261,8 +1261,8 @@ function RevenueCalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitle && (
-          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">
@@ -1279,8 +1279,8 @@ function ProductSalesCalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitle && (
-          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">

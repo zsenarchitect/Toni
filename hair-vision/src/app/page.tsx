@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Camera, History, Sparkles, ChevronRight, Scissors } from 'lucide-react';
+import { Camera, History, Sparkles, ChevronRight, Scissors, Presentation, Users, Palette } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { useStore } from '@/hooks/useStore';
 
@@ -86,6 +86,62 @@ export default function HomePage() {
             title="专业呈现"
             description="高品质效果图"
           />
+        </motion.div>
+
+        {/* Quick Links Section */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="mb-8"
+        >
+          <h3 className="text-lg font-semibold text-gray-900 mb-4">快速入口</h3>
+          <div className="space-y-3">
+            <Link href="/capture">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-100 hover:border-amber-200 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center">
+                    <Palette className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">造型体验</p>
+                    <p className="text-sm text-gray-500">开始预览您的新发型</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-amber-500" />
+              </div>
+            </Link>
+
+            <Link href="/presentation/external">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl border border-blue-100 hover:border-blue-200 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center">
+                    <Users className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">销售演示</p>
+                    <p className="text-sm text-gray-500">面向客户的产品介绍</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-blue-500" />
+              </div>
+            </Link>
+
+            <Link href="/presentation/internal">
+              <div className="flex items-center justify-between p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-2xl border border-purple-100 hover:border-purple-200 transition-colors">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center">
+                    <Presentation className="w-5 h-5 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-medium text-gray-900">内部演示</p>
+                    <p className="text-sm text-gray-500">技术架构与商业计划</p>
+                  </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-purple-500" />
+              </div>
+            </Link>
+          </div>
         </motion.div>
 
         {/* History Section */}
