@@ -106,7 +106,7 @@ export const useStore = create<AppState>()(
         }),
     }),
     {
-      name: 'hairvision-storage',
+      name: 'merror-storage',
       partialize: (state) => ({ history: state.history }),
     }
   )

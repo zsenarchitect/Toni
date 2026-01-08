@@ -21,182 +21,283 @@ import {
   ArrowRight,
 } from 'lucide-react';
 
-// 外部销售演示文稿
+// External Sales Presentation
 export default function ExternalPresentation() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const slides: SlideData[] = [
-    // 封面
+    // Cover
     {
       type: 'cover',
-      title: 'HairVision',
-      subtitle: '在剪发前，预见完美造型',
+      title: 'MeRROR',
+      subtitle: 'See Your Perfect Style Before the Cut',
       tagline: 'Exclusively for Premium Salons',
     },
-    // 痛点引入
+    // Pain Points Introduction
     {
       type: 'pain-quote',
-      quote: '"我说要有层次感，结果剪成了狗啃的..."',
-      attribution: '— 每一位曾经失望的顾客',
+      quote: '"I said I wanted layers, and I got a choppy mess..."',
+      attribution: '— Every disappointed customer',
     },
     {
       type: 'pain-stats',
-      title: '沟通失败的代价',
+      title: 'The Cost of Communication Failure',
       stats: [
-        { number: '73%', label: '的顾客曾对发型结果不满意' },
-        { number: '$300+', label: '色彩矫正/返工的平均费用' },
-        { number: '6个月', label: '修复一次失败剪发的等待时间' },
-        { number: '1次', label: '不满意 = 终身流失的客户' },
+        { number: '73%', label: 'of customers have been dissatisfied with results' },
+        { number: '$300+', label: 'average cost of color correction/redo' },
+        { number: '6 months', label: 'wait time to fix a bad haircut' },
+        { number: '1 time', label: 'dissatisfaction = lifetime customer loss' },
       ],
     },
     {
       type: 'pain-expand',
-      title: '为什么沟通这么难？',
+      title: 'Why is Communication So Difficult?',
       points: [
-        { icon: '😵', title: '语言模糊', desc: '"层次感"、"蓬松"、"稍微短一点"每个人理解不同' },
-        { icon: '📱', title: '参考图片不适用', desc: 'Pinterest图片的人跟顾客的脸型、发质完全不同' },
-        { icon: '🤔', title: '想象力有限', desc: '顾客无法想象染色/烫发后的真实效果' },
-        { icon: '✂️', title: '不可挽回', desc: '剪短了不能变长，染坏了要等半年' },
+        { icon: '😵', title: 'Vague Language', desc: '"Layers", "volume", "a bit shorter" - everyone interprets differently' },
+        { icon: '📱', title: 'Reference Photos Don\'t Work', desc: 'Pinterest photos show people with completely different face shapes and hair textures' },
+        { icon: '🤔', title: 'Limited Imagination', desc: 'Customers can\'t visualize how color/perm will actually look' },
+        { icon: '✂️', title: 'Irreversible', desc: 'Once cut, it can\'t grow back. Once colored wrong, months to fix' },
       ],
     },
-    // 解决方案引入
+    {
+      type: 'pain-real-quotes',
+      title: 'Real Customer Feedback',
+      quotes: [
+        { text: '"I showed her a picture of a lob and she gave me a mom bob. Now I have to wait 6 months to fix it."', source: 'Reddit r/Hair' },
+        { text: '"Told him I wanted subtle highlights, walked out looking like a zebra"', source: 'Instagram #haircutfail' },
+        { text: '"Paid $400 for a cut and it looks exactly like my $40 cuts"', source: 'Yelp Review' },
+        { text: '"Spent $300 on a color correction because the first stylist didn\'t understand what I wanted"', source: 'Real Customer' },
+      ],
+    },
+    {
+      type: 'pain-hidden-costs',
+      title: 'The Hidden Cost of One Failure',
+      costs: [
+        { category: 'Customer Loss', items: ['Correction costs $100-500', 'Wait time 3-12 months', 'Psychological cost immeasurable', 'Accessories $50-200'] },
+        { category: 'Salon Loss', items: ['Lifetime customer loss', 'Negative word-of-mouth spread', 'Permanent social media bad reviews', 'Refund/compensation costs'] },
+      ],
+      conclusion: 'One communication failure = $300 redo + 3 months wait + lifetime customer loss + social media damage',
+    },
+    // Solution Introduction
     {
       type: 'solution-intro',
-      title: '如果顾客能在剪发前\n看到效果呢？',
+      title: 'What if customers could see\nthe result before the cut?',
     },
     {
       type: 'solution-demo',
-      title: 'HairVision 造型预览系统',
+      title: 'MeRROR Style Preview System',
       features: [
-        { icon: <Camera />, title: '现场拍照', desc: '用iPad拍摄顾客照片' },
-        { icon: <Scissors />, title: '选择发型', desc: '浏览精选发型库' },
-        { icon: <Palette />, title: '预览颜色', desc: '看到染发后的效果' },
-        { icon: <RotateCcw />, title: '多角度', desc: '正面、侧面、背面' },
+        { icon: <Camera />, title: 'Live Photo Capture', desc: 'Take customer photos with iPad' },
+        { icon: <Scissors />, title: 'Choose Style', desc: 'Browse curated style library' },
+        { icon: <Palette />, title: 'Preview Color', desc: 'See how color will look' },
+        { icon: <RotateCcw />, title: 'Multiple Angles', desc: 'Front, side, and back views' },
       ],
     },
     {
       type: 'demo-flow',
-      title: '30秒完成造型预览',
+      title: 'Complete Style Preview in 30 Seconds',
       steps: [
-        { num: '1', title: '拍照', desc: '5秒', image: '📷' },
-        { num: '2', title: '选发型', desc: '10秒', image: '💇' },
-        { num: '3', title: '选颜色', desc: '5秒', image: '🎨' },
-        { num: '4', title: '查看效果', desc: '10秒', image: '✨' },
+        { num: '1', title: 'Capture', desc: '5 sec', image: '📷' },
+        { num: '2', title: 'Select Style', desc: '10 sec', image: '💇' },
+        { num: '3', title: 'Choose Color', desc: '5 sec', image: '🎨' },
+        { num: '4', title: 'View Result', desc: '10 sec', image: '✨' },
       ],
     },
-    // 价值主张
+    // Value Propositions
     {
       type: 'value-stylist',
-      title: '让造型师的专业被"看见"',
+      title: 'Make Stylist Expertise "Visible"',
       content: {
         before: {
-          title: '以前',
-          quote: '"相信我，这款很适合您"',
-          result: '客户半信半疑',
+          title: 'Before',
+          quote: '"Trust me, this will look great on you"',
+          result: 'Customer is skeptical',
         },
         after: {
-          title: '现在',
-          quote: '"您看，这是效果图"',
-          result: '客户立刻信服',
+          title: 'Now',
+          quote: '"Here, see the preview"',
+          result: 'Customer is convinced',
         },
       },
-      note: '造型师不是被取代，而是被赋能',
+      note: 'Stylists aren\'t replaced—they\'re empowered',
     },
     {
       type: 'value-upsell',
-      title: '提升服务转化',
+      title: 'Increase Service Conversion',
       scenarios: [
         { 
-          from: '客户来剪发',
-          to: '看到染色效果后升级染发',
+          from: 'Customer comes for cut',
+          to: 'Sees color preview and upgrades to color',
           increase: '+$200',
         },
         { 
-          from: '犹豫要不要烫发',
-          to: '看到烫发效果后决定尝试',
+          from: 'Hesitant about perm',
+          to: 'Sees perm preview and decides to try',
           increase: '+$300',
         },
         { 
-          from: '普通服务',
-          to: '看到招牌项目效果后升级',
+          from: 'Basic service',
+          to: 'Sees signature service preview and upgrades',
           increase: '+$150',
         },
       ],
-      result: '转化率提升 20%+',
+      result: 'Conversion rate increases 20%+',
     },
     {
       type: 'value-brand',
-      title: '完全融入您的品牌',
+      title: 'Fully Integrated with Your Brand',
       points: [
-        { icon: <Shield />, title: '白标定制', desc: '您的Logo、配色、字体' },
-        { icon: <Star />, title: '专属系统', desc: '顾客只看到您的品牌' },
-        { icon: <Users />, title: '等位区体验', desc: '顾客等待时自行浏览' },
+        { icon: <Shield />, title: 'White-Label Customization', desc: 'Your logo, colors, fonts' },
+        { icon: <Star />, title: 'Exclusive System', desc: 'Customers only see your brand' },
+        { icon: <Users />, title: 'Waiting Area Experience', desc: 'Customers browse while waiting' },
       ],
-      tagline: '在顾客眼里，这就是您沙龙的专属技术',
+      tagline: 'To customers, this is your salon\'s exclusive technology',
     },
-    // 社会证明
+    {
+      type: 'value-upsell-detail',
+      title: 'Upsell Conversion Scenarios',
+      scenarios: [
+        { 
+          from: 'Customer comes for cut $50',
+          to: 'Sees color preview and upgrades to color',
+          increase: '+$150-250',
+          conversion: '15-25%',
+        },
+        { 
+          from: 'Hesitant about perm',
+          to: 'Sees perm preview and decides to try',
+          increase: '+$200-350',
+          conversion: '10-20%',
+        },
+        { 
+          from: 'Basic service $200',
+          to: 'Sees signature service preview and upgrades',
+          increase: '+$150-300',
+          conversion: '25-40%',
+        },
+      ],
+      calculation: '20% customers upgrade × $150 average = $600/day extra revenue',
+    },
+    {
+      type: 'value-stylist-empowerment',
+      title: 'Stylists Aren\'t Replaced—They\'re Empowered',
+      comparison: {
+        traditional: {
+          title: 'Traditional Communication',
+          flow: [
+            'Customer: "I want layered medium-length hair"',
+            'Stylist: "Sure, where should the layers start?"',
+            'Customer: "Um... I don\'t know, just... make it look good?"',
+            'Stylist: (Guessing based on experience, uncertain)',
+          ],
+        },
+        withMeRROR: {
+          title: 'With MeRROR',
+          flow: [
+            'Customer: "I want layered medium-length hair"',
+            'Stylist: "Let me show you a few options"',
+            '[Shows 3 different layering options]',
+            'Stylist: "Based on your face shape, I recommend this one"',
+            'Customer: "Wow, I see! Let\'s do this one!"',
+          ],
+        },
+      },
+      keyPoint: 'The tool serves the stylist\'s judgment, not replaces it',
+    },
+    // Social Proof
     {
       type: 'testimonial',
-      quote: '以前解释一个发型要10分钟，现在直接展示，客户马上懂了。染发转化率明显提升了。',
+      quote: 'Before, explaining a style took 10 minutes. Now I just show them, and they get it immediately. Color service conversion has improved significantly.',
       author: 'Sarah Chen',
-      role: '资深造型师',
-      salon: 'Manhattan高端沙龙',
+      role: 'Senior Stylist',
+      salon: 'Manhattan Premium Salon',
     },
-    // 定价
+    // Pricing
     {
       type: 'pricing',
-      title: '简单透明的定价',
+      title: 'Simple, Transparent Pricing',
       tiers: [
         { 
           name: 'Essential',
           price: '$199',
-          period: '/月',
-          desc: '适合单店起步',
-          features: ['系统发型库', '基础品牌定制', '200次生成/月'],
+          period: '/month',
+          desc: 'Perfect for single location',
+          features: ['System style library', 'Basic brand customization', '200 generations/month'],
         },
         { 
           name: 'Professional',
           price: '$499',
-          period: '/月',
-          desc: '最受欢迎',
-          features: ['自定义发型库', '完全白标', '服务关联推荐', '500次生成/月'],
+          period: '/month',
+          desc: 'Most Popular',
+          features: ['Custom style library', 'Full white-label', 'Service recommendations', '500 generations/month'],
           popular: true,
         },
         { 
           name: 'Enterprise',
-          price: '联系我们',
+          price: 'Contact Us',
           period: '',
-          desc: '适合连锁品牌',
-          features: ['无限生成', '专属定制开发', 'API接入', '多店管理'],
+          desc: 'For salon chains',
+          features: ['Unlimited generations', 'Custom development', 'API access', 'Multi-location management'],
         },
       ],
     },
     {
       type: 'roi',
-      title: '投资回报',
+      title: 'Return on Investment',
       calculation: {
-        investment: '$499/月 (Professional)',
-        scenario: '每月只需 3 位客户因"看到效果"而升级染发',
-        return: '3 × $150 = $450 额外收入',
-        conclusion: '一周就能回本',
+        investment: '$499/month (Professional)',
+        scenario: 'Just 3 customers upgrade to color after "seeing the preview"',
+        return: '3 × $150 = $450 extra revenue',
+        conclusion: 'Pays for itself in one week',
       },
     },
-    // 行动号召
+    {
+      type: 'roi-detailed',
+      title: 'Detailed ROI Calculation',
+      example: {
+        tier: 'Professional Plan ($499/month)',
+        assumptions: [
+          'Monthly customers: 400',
+          'Upgrade conversion rate: 15%',
+          'Average upgrade amount: $150',
+        ],
+        calculation: [
+          'Extra revenue = 400 × 15% × $150',
+          '= $9,000/month',
+          'ROI = ($9,000 - $499) / $499',
+          '= 2,156%',
+        ],
+        note: 'Even with just 3 upgrades, you break even',
+      },
+    },
+    {
+      type: 'competitive-advantage',
+      title: 'Why Regular Salons Won\'t Use This?',
+      insight: 'This actually protects our market',
+      reasons: [
+        { point: 'Price Sensitive', desc: 'Regular salons have thin margins, unwilling to invest in tech' },
+        { point: 'Customer Expectations', desc: 'Regular customers have lower experience expectations' },
+        { point: 'Technical Capability', desc: 'Lack willingness to operate new systems' },
+        { point: 'Brand Positioning', desc: '"High-tech" conflicts with budget positioning' },
+      ],
+      conclusion: 'Premium salons are motivated to adopt for competitive differentiation',
+    },
+    // Call to Action
     {
       type: 'cta-demo',
-      title: '现在，让我为您演示',
-      subtitle: '用您的照片，看看效果',
-      buttonText: '开始演示 →',
+      title: 'Let Me Show You Now',
+      subtitle: 'Using your photo, see the results',
+      buttonText: 'Start Demo →',
     },
-    // 结束
+    // End
     {
       type: 'end',
-      title: 'HairVision',
-      subtitle: '让每一次造型沟通，都完美无误',
+      title: 'MeRROR',
+      subtitle: 'Make every style consultation perfect',
       contact: {
-        action: '预约详细演示',
-        email: 'demo@hairvision.app',
+        action: 'Schedule a Detailed Demo',
+        email: 'demo@merror.app',
       },
     },
   ];
@@ -303,7 +404,7 @@ export default function ExternalPresentation() {
 
       {/* Hints */}
       <div className="fixed bottom-4 right-4 text-xs text-gray-500 space-y-1">
-        <p>← → 翻页 | F 全屏</p>
+        <p>← → Navigate | F Fullscreen</p>
       </div>
     </div>
   );
@@ -320,15 +421,21 @@ function ExternalSlideRenderer({ slide }: { slide: SlideData }) {
     case 'pain-quote': return <PainQuoteSlide {...slide} />;
     case 'pain-stats': return <PainStatsSlide {...slide} />;
     case 'pain-expand': return <PainExpandSlide {...slide} />;
+    case 'pain-real-quotes': return <PainRealQuotesSlide {...slide} />;
+    case 'pain-hidden-costs': return <PainHiddenCostsSlide {...slide} />;
     case 'solution-intro': return <SolutionIntroSlide {...slide} />;
     case 'solution-demo': return <SolutionDemoSlide {...slide} />;
     case 'demo-flow': return <DemoFlowSlide {...slide} />;
     case 'value-stylist': return <ValueStylistSlide {...slide} />;
     case 'value-upsell': return <ValueUpsellSlide {...slide} />;
+    case 'value-upsell-detail': return <ValueUpsellDetailSlide {...slide} />;
+    case 'value-stylist-empowerment': return <ValueStylistEmpowermentSlide {...slide} />;
     case 'value-brand': return <ValueBrandSlide {...slide} />;
     case 'testimonial': return <TestimonialSlide {...slide} />;
     case 'pricing': return <PricingSlide {...slide} />;
     case 'roi': return <RoiSlide {...slide} />;
+    case 'roi-detailed': return <RoiDetailedSlide {...slide} />;
+    case 'competitive-advantage': return <CompetitiveAdvantageSlide {...slide} />;
     case 'cta-demo': return <CtaDemoSlide {...slide} />;
     case 'end': return <EndSlide {...slide} />;
     default: return <div>Unknown</div>;
@@ -599,7 +706,7 @@ function PricingSlide({ title, tiers }: SlideData) {
           >
             {tier.popular && (
               <span className="bg-amber-500 text-white text-xs px-3 py-1 rounded-full self-start mb-2">
-                最受欢迎
+                Most Popular
               </span>
             )}
             <h3 className="font-bold text-xl">{tier.name}</h3>
@@ -632,15 +739,15 @@ function RoiSlide({ title, calculation }: SlideData) {
       <h2 className="text-4xl font-bold mb-12">{title as string}</h2>
       <div className="bg-gray-50 rounded-2xl p-8 max-w-2xl w-full space-y-6">
         <div className="flex justify-between items-center pb-4 border-b">
-          <span className="text-gray-600">投入</span>
+          <span className="text-gray-600">Investment</span>
           <span className="font-bold text-xl">{calc.investment}</span>
         </div>
         <div className="py-4">
-          <p className="text-gray-600 mb-2">回本场景:</p>
+          <p className="text-gray-600 mb-2">Break-even Scenario:</p>
           <p className="font-medium">{calc.scenario}</p>
         </div>
         <div className="flex justify-between items-center py-4 border-t">
-          <span className="text-gray-600">额外收入</span>
+          <span className="text-gray-600">Extra Revenue</span>
           <span className="font-bold text-xl text-green-600">{calc.return}</span>
         </div>
         <div className="bg-amber-500 text-white rounded-xl p-4 text-center">
@@ -676,6 +783,164 @@ function EndSlide({ title, subtitle, contact }: SlideData) {
       <div className="text-center">
         <p className="text-amber-500 mb-2">{contactData.action}</p>
         <p className="text-2xl font-bold">{contactData.email}</p>
+      </div>
+    </div>
+  );
+}
+
+function PainRealQuotesSlide({ title, quotes }: SlideData) {
+  const quotesData = quotes as { text: string; source: string }[];
+  return (
+    <div className="h-full p-12 flex flex-col bg-red-50">
+      <h2 className="text-4xl font-bold mb-8 text-center">{title as string}</h2>
+      <div className="flex-1 space-y-4 overflow-auto">
+        {quotesData.map((q, i) => (
+          <div key={i} className="bg-white rounded-2xl p-6 border-l-4 border-red-500">
+            <Quote className="w-8 h-8 text-red-300 mb-3" />
+            <p className="text-lg text-gray-800 mb-2 italic">"{q.text}"</p>
+            <p className="text-sm text-gray-500">— {q.source}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function PainHiddenCostsSlide({ title, costs, conclusion }: SlideData) {
+  const costsData = costs as { category: string; items: string[] }[];
+  return (
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-4xl font-bold mb-8 text-center">{title as string}</h2>
+      <div className="flex-1 grid grid-cols-2 gap-6">
+        {costsData.map((cost, i) => (
+          <div key={i} className="bg-red-50 rounded-2xl p-6">
+            <h3 className="font-bold text-xl mb-4 text-red-700">{cost.category}</h3>
+            <ul className="space-y-2">
+              {cost.items.map((item, j) => (
+                <li key={j} className="flex gap-2 text-gray-700">
+                  <span className="text-red-500">•</span>
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <div className="bg-amber-500 text-white rounded-xl p-4 text-center mt-4">
+        <p className="text-xl font-bold">{conclusion as string}</p>
+      </div>
+    </div>
+  );
+}
+
+function ValueUpsellDetailSlide({ title, scenarios, calculation }: SlideData) {
+  const scenariosData = scenarios as { from: string; to: string; increase: string; conversion: string }[];
+  return (
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
+      <div className="flex-1 space-y-4">
+        {scenariosData.map((s, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-6">
+            <div className="flex items-center gap-4 mb-2">
+              <div className="flex-1">
+                <p className="text-gray-600">{s.from}</p>
+              </div>
+              <ArrowRight className="w-6 h-6 text-amber-500" />
+              <div className="flex-1">
+                <p className="font-medium">{s.to}</p>
+              </div>
+              <div className="text-right">
+                <span className="text-2xl font-bold text-green-600">{s.increase}</span>
+                <p className="text-sm text-gray-500">Conversion Rate: {s.conversion}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="bg-green-500 text-white rounded-xl p-4 text-center mt-4">
+        <p className="text-xl font-bold">{calculation as string}</p>
+      </div>
+    </div>
+  );
+}
+
+function ValueStylistEmpowermentSlide({ title, comparison, keyPoint }: SlideData) {
+  const comp = comparison as { traditional: { title: string; flow: string[] }; withMeRROR: { title: string; flow: string[] } };
+  return (
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
+      <div className="flex-1 grid grid-cols-2 gap-6">
+        <div className="bg-gray-100 rounded-2xl p-6">
+          <h3 className="font-bold text-xl mb-4 text-gray-600">{comp.traditional.title}</h3>
+          <ul className="space-y-2">
+            {comp.traditional.flow.map((step, i) => (
+              <li key={i} className="text-sm text-gray-700">• {step}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="bg-green-50 rounded-2xl p-6 border-2 border-green-500">
+          <h3 className="font-bold text-xl mb-4 text-green-700">{comp.withMeRROR.title}</h3>
+          <ul className="space-y-2">
+            {comp.withMeRROR.flow.map((step, i) => (
+              <li key={i} className="text-sm text-gray-700">• {step}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="bg-amber-500 text-white rounded-xl p-4 text-center mt-4">
+        <p className="text-lg font-bold">{keyPoint as string}</p>
+      </div>
+    </div>
+  );
+}
+
+function RoiDetailedSlide({ title, example }: SlideData) {
+  const ex = example as { tier: string; assumptions: string[]; calculation: string[]; note: string };
+  return (
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
+      <div className="flex-1 bg-gray-50 rounded-2xl p-8 max-w-3xl mx-auto w-full">
+        <h3 className="font-bold text-xl mb-6">{ex.tier}</h3>
+        <div className="mb-6">
+          <h4 className="font-semibold mb-2">Assumptions:</h4>
+          <ul className="space-y-1">
+            {ex.assumptions.map((a, i) => (
+              <li key={i} className="text-gray-700">• {a}</li>
+            ))}
+          </ul>
+        </div>
+        <div className="mb-6">
+          <h4 className="font-semibold mb-2">Calculation:</h4>
+          <div className="bg-white rounded-lg p-4 font-mono text-sm space-y-1">
+            {ex.calculation.map((c, i) => (
+              <div key={i} className={i === ex.calculation.length - 1 ? 'text-green-600 font-bold' : ''}>{c}</div>
+            ))}
+          </div>
+        </div>
+        <div className="bg-amber-500 text-white rounded-xl p-4 text-center">
+          <p className="font-bold">{ex.note}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CompetitiveAdvantageSlide({ title, insight, reasons, conclusion }: SlideData) {
+  const reasonsData = reasons as { point: string; desc: string }[];
+  return (
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-4xl font-bold text-center mb-4">{title as string}</h2>
+      <p className="text-center text-amber-600 font-semibold mb-8">{insight as string}</p>
+      <div className="flex-1 grid grid-cols-2 gap-4 mb-6">
+        {reasonsData.map((r, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-4">
+            <h3 className="font-bold mb-2">{r.point}</h3>
+            <p className="text-sm text-gray-600">{r.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-green-500 text-white rounded-xl p-4 text-center">
+        <p className="text-xl font-bold">{conclusion as string}</p>
       </div>
     </div>
   );

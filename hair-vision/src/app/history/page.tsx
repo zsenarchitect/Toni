@@ -18,7 +18,7 @@ export default function HistoryPage() {
   const handleDownload = (item: GenerationResult) => {
     downloadImage(
       item.resultPhoto,
-      `hairvision-${item.style.nameEn}-${item.viewAngle}.jpg`
+      `merror-${item.style.nameEn}-${item.viewAngle}.jpg`
     );
   };
 

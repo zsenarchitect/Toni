@@ -22,7 +22,7 @@ export default function HomePage() {
             <Scissors className="w-6 h-6 text-amber-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">HairVision</h1>
+            <h1 className="text-2xl font-bold text-gray-900">MeRROR</h1>
             <p className="text-sm text-gray-500">Salon Style Preview</p>
           </div>
         </motion.div>

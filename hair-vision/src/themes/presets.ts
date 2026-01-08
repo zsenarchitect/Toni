@@ -3,10 +3,10 @@ import type { SalonTheme } from '@/types/theme';
 // 默认主题 - 经典黑金
 export const defaultTheme: SalonTheme = {
   id: 'default',
-  salonName: 'HairVision',
+  salonName: 'MeRROR',
   branding: {
     logoPosition: 'left',
-    appName: 'HairVision',
+    appName: 'MeRROR',
     tagline: 'Salon Style Preview',
     showPoweredBy: false,
   },

@@ -1,8 +1,8 @@
-# HairVision 💇
+# MeRROR 💇
 
 > Professional hairstyle preview system for premium salons
 
-HairVision 是一款为高端理发沙龙设计的专业发型预览系统。让顾客在剪发前就能看到效果图，大幅减少沟通成本，提升服务体验。
+MeRROR 是一款为高端理发沙龙设计的专业发型预览系统。让顾客在剪发前就能看到效果图，大幅减少沟通成本，提升服务体验。
 
 ## ✨ 功能特点
 

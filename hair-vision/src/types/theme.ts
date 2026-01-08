@@ -11,7 +11,7 @@ export interface SalonTheme {
     logoPosition: 'left' | 'center';
     appName: string;
     tagline?: string;
-    showPoweredBy: boolean;  // 是否显示 "Powered by HairVision"
+    showPoweredBy: boolean;  // 是否显示 "Powered by MeRROR"
   };
   
   // 颜色系统

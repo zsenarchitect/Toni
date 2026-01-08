@@ -136,7 +136,7 @@ export default function ResultPage() {
       addToHistory(historyItem);
 
       // Download
-      downloadImage(result, `hairvision-${selectedStyle.nameEn}-${selectedViewAngle}.jpg`);
+      downloadImage(result, `merror-${selectedStyle.nameEn}-${selectedViewAngle}.jpg`);
     }
   };
 

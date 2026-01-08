@@ -66,7 +66,7 @@ export function ThemedHeader({ showBack, onBack, title, subtitle }: ThemedHeader
           className="text-xs mt-4 opacity-50"
           style={{ color: theme.colors.textMuted }}
         >
-          Powered by HairVision
+          Powered by MeRROR
         </p>
       )}
     </header>

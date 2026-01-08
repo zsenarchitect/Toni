@@ -9,13 +9,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'HairVision - Salon Style Preview',
+  title: 'MeRROR - Salon Style Preview',
   description: '专业发型预览系统，助您与造型师完美沟通',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'HairVision',
+    title: 'MeRROR',
   },
   icons: {
     icon: '/icon.svg',

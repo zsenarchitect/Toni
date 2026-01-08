@@ -19,6 +19,7 @@ import {
   Layers,
   Palette,
   CheckCircle2,
+  ArrowRight,
 } from 'lucide-react';
 
 // 内部演示文稿 - 技术、商业、计划
@@ -30,7 +31,7 @@ export default function InternalPresentation() {
     // 封面
     {
       type: 'cover',
-      title: 'HairVision',
+      title: 'MeRROR',
       subtitle: '高端沙龙造型预览系统',
       footer: '内部商业计划 | January 2026',
     },
@@ -42,6 +43,7 @@ export default function InternalPresentation() {
         { icon: <Target />, text: '项目概述与核心价值' },
         { icon: <Code />, text: '技术架构与实现' },
         { icon: <DollarSign />, text: '商业模式与定价' },
+        { icon: <TrendingUp />, text: '市场研究与分析' },
         { icon: <MessageSquare />, text: '销售策略与话术' },
         { icon: <Calendar />, text: '执行计划与里程碑' },
       ],
@@ -111,10 +113,24 @@ export default function InternalPresentation() {
       content: {
         layout: 'tech-stack',
         items: [
-          { category: 'Frontend', techs: ['Next.js 14', 'React', 'TailwindCSS', 'Framer Motion'] },
-          { category: 'Backend', techs: ['Vercel Serverless', 'Edge Functions'] },
-          { category: 'AI', techs: ['Google Gemini 2.0 Flash', 'Image Generation API'] },
-          { category: 'Storage', techs: ['Supabase', 'Cloudinary'] },
+          { category: 'Frontend', techs: ['Next.js 14', 'React', 'TailwindCSS', 'Framer Motion', 'PWA Support'] },
+          { category: 'Backend', techs: ['Vercel Serverless', 'Edge Functions', 'API Routes'] },
+          { category: 'AI', techs: ['Google Gemini 2.0 Flash', 'Image Generation API', 'Prompt Engineering'] },
+          { category: 'Storage', techs: ['Supabase (Database + Auth)', 'Cloudinary (Images)'] },
+          { category: 'DevOps', techs: ['Vercel (Deployment)', 'GitHub Actions (CI/CD)', 'Sentry (Monitoring)'] },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '系统架构',
+      content: {
+        layout: 'architecture',
+        layers: [
+          { name: 'Frontend Layer', desc: 'Next.js 14 App Router, iPad优化响应式设计' },
+          { name: 'API Layer', desc: 'Vercel Serverless Functions, Edge Functions' },
+          { name: 'AI Layer', desc: 'Google Gemini API, 图像生成与处理' },
+          { name: 'Data Layer', desc: 'Supabase (用户/沙龙/生成记录), Cloudinary (图片存储)' },
         ],
       },
     },
@@ -164,6 +180,53 @@ CRITICAL REQUIREMENTS:
 2. Hair must look natural and realistic
 3. Professional salon quality output
 \`;`,
+    },
+    {
+      type: 'content',
+      title: '多角度一致性方案',
+      content: {
+        layout: 'multi-angle',
+        current: {
+          approach: '单张正面照片 + AI想象',
+          pros: ['操作简单', '降低使用门槛', '快速出图'],
+          cons: ['侧面/背面可能不准确', '个人特征无法精确呈现', '不同角度可能不一致'],
+        },
+        future: {
+          approach: '多角度拍摄输入 (V1.5)',
+          features: ['正面(必需) + 左侧45度(可选) + 右侧45度(可选) + 背面(可选)', '多张参考图提高一致性', '更准确的个人特征'],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '持续编辑功能设计',
+      content: {
+        layout: 'editing-features',
+        features: [
+          { name: '长度调整', desc: '滑块: -5cm 到 +5cm', status: 'V1.5' },
+          { name: '层次感', desc: '滑块: 0-100%', status: 'V1.5' },
+          { name: '卷度大小', desc: '5档选择: 直发/微卷/中卷/大卷/小卷', status: 'V1.5' },
+          { name: '光泽度', desc: '滑块: 0-100%', status: 'V1.5' },
+          { name: '颜色深浅', desc: '滑块: -50 到 +50', status: 'V1.5' },
+          { name: '刘海长度', desc: '5档选择', status: 'V1.5' },
+        ],
+        strategy: '基于前图的编辑指令 + 参数化Prompt',
+      },
+    },
+    {
+      type: 'content',
+      title: '白标主题系统',
+      content: {
+        layout: 'white-label',
+        features: [
+          { feature: '品牌融合', desc: 'Logo、配色、字体完全匹配沙龙品牌' },
+          { feature: 'CSS变量系统', desc: '动态主题注入，无需重新编译' },
+          { feature: '预设模板', desc: '5种预设主题 + 自定义主题' },
+          { feature: '等位区模式', desc: '简化界面，顾客自行浏览' },
+          { feature: '自定义域名', desc: 'Professional+ 套餐支持' },
+        ],
+        value: '顾客看不到任何第三方标识，完全融入沙龙品牌',
+      },
     },
     // 商业模式
     {
@@ -232,11 +295,168 @@ CRITICAL REQUIREMENTS:
       },
     },
     {
+      type: 'content',
+      title: '成本结构',
+      content: {
+        layout: 'costs',
+        items: [
+          { category: '技术运营', monthly: '$150', items: ['Vercel Pro $20', 'Supabase $25', 'Gemini API $50-100'] },
+          { category: '纽约地推', monthly: '$700', items: ['交通 $200', '餐饮约见 $300', '营销材料 $200'] },
+          { category: '一次性', amount: '$800', items: ['演示用iPad'] },
+        ],
+        total: '~$1,000/月 (初期)',
+      },
+    },
+    {
       type: 'highlight',
       title: 'ROI 卖点',
       highlight: '3个升级 = 回本',
       subtitle: '每月只需3个客户因"看到效果"而升级染发，即可回本',
       description: '客户升级率提升20%，平均+$150 → 每月$15,000+额外收入 (以400客户/月计算)',
+    },
+    // 市场研究
+    {
+      type: 'section',
+      title: '市场研究与分析',
+      icon: <TrendingUp className="w-16 h-16" />,
+    },
+    {
+      type: 'content',
+      title: '市场规模分析',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '市场背景',
+          items: [
+            '全球美发市场: $105-108B (2024)',
+            '美国美发市场: $20.12B (2025), 年增长4.57%',
+            '高端美发市场: $8.13B (2024) → $12.62B (2033)',
+            '沙龙软件市场: $2-3B 全球',
+          ],
+        },
+        right: {
+          title: '目标市场 (NYC)',
+          items: [
+            '总沙龙数: 8,000-10,000',
+            '高端沙龙 ($150+): 500-800',
+            '目标客户 (ICP): 200-300',
+            'SAM: $960K-$1.44M/年',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '竞争分析',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '直接竞争对手',
+          items: [
+            'YouCam Makeup: 消费者应用，威胁低',
+            'Style My Hair (L\'Oréal): 产品推广工具，威胁低',
+            'Perfect Corp B2B: $5K-$50K+，威胁中等',
+          ],
+        },
+        right: {
+          title: '间接竞争对手',
+          items: [
+            'Vagaro: $25-75/月 (运营工具)',
+            'Square: $29-69/月 (预约系统)',
+            'Mindbody: $129-249/月 (完整套件)',
+            '关键洞察: 这些平台专注运营，不解决沟通问题',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '关键发现与风险',
+      content: {
+        layout: 'challenges',
+        items: [
+          { 
+            challenge: '✅ 问题真实存在', 
+            solution: '沟通失败在沙龙中确实存在，有数据支持',
+            risk: '低',
+          },
+          { 
+            challenge: '⚠️ 市场规模未验证', 
+            solution: '需要验证73%不满意率等关键假设',
+            risk: '中',
+          },
+          { 
+            challenge: '⚠️ 定价可能过高', 
+            solution: '建议启动时使用"创始人定价" $99-$199',
+            risk: '中',
+          },
+          { 
+            challenge: '⚠️ 销售周期较长', 
+            solution: 'B2B沙龙销售通常3-6个月，需调整预期',
+            risk: '中',
+          },
+          { 
+            challenge: '✅ 竞争护城河', 
+            solution: '白标定位是明智的差异化策略',
+            risk: '低',
+          },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '定价策略建议',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '当前定价',
+          items: [
+            'Essential: $199/月',
+            'Professional: $499/月',
+            'Enterprise: $999/月',
+          ],
+        },
+        right: {
+          title: '建议调整',
+          items: [
+            '启动期: "创始人定价" $99-$249',
+            '收集ROI数据证明价值',
+            '6个月后逐步提升至$199-$499',
+            '基于实际转化数据调整',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '销售策略建议',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '当前计划',
+          items: [
+            'Month 1-2: 20+沙龙访问',
+            'Month 3-4: 5个试用转化',
+            'Month 5-6: 30+付费客户',
+          ],
+        },
+        right: {
+          title: '建议调整',
+          items: [
+            'Month 1-2: 100+冷接触, 30+访问, 5-10试用',
+            'Month 3-4: 10-15付费客户 (非5个)',
+            'Month 5-6: 25-40客户 (非30个)',
+            '聚焦早期采用者: 技术导向沙龙',
+          ],
+        },
+      },
+    },
+    {
+      type: 'highlight',
+      title: '关键验证需求',
+      highlight: '在规模化前必须验证',
+      subtitle: '1. 73%不满意率 | 2. 15-20%升级转化率 | 3. $199-499价格接受度',
+      description: '建议: 前3-5个试点客户收集真实数据，验证ROI故事后再扩展',
     },
     // 销售策略
     {
@@ -293,7 +513,45 @@ CRITICAL REQUIREMENTS:
           { objection: '"我们不需要"', response: '您的竞争对手可能已经在用类似技术了' },
           { objection: '"效果不真实"', response: '我现在给您演示，您亲眼看看' },
           { objection: '"客户不会用"', response: '造型师操作，客户只需要看和选择' },
+          { objection: '"造型师会抵触"', response: '这是赋能工具，让专业判断被"看见"，不是取代' },
+          { objection: '"技术太复杂"', response: '30秒完成预览，操作比拍照还简单' },
         ],
+      },
+    },
+    {
+      type: 'content',
+      title: '造型师赋能策略',
+      content: {
+        layout: 'stylist-empowerment',
+        keyPoints: [
+          { point: '定位', desc: '专业助手，不是AI设计师' },
+          { point: '流程', desc: '造型师问诊 → 专业分析 → 推荐方案 → MeRROR可视化 → 客户决策' },
+          { point: '价值', desc: '让专业判断被"看见"，增强说服力' },
+          { point: '话术', desc: '"这款更适合您的脸型" + 可视化效果 = 客户信服' },
+        ],
+        scenarios: [
+          { from: '剪发 $50', to: '看到染色效果 → 升级染发', increase: '+$150-250' },
+          { from: '犹豫烫发', to: '看到烫发效果 → 决定尝试', increase: '+$200-350' },
+          { from: '普通服务', to: '看到招牌项目 → 升级', increase: '+$150-300' },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '沙龙定制化功能',
+      content: {
+        layout: 'salon-customization',
+        features: [
+          { feature: '自定义发型库', desc: '添加沙龙招牌发型/独家设计 (Professional+)' },
+          { feature: '服务关联推荐', desc: '每个发型关联推荐服务和产品' },
+          { feature: '效果对比模式', desc: '基础服务 vs 高级服务对比展示' },
+          { feature: '护理效果预览', desc: '光泽度、顺滑度等参数调整预览' },
+        ],
+        example: {
+          signature: 'Cloud Perm 云朵烫',
+          services: ['深层护理 $150', '光泽护理 $80'],
+          products: ['卷发定型慕斯 $45', '护色洗发水 $38'],
+        },
       },
     },
     // 执行计划
@@ -312,6 +570,35 @@ CRITICAL REQUIREMENTS:
           { phase: 'Month 3-4', title: '验证期', tasks: ['迭代产品', '转化付费', '案例研究', '优化话术'] },
           { phase: 'Month 5-6', title: '扩张期', tasks: ['签约30+客户', '招聘销售', '扩展LA/Miami'] },
           { phase: 'Year 2', title: '规模化', tasks: ['100+客户', '国际扩展', '融资准备'] },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '开发路线图',
+      content: {
+        layout: 'roadmap',
+        phases: [
+          { 
+            phase: 'MVP (V1.0)', 
+            status: '已完成',
+            features: ['单张照片输入', '基础发型选择', '颜色选择', '多视角生成', '基础白标'],
+          },
+          { 
+            phase: 'V1.5', 
+            status: '进行中',
+            features: ['颜色深浅滑块', '光泽度调整', '卷度大小选择', '长度微调', '可选多角度拍摄'],
+          },
+          { 
+            phase: 'V2.0', 
+            status: '计划中',
+            features: ['完整参数化编辑', '多角度拍摄引导', '编辑历史/撤销', '参数预设保存'],
+          },
+          { 
+            phase: 'V3.0', 
+            status: '未来',
+            features: ['实时预览', '3D头部模型', 'AR实时试戴'],
+          },
         ],
       },
     },
@@ -343,7 +630,7 @@ CRITICAL REQUIREMENTS:
     {
       type: 'end',
       title: 'Let\'s Build This',
-      subtitle: 'HairVision - 从纽约开始，征服高端沙龙市场',
+      subtitle: 'MeRROR - 从纽约开始，征服高端沙龙市场',
       contact: 'Internal Document | Confidential',
     },
   ];
@@ -543,6 +830,14 @@ function ContentSlide({ title, content }: SlideData) {
         {contentData.layout === 'objections' && <ObjectionsLayout content={contentData} />}
         {contentData.layout === 'timeline' && <TimelineLayout content={contentData} />}
         {contentData.layout === 'budget' && <BudgetLayout content={contentData} />}
+        {contentData.layout === 'architecture' && <ArchitectureLayout content={contentData} />}
+        {contentData.layout === 'multi-angle' && <MultiAngleLayout content={contentData} />}
+        {contentData.layout === 'editing-features' && <EditingFeaturesLayout content={contentData} />}
+        {contentData.layout === 'white-label' && <WhiteLabelLayout content={contentData} />}
+        {contentData.layout === 'costs' && <CostsLayout content={contentData} />}
+        {contentData.layout === 'stylist-empowerment' && <StylistEmpowermentLayout content={contentData} />}
+        {contentData.layout === 'salon-customization' && <SalonCustomizationLayout content={contentData} />}
+        {contentData.layout === 'roadmap' && <RoadmapLayout content={contentData} />}
       </div>
     </div>
   );
@@ -817,6 +1112,229 @@ function BudgetLayout({ content }: { content: Record<string, unknown> }) {
         <span className="font-bold">总计</span>
         <span className="font-bold text-amber-500">{total}</span>
       </div>
+    </div>
+  );
+}
+
+function ArchitectureLayout({ content }: { content: Record<string, unknown> }) {
+  const layers = content.layers as { name: string; desc: string }[];
+  return (
+    <div className="space-y-4">
+      {layers.map((layer, i) => (
+        <div key={i} className="p-4 bg-gray-900 text-white rounded-xl">
+          <h4 className="font-bold text-amber-500 mb-2">{layer.name}</h4>
+          <p className="text-sm text-gray-300">{layer.desc}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function MultiAngleLayout({ content }: { content: Record<string, unknown> }) {
+  const current = content.current as { approach: string; pros: string[]; cons: string[] };
+  const future = content.future as { approach: string; features: string[] };
+  return (
+    <div className="grid grid-cols-2 gap-6">
+      <div className="bg-gray-50 rounded-xl p-6">
+        <h4 className="font-bold mb-3 text-red-600">当前方案</h4>
+        <p className="text-sm mb-4">{current.approach}</p>
+        <div className="mb-4">
+          <p className="text-xs font-semibold text-green-600 mb-2">优点:</p>
+          <ul className="text-xs space-y-1">
+            {current.pros.map((p, i) => (
+              <li key={i}>✓ {p}</li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-red-600 mb-2">缺点:</p>
+          <ul className="text-xs space-y-1">
+            {current.cons.map((c, i) => (
+              <li key={i}>✗ {c}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <div className="bg-green-50 rounded-xl p-6 border-2 border-green-500">
+        <h4 className="font-bold mb-3 text-green-700">未来方案 (V1.5)</h4>
+        <p className="text-sm mb-4">{future.approach}</p>
+        <div>
+          <p className="text-xs font-semibold mb-2">特性:</p>
+          <ul className="text-xs space-y-1">
+            {future.features.map((f, i) => (
+              <li key={i}>• {f}</li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EditingFeaturesLayout({ content }: { content: Record<string, unknown> }) {
+  const features = content.features as { name: string; desc: string; status: string }[];
+  const strategy = content.strategy as string;
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-3 gap-4">
+        {features.map((f, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-4">
+            <h4 className="font-bold mb-2">{f.name}</h4>
+            <p className="text-sm text-gray-600 mb-2">{f.desc}</p>
+            <span className={`text-xs px-2 py-1 rounded ${
+              f.status === 'V1.5' ? 'bg-amber-100 text-amber-700' : 'bg-green-100 text-green-700'
+            }`}>
+              {f.status}
+            </span>
+          </div>
+        ))}
+      </div>
+      <div className="bg-amber-50 rounded-xl p-4 border-l-4 border-amber-500">
+        <p className="text-sm font-semibold">实现策略: {strategy}</p>
+      </div>
+    </div>
+  );
+}
+
+function WhiteLabelLayout({ content }: { content: Record<string, unknown> }) {
+  const features = content.features as { feature: string; desc: string }[];
+  const value = content.value as string;
+  return (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        {features.map((f, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-4">
+            <h4 className="font-bold mb-2">{f.feature}</h4>
+            <p className="text-sm text-gray-600">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-black text-white rounded-xl p-4 text-center">
+        <p className="font-semibold">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function CostsLayout({ content }: { content: Record<string, unknown> }) {
+  const items = content.items as { category: string; monthly?: string; amount?: string; items: string[] }[];
+  const total = content.total as string;
+  return (
+    <div className="space-y-4">
+      {items.map((item, i) => (
+        <div key={i} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl">
+          <div className="flex-1">
+            <h4 className="font-bold">{item.category}</h4>
+            <p className="text-sm text-gray-500">{item.items.join(', ')}</p>
+          </div>
+          <span className="font-bold">{item.monthly || item.amount}</span>
+        </div>
+      ))}
+      <div className="flex items-center justify-between p-4 bg-black text-white rounded-xl">
+        <span className="font-bold">总计</span>
+        <span className="font-bold text-amber-500">{total}</span>
+      </div>
+    </div>
+  );
+}
+
+function StylistEmpowermentLayout({ content }: { content: Record<string, unknown> }) {
+  const keyPoints = content.keyPoints as { point: string; desc: string }[];
+  const scenarios = content.scenarios as { from: string; to: string; increase: string }[];
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-4">
+        {keyPoints.map((kp, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-4">
+            <h4 className="font-bold mb-2">{kp.point}</h4>
+            <p className="text-sm text-gray-600">{kp.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div>
+        <h4 className="font-bold mb-3">增值销售场景:</h4>
+        <div className="space-y-2">
+          {scenarios.map((s, i) => (
+            <div key={i} className="flex items-center gap-4 p-3 bg-green-50 rounded-lg">
+              <span className="text-sm text-gray-600">{s.from}</span>
+              <ArrowRight className="w-4 h-4 text-green-600" />
+              <span className="text-sm font-medium flex-1">{s.to}</span>
+              <span className="font-bold text-green-600">{s.increase}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SalonCustomizationLayout({ content }: { content: Record<string, unknown> }) {
+  const features = content.features as { feature: string; desc: string }[];
+  const example = content.example as { signature: string; services: string[]; products: string[] };
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 gap-4">
+        {features.map((f, i) => (
+          <div key={i} className="bg-gray-50 rounded-xl p-4">
+            <h4 className="font-bold mb-2">{f.feature}</h4>
+            <p className="text-sm text-gray-600">{f.desc}</p>
+          </div>
+        ))}
+      </div>
+      <div className="bg-amber-50 rounded-xl p-6 border-l-4 border-amber-500">
+        <h4 className="font-bold mb-3">示例: {example.signature}</h4>
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <p className="text-sm font-semibold mb-2">关联服务:</p>
+            <ul className="text-sm space-y-1">
+              {example.services.map((s, i) => (
+                <li key={i}>• {s}</li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="text-sm font-semibold mb-2">关联产品:</p>
+            <ul className="text-sm space-y-1">
+              {example.products.map((p, i) => (
+                <li key={i}>• {p}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RoadmapLayout({ content }: { content: Record<string, unknown> }) {
+  const phases = content.phases as { phase: string; status: string; features: string[] }[];
+  return (
+    <div className="space-y-4">
+      {phases.map((phase, i) => (
+        <div key={i} className="bg-gray-50 rounded-xl p-4">
+          <div className="flex items-center gap-3 mb-3">
+            <h4 className="font-bold">{phase.phase}</h4>
+            <span className={`text-xs px-2 py-1 rounded ${
+              phase.status === '已完成' ? 'bg-green-100 text-green-700' :
+              phase.status === '进行中' ? 'bg-amber-100 text-amber-700' :
+              phase.status === '计划中' ? 'bg-blue-100 text-blue-700' :
+              'bg-gray-100 text-gray-700'
+            }`}>
+              {phase.status}
+            </span>
+          </div>
+          <ul className="text-sm space-y-1">
+            {phase.features.map((f, j) => (
+              <li key={j} className="flex gap-2">
+                <span className={phase.status === '已完成' ? 'text-green-600' : 'text-gray-400'}>
+                  {phase.status === '已完成' ? '✓' : '○'}
+                </span>
+                {f}
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
   );
 }
