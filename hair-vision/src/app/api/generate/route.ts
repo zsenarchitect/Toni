@@ -4,7 +4,7 @@ import { getHairstyleById } from '@/data/hairstyles';
 import { getColorById } from '@/data/colors';
 import { getBackgroundById } from '@/data/backgrounds';
 import type { ViewAngle, ImageResolution } from '@/types';
-import { selectModel, useCredits, getCreditStats } from '@/lib/credits';
+import { calculateCreditsRequiredForRequest, useCredits, getCreditStats } from '@/lib/credits';
 import { getCreditBalance, updateCreditBalance, recordCreditUsage } from '@/lib/credit-storage';
 import { generateHairstyle } from '@/lib/gemini';
 
@@ -89,9 +89,9 @@ export async function POST(request: NextRequest) {
       (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
       '1K';
     
-    // 信用检查和模型选择（如果提供了salonId）
-    // 注意：永远不拒绝请求 - 允许超支，服务不中断
-    let selectedModel: string | undefined;
+    // 信用检查和计算（如果提供了salonId）
+    // 注意：永远不因为信用问题而降级模型，确保服务质量一致
+    // 始终使用 Gemini 3.0 Pro，只有在 API 错误（不可用/配额限制）时才降级
     let creditsRequired = 0;
     let creditBalance = null;
     let isOverage = false;
@@ -99,20 +99,23 @@ export async function POST(request: NextRequest) {
     if (salonId) {
       try {
         creditBalance = await getCreditBalance(salonId);
-        const modelSelection = selectModel(creditBalance, imageResolution);
-        selectedModel = modelSelection.model;
-        creditsRequired = modelSelection.creditsRequired;
-        isOverage = modelSelection.isOverage;
+        // 始终使用 Pro 模型计算信用需求，不因信用降级
+        creditsRequired = calculateCreditsRequiredForRequest(imageResolution);
         
         const stats = getCreditStats(creditBalance);
-        console.log(`[Credits] Salon ${salonId}: Available: ${stats.displayAvailable}, Required: ${creditsRequired}, Model: ${selectedModel}, Overage: ${isOverage}`);
+        const available = stats.displayAvailable;
+        isOverage = stats.isOverage || (available - creditsRequired < 0);
+        
+        console.log(`[Credits] Salon ${salonId}: Available: ${available}, Required: ${creditsRequired}, Model: gemini-3.0-pro-image-generation (always), Overage: ${isOverage}`);
         
         if (isOverage) {
-          console.log(`[Credits] Overage mode - service continues, will be billed later. Overage: ${stats.overage} credits ($${stats.overageCost.toFixed(2)})`);
+          console.log(`[Credits] Overage mode - service continues with Pro model, will be billed later. Overage: ${stats.overage} credits ($${stats.overageCost.toFixed(2)})`);
         }
       } catch (error) {
-        // 即使信用检查失败，也继续服务（使用默认模型）
-        console.warn(`[Credits] Credit check failed for salon ${salonId}, continuing with default model:`, error);
+        // 即使信用检查失败，也继续服务（使用默认 Pro 模型）
+        console.warn(`[Credits] Credit check failed for salon ${salonId}, continuing with Pro model:`, error);
+        // 使用默认信用需求
+        creditsRequired = calculateCreditsRequiredForRequest(imageResolution);
       }
     }
     
@@ -140,7 +143,8 @@ export async function POST(request: NextRequest) {
     const color = colorId ? getColorById(colorId) : null;
     const background = getBackgroundById(backgroundId) || { id: 'studio', name: 'Studio', value: 'studio' };
 
-    // 使用统一的生成函数（支持模型选择）
+    // 使用统一的生成函数
+    // 始终使用 Gemini 3.0 Pro，只有在 API 错误（不可用/配额限制）时才会自动降级到 Flash
     const resultUrl = await generateHairstyle({
       photoBase64: photo,
       style,
@@ -148,7 +152,8 @@ export async function POST(request: NextRequest) {
       viewAngle,
       background,
       resolution: imageResolution,
-      model: selectedModel as any, // 如果提供了salonId，使用信用系统选择的模型
+      // 不指定 model，使用默认的 Pro 模型
+      // 只有在 API 错误时才会在 generateHairstyle 内部自动降级
     });
 
     // 如果生成成功，扣除信用
@@ -157,18 +162,27 @@ export async function POST(request: NextRequest) {
         const updatedBalance = useCredits(creditBalance, creditsRequired);
         await updateCreditBalance(updatedBalance);
         
-        // 记录使用历史
+        // 记录使用历史（始终使用 Pro 模型记录，因为服务始终使用 Pro）
         await recordCreditUsage({
           id: `usage-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
           salonId,
           creditsUsed: creditsRequired,
-          model: selectedModel as any,
+          model: 'gemini-3.0-pro-image-generation', // 始终记录为 Pro 模型
           resolution: imageResolution,
           timestamp: new Date(),
           cost: estimatedCost,
         });
         
-        console.log(`[Credits] Deducted ${creditsRequired} credits from salon ${salonId}. Remaining: ${getCreditStats(updatedBalance).available}`);
+        const updatedStats = getCreditStats(updatedBalance);
+        console.log(`[Credits] Deducted ${creditsRequired} credits from salon ${salonId}. Remaining: ${updatedStats.available}`);
+        
+        // 异步检查是否需要发送使用提醒邮件（不阻塞响应）
+        // 注意：这里需要沙龙邮箱信息，暂时跳过，由定时任务统一处理
+        // if (salonEmail) {
+        //   checkAndSendUsageAlert(salonId, salonEmail, salonName, updatedBalance).catch(err => {
+        //     console.error(`[Credit Alert] Failed to send alert:`, err);
+        //   });
+        // }
       } catch (error) {
         console.error(`[Credits] Failed to update credits for salon ${salonId}:`, error);
         // 即使信用更新失败，也返回生成的图片（避免用户体验问题）

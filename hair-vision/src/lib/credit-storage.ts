@@ -108,3 +108,11 @@ export async function updateSubscription(
   return balance;
 }
 
+/**
+ * 获取所有沙龙的信用余额（用于批量检查）
+ * 注意：生产环境应从数据库查询
+ */
+export async function getAllCreditBalances(): Promise<CreditBalance[]> {
+  return Array.from(creditBalances.values());
+}
+

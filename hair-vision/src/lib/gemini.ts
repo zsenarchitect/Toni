@@ -64,19 +64,24 @@ function buildPrompt(params: GenerateParams): string {
 }
 
 export async function generateHairstyle(params: GenerateParams): Promise<string> {
-  try {
-    // 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
-    const resolution: ImageResolution = params.resolution || 
-      (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
-      '1K';
-    
-    // 获取模型，如果未指定则使用默认的Pro模型
-    const modelName: GeminiModel = params.model || 'gemini-3.0-pro-image-generation';
-    
-    // 记录成本估算
-    const estimatedCost = COST_ESTIMATES[resolution];
-    console.log(`[Cost] Generating ${resolution} image with ${modelName}, estimated cost: $${estimatedCost.toFixed(4)}`);
+  // 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
+  const resolution: ImageResolution = params.resolution || 
+    (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
+    '1K';
+  
+  // 始终使用 Gemini 3.0 Pro 作为首选模型，确保服务质量一致
+  // 只有在 API 错误（不可用/配额限制）时才降级到 Flash
+  const preferredModel: GeminiModel = 'gemini-3.0-pro-image-generation';
+  const fallbackModel: GeminiModel = 'gemini-2.0-flash-preview-image-generation';
+  
+  // 如果明确指定了模型（用于降级场景），使用指定的模型
+  const modelName: GeminiModel = params.model || preferredModel;
+  
+  // 记录成本估算
+  const estimatedCost = COST_ESTIMATES[resolution];
+  console.log(`[Cost] Generating ${resolution} image with ${modelName}, estimated cost: $${estimatedCost.toFixed(4)}`);
 
+  try {
     const model = genAI.getGenerativeModel({ 
       model: modelName,
       generationConfig: {
@@ -127,8 +132,61 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
 
     throw new Error('No image generated in response');
   } catch (error) {
-    console.error('Gemini API error:', error);
-    throw error;
+    // 业务安全方案：如果首选模型失败（不可用/配额限制），尝试降级到 Flash
+    // 这确保服务不中断，但只有在技术问题时才降级，而不是因为信用问题
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isQuotaOrAvailabilityError = 
+      errorMessage.includes('quota') || 
+      errorMessage.includes('rate limit') || 
+      errorMessage.includes('unavailable') ||
+      errorMessage.includes('503') ||
+      errorMessage.includes('429');
+    
+    // 如果已经使用了降级模型，或者不是配额/可用性错误，直接抛出
+    if (modelName !== preferredModel || !isQuotaOrAvailabilityError) {
+      console.error(`[Gemini API] Error with ${modelName}:`, error);
+      throw error;
+    }
+    
+    // 尝试降级到 Flash 模型（业务安全方案）
+    console.warn(`[Gemini API] ${preferredModel} unavailable (${errorMessage}), falling back to ${fallbackModel} for business continuity`);
+    
+    try {
+      const fallbackModelInstance = genAI.getGenerativeModel({ 
+        model: fallbackModel,
+        generationConfig: {
+          responseModalities: ['Text', 'Image'],
+        } as unknown as Record<string, unknown>,
+      });
+
+      const fallbackResult = await fallbackModelInstance.generateContent([
+        {
+          inlineData: {
+            mimeType,
+            data: base64Data,
+          },
+        },
+        fullPrompt,
+      ]);
+
+      const fallbackResponse = fallbackResult.response;
+      
+      if (fallbackResponse.candidates && fallbackResponse.candidates[0]?.content?.parts) {
+        for (const part of fallbackResponse.candidates[0].content.parts) {
+          const imagePart = part as InlineDataPart;
+          if (imagePart.inlineData) {
+            const imageData = imagePart.inlineData;
+            console.log(`[Cost] Image generated with fallback model ${fallbackModel} at ${resolution}`);
+            return `data:${imageData.mimeType};base64,${imageData.data}`;
+          }
+        }
+      }
+      
+      throw new Error('No image generated in fallback response');
+    } catch (fallbackError) {
+      console.error(`[Gemini API] Fallback model ${fallbackModel} also failed:`, fallbackError);
+      throw fallbackError;
+    }
   }
 }
 

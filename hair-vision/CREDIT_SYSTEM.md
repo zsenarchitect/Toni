@@ -14,18 +14,27 @@ The credit system provides a flexible pricing model for the barbershop hair visu
 
 ### Essential Plan - $199/month
 - **Base Credits**: 200 generations/month
-- **Pay-as-you-go**: $0.10 per additional credit
+- **Pay-as-you-go**: $0.15 per additional credit
 - **Features**: System style library, basic brand customization
 
 ### Professional Plan - $499/month
 - **Base Credits**: 500 generations/month
-- **Pay-as-you-go**: $0.08 per additional credit
+- **Pay-as-you-go**: $0.14 per additional credit
 - **Features**: Custom style library, full white-label, service recommendations
 
 ### Enterprise Plan - $999/month
 - **Base Credits**: 2000 generations/month
-- **Pay-as-you-go**: $0.06 per additional credit
+- **Pay-as-you-go**: $0.13 per additional credit
 - **Features**: Unlimited custom styles, analytics dashboard, API access
+
+**定价策略**：
+- **主要收入来源**：订阅套餐（$199-$999/月）
+- **按需付费定价**：接近成本价，主要目的是鼓励用户升级到更高套餐
+- 基于 Gemini 3 Pro 官方 API 成本：1K 图像约 $0.135（输出 $0.134 + 输入 $0.001）
+- Essential: $0.15/credit（接近成本价，仅覆盖运营成本）
+- Professional: $0.14/credit（接近成本价，鼓励升级）
+- Enterprise: $0.13/credit（接近成本价，最大优惠）
+- **为什么接近成本价**：让用户意识到订阅套餐更划算，从而促进订阅收入
 
 ## Credit Cost Structure
 
@@ -36,13 +45,15 @@ The credit system provides a flexible pricing model for the barbershop hair visu
 | Gemini 3.0 Pro | 1.0 credit | 1.0 credit | 1.8 credits |
 | Gemini 2.0 Flash | 0.5 credits | 0.5 credits | 0.9 credits |
 
+**注意**：系统始终使用 Gemini 3.0 Pro 计算信用成本，确保服务质量一致。只有在 API 错误（不可用/配额限制）时才会降级到 Flash，这是业务安全方案。
+
 ### Model Selection Logic
 
-1. **Priority**: Always tries to use Gemini 3.0 Pro first (best quality)
-2. **Fallback**: If insufficient credits for Pro, automatically falls back to Gemini 2.0 Flash
+1. **Consistent Quality**: Always uses Gemini 3.0 Pro - never downgrades due to credit issues
+2. **Business Safety Fallback**: Only downgrades to Gemini 2.0 Flash when Pro model is unavailable or at quota limit (API errors)
 3. **Never blocks**: Service always continues - if credits are insufficient, system allows overage
 4. **Overage tracking**: Negative balance is tracked separately for later billing
-5. **Customer experience**: Customers never see credit errors or limitations
+5. **Customer experience**: Customers never see credit errors or limitations, always get consistent quality
 
 ## API Usage
 
@@ -177,7 +188,7 @@ PUT /api/credits/subscription
     "name": "Professional",
     "monthlyPrice": 499,
     "baseCredits": 500,
-    "payAsYouGoPrice": 0.08
+    "payAsYouGoPrice": 0.14
   }
 }
 ```
@@ -233,18 +244,26 @@ GET /api/credits/usage?salonId=salon-abc123&limit=50
 
 1. **Request**: Generate 1K image
 2. **Pro model requires**: 1.0 credit ❌ Insufficient
-3. **Fallback check**: Flash model requires 0.5 credits ❌ Still insufficient
-4. **Overage mode**: Service continues, uses Flash model
-5. **Result**: Image generated successfully, 0.2 credits overage tracked for later billing
-6. **Customer**: Sees no error, service works normally
+3. **Service continues**: Always uses Gemini 3.0 Pro (consistent quality, never downgrades for credits)
+4. **Overage mode**: Service continues, tracks 0.7 credits overage
+5. **Result**: Image generated successfully with Pro model, 0.7 credits overage tracked for later billing
+6. **Customer**: Sees no error, always gets consistent high-quality service
 
 ### Scenario: Professional Plan with 0.6 credits remaining
 
 1. **Request**: Generate 1K image
 2. **Pro model requires**: 1.0 credit ❌ Insufficient
-3. **Fallback check**: Flash model requires 0.5 credits ✅ Available
-4. **Result**: Uses Gemini 2.0 Flash, deducts 0.5 credits
-5. **Log**: "Insufficient credits for Pro model, falling back to Flash"
+3. **Service continues**: Always uses Gemini 3.0 Pro (consistent quality)
+4. **Result**: Uses Gemini 3.0 Pro, deducts 1.0 credit, tracks 0.4 credits overage
+5. **Log**: "Overage mode - service continues with Pro model, will be billed later"
+
+### Scenario: API Quota Limit (Business Safety)
+
+1. **Request**: Generate 1K image
+2. **Pro model call**: Returns quota/rate limit error
+3. **Business safety fallback**: Automatically tries Gemini 2.0 Flash
+4. **Result**: Uses Flash model, service continues without interruption
+5. **Log**: "Pro model unavailable (quota limit), falling back to Flash for business continuity"
 
 ## Implementation Details
 
@@ -293,11 +312,84 @@ import CreditDashboard from '@/components/admin/CreditDashboard';
 3. **Predictable Costs**: Base subscription covers typical usage
 4. **Quality Preservation**: Always tries best model first
 
+## 自动使用提醒系统
+
+系统会自动检测过度使用并发送友好的邮件提醒：
+
+### 提醒阈值
+
+- **80% 使用率**: 发送友好提醒，告知使用情况
+- **95% 使用率**: 发送严重警告，建议升级或购买信用
+- **超支**: 任何超支都会发送通知，说明服务继续运行，超支部分将在月底结算
+
+### 邮件频率控制
+
+- 同一类型的提醒邮件至少间隔 24 小时
+- 避免重复发送，确保用户体验友好
+
+### API 端点
+
+#### 检查并发送提醒
+
+```typescript
+POST /api/credits/check-alerts
+{
+  "salonId": "salon-abc123",
+  "salonEmail": "owner@salon.com",
+  "salonName": "美丽沙龙"
+}
+```
+
+**响应:**
+```json
+{
+  "success": true,
+  "sent": true,
+  "alertType": "warning", // "warning" | "critical" | "overage"
+  "reason": null
+}
+```
+
+### 邮件模板
+
+提醒邮件包含：
+- 友好的标题和问候
+- 详细的使用统计表格
+- 清晰的行动建议（查看详情/购买信用）
+- 视觉化的进度指示
+- 温馨的提示信息
+
+### 定时任务集成
+
+建议设置定时任务（例如每天检查一次）：
+
+```typescript
+// 示例：使用 Vercel Cron 或类似服务
+import { checkAllSalonsAndSendAlerts } from '@/lib/credit-alerts';
+import { getAllCreditBalances } from '@/lib/credit-storage';
+
+// 获取所有沙龙列表（需要从数据库）
+const salons = await getSalonsFromDatabase();
+const salonList = salons.map(s => ({
+  salonId: s.id,
+  email: s.email,
+  name: s.name,
+}));
+
+// 批量检查并发送提醒
+const result = await checkAllSalonsAndSendAlerts(
+  salonList,
+  getCreditBalance
+);
+
+console.log(`Checked ${result.checked} salons, sent ${result.sent} alerts`);
+```
+
 ## Future Enhancements
 
+- [x] Credit alerts and notifications ✅
 - [ ] Credit expiration policies for purchased credits
 - [ ] Usage analytics and reporting
-- [ ] Credit alerts and notifications
 - [ ] Bulk credit purchase discounts
 - [ ] Annual subscription discounts
 - [ ] Credit sharing across salon locations (Enterprise)

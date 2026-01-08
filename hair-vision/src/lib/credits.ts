@@ -1,13 +1,20 @@
 import type { SubscriptionTier, CreditBalance, CreditUsage, SubscriptionPlan, ImageResolution, GeminiModel } from '@/types';
 
 // 订阅套餐配置
+// 定价策略：主要收入来自订阅，按需付费接近成本价以鼓励订阅
+// 基于 Gemini 3 Pro 官方 API 成本：
+// - 1K/2K 图像：~$0.134 per image (1,120 tokens × $120/1M tokens)
+// - 4K 图像：~$0.24 per image (2,000 tokens × $120/1M tokens)
+// - 输入成本：~$0.001 per request (100-200 tokens × $2/1M tokens)
+// 总成本约 $0.135 per 1K image
+// 按需付费价格接近成本价，主要目的是鼓励用户升级到更高套餐
 export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
   essential: {
     tier: 'essential',
     name: 'Essential',
     monthlyPrice: 199,
     baseCredits: 200, // 200 generations/month
-    payAsYouGoPrice: 0.10, // $0.10 per additional credit
+    payAsYouGoPrice: 0.15, // $0.15 per additional credit (接近成本价 $0.135，仅覆盖运营成本)
     features: ['System style library', 'Basic brand customization', '200 generations/month'],
   },
   professional: {
@@ -15,7 +22,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     name: 'Professional',
     monthlyPrice: 499,
     baseCredits: 500, // 500 generations/month
-    payAsYouGoPrice: 0.08, // $0.08 per additional credit (discount for higher tier)
+    payAsYouGoPrice: 0.14, // $0.14 per additional credit (接近成本价，鼓励升级)
     features: ['Custom style library', 'Full white-label', 'Service recommendations', '500 generations/month'],
   },
   enterprise: {
@@ -23,7 +30,7 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
     name: 'Enterprise',
     monthlyPrice: 999,
     baseCredits: 2000, // 2000 generations/month
-    payAsYouGoPrice: 0.06, // $0.06 per additional credit (best rate)
+    payAsYouGoPrice: 0.13, // $0.13 per additional credit (接近成本价，最大优惠)
     features: ['Unlimited custom styles', 'Analytics dashboard', 'API access', '2000 generations/month'],
   },
 };
@@ -89,39 +96,15 @@ export function hasEnoughCredits(
 }
 
 /**
- * 选择模型 (优先使用Pro，信用不足时降级到Flash)
- * 永远不抛出错误 - 允许超支，服务不中断
+ * 计算信用需求（始终使用 Pro 模型）
+ * 注意：我们永远不因为信用问题而降级模型，确保服务质量一致
+ * 只有在 API 错误（不可用/配额限制）时才降级，这是业务安全方案
  */
-export function selectModel(
-  balance: CreditBalance,
+export function calculateCreditsRequiredForRequest(
   resolution: ImageResolution
-): { model: GeminiModel; creditsRequired: number; isOverage: boolean } {
+): number {
   const proModel: GeminiModel = 'gemini-3.0-pro-image-generation';
-  const flashModel: GeminiModel = 'gemini-2.0-flash-preview-image-generation';
-  
-  const proCredits = calculateCreditsRequired(proModel, resolution);
-  const flashCredits = calculateCreditsRequired(flashModel, resolution);
-  
-  const available = getAvailableCredits(balance);
-  
-  // 如果有足够信用使用Pro模型，优先使用
-  if (available >= proCredits) {
-    return { model: proModel, creditsRequired: proCredits, isOverage: false };
-  }
-  
-  // 如果Pro不够但Flash够，降级到Flash
-  if (available >= flashCredits) {
-    console.log(`[Credits] Insufficient credits for Pro model, falling back to Flash. Available: ${available}, Required: ${proCredits}`);
-    return { model: flashModel, creditsRequired: flashCredits, isOverage: false };
-  }
-  
-  // 即使信用不足，也允许继续服务（超支模式）
-  // 优先尝试Flash（更便宜），如果连Flash都不够，仍然使用Flash但标记为超支
-  const isOverage = available < flashCredits;
-  if (isOverage) {
-    console.log(`[Credits] Overage mode: Available: ${available}, Required (Flash): ${flashCredits}. Service continues, will be billed later.`);
-  }
-  return { model: flashModel, creditsRequired: flashCredits, isOverage };
+  return calculateCreditsRequired(proModel, resolution);
 }
 
 /**
