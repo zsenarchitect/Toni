@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ChevronLeft, 
@@ -1041,12 +1042,22 @@ function RoiSlide({ title, calculation }: SlideData) {
 }
 
 function CtaDemoSlide({ title, subtitle, buttonText }: SlideData) {
+  const router = useRouter();
+  
+  const handleStartDemo = () => {
+    // 导航到演示页面
+    router.push('/capture');
+  };
+
   return (
     <div className="h-full bg-gradient-to-br from-amber-500 to-amber-600 flex flex-col items-center justify-center text-white p-12">
       <Sparkles className="w-16 h-16 mb-6" />
       <h2 className="text-5xl font-bold mb-4">{title as string}</h2>
       <p className="text-xl mb-8 opacity-90">{subtitle as string}</p>
-      <button className="bg-white text-amber-600 px-8 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors">
+      <button 
+        onClick={handleStartDemo}
+        className="bg-white text-amber-600 px-8 py-4 rounded-xl font-bold text-xl hover:bg-gray-100 transition-colors cursor-pointer shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+      >
         {buttonText as string}
       </button>
     </div>

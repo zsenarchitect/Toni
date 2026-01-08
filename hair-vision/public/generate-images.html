@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Presentation Images</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #f59e0b;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #d97706;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .status {
+            margin: 20px 0;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f0f0f0;
+        }
+        .success {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .info {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        .result-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9fafb;
+            border-radius: 6px;
+            border-left: 4px solid #e5e7eb;
+        }
+        .result-item.success {
+            border-left-color: #10b981;
+        }
+        .result-item.error {
+            border-left-color: #ef4444;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 Generate Presentation Images</h1>
+        <p>This tool will generate all presentation images using Gemini AI.</p>
+        
+        <button id="generateBtn" onclick="generateImages()">Generate All Images</button>
+        <button onclick="downloadAll()" id="downloadBtn" disabled>Download All Images</button>
+        
+        <div id="status" class="status info" style="display: none;"></div>
+        
+        <div id="results"></div>
+    </div>
+
+    <script>
+        let generatedImages = {};
+
+        async function generateImages() {
+            const btn = document.getElementById('generateBtn');
+            const status = document.getElementById('status');
+            const results = document.getElementById('results');
+            
+            btn.disabled = true;
+            status.style.display = 'block';
+            status.className = 'status info';
+            status.textContent = '🔄 Generating images... This may take a few minutes.';
+            results.innerHTML = '';
+
+            try {
+                const response = await fetch('/api/presentation/generate-all-images', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || 'Failed to generate images');
+                }
+
+                status.className = 'status success';
+                status.innerHTML = `
+                    ✅ Generation complete!<br>
+                    Success: ${data.summary.success} | Failed: ${data.summary.failed}
+                `;
+
+                generatedImages = {};
+                results.innerHTML = '<h3>Results:</h3>';
+
+                data.results.forEach(result => {
+                    const item = document.createElement('div');
+                    item.className = `result-item ${result.success ? 'success' : 'error'}`;
+                    
+                    let content = `<strong>${result.description}</strong> (${result.key})<br>`;
+                    
+                    if (result.success) {
+                        content += `✅ Generated successfully<br>`;
+                        if (result.imageUrl) {
+                            content += `<img src="${result.imageUrl}" alt="${result.description}" class="image-preview"><br>`;
+                            generatedImages[result.key] = result.imageUrl;
+                        }
+                    } else {
+                        content += `❌ Error: ${result.error || 'Unknown error'}<br>`;
+                    }
+                    
+                    item.innerHTML = content;
+                    results.appendChild(item);
+                });
+
+                if (data.summary.success > 0) {
+                    document.getElementById('downloadBtn').disabled = false;
+                }
+            } catch (error) {
+                status.className = 'status error';
+                status.textContent = `❌ Error: ${error.message}`;
+            } finally {
+                btn.disabled = false;
+            }
+        }
+
+        function downloadAll() {
+            Object.entries(generatedImages).forEach(([key, dataUrl]) => {
+                const link = document.createElement('a');
+                link.href = dataUrl;
+                link.download = `${key}.png`;
+                link.click();
+            });
+        }
+    </script>
+</body>
+</html>
+
