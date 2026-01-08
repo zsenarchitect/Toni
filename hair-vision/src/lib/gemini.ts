@@ -101,6 +101,18 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
   const estimatedCost = COST_ESTIMATES[resolution];
   console.log(`[Cost] Generating ${resolution} image with ${modelName}, estimated cost: $${estimatedCost.toFixed(4)}`);
 
+  // 在 try 块外构建 prompt，以便在 fallback 中也能使用
+  const prompt = buildPrompt(params);
+  
+  // 如果指定了分辨率，在提示词中明确要求
+  const resolutionPrompt = resolution === '1K' 
+    ? ' Generate at 1K resolution (1024x1024).'
+    : resolution === '2K'
+    ? ' Generate at 2K resolution (2048x2048).'
+    : ' Generate at 4K resolution (4096x4096).';
+  
+  const fullPrompt = prompt + resolutionPrompt;
+
   try {
     const model = genAI.getGenerativeModel({ 
       model: modelName,
@@ -110,17 +122,6 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         // 目前通过prompt中的分辨率要求来控制
       } as unknown as Record<string, unknown>,
     });
-
-    const prompt = buildPrompt(params);
-    
-    // 如果指定了分辨率，在提示词中明确要求
-    const resolutionPrompt = resolution === '1K' 
-      ? ' Generate at 1K resolution (1024x1024).'
-      : resolution === '2K'
-      ? ' Generate at 2K resolution (2048x2048).'
-      : ' Generate at 4K resolution (4096x4096).';
-    
-    const fullPrompt = prompt + resolutionPrompt;
     
     // V1.5: 构建多角度输入数组
     const contentParts: Array<{ inlineData: { mimeType: string; data: string } } | string> = [];

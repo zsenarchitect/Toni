@@ -71,7 +71,7 @@ export async function discoverBusinessesGoogle(
           const placeDetails = await getPlaceDetails(place.place_id);
           
           const businessType: BusinessType = 
-            place.types?.some(t => t.includes('barber')) ? 'barbershop' : 'salon';
+            place.types?.some((t: string) => t.includes('barber')) ? 'barbershop' : 'salon';
 
           results.push({
             name: place.name,
