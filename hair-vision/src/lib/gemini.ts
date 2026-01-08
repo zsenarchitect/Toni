@@ -248,7 +248,17 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
           },
         });
       }
-      fallbackContentParts.push(fullPrompt);
+      
+      // 重新构建完整提示词（因为在try块中定义的不可访问）
+      const fallbackPrompt = buildPrompt(params);
+      const fallbackResolutionPrompt = resolution === '1K' 
+        ? ' Generate at 1K resolution (1024x1024).'
+        : resolution === '2K'
+        ? ' Generate at 2K resolution (2048x2048).'
+        : ' Generate at 4K resolution (4096x4096).';
+      const fallbackFullPrompt = fallbackPrompt + fallbackResolutionPrompt;
+      
+      fallbackContentParts.push(fallbackFullPrompt);
 
       const fallbackResult = await fallbackModelInstance.generateContent(fallbackContentParts);
 

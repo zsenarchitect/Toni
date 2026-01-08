@@ -54,7 +54,7 @@ export default function ResultPage() {
 
   // Generate image when needed
   const generateImage = useCallback(async (angle: ViewAngle) => {
-    const { currentPhoto, multiAnglePhotos, selectedStyle, selectedColor, selectedBackground, isGenerating, generatedResults, setIsGenerating, setError, setGeneratedResult } = useStore.getState();
+    const { currentPhoto, multiAnglePhotos, selectedStyle, selectedColor, selectedBackground, isGenerating, generatedResults, setIsGenerating, setGeneratedResult } = useStore.getState();
     
     if ((!currentPhoto && !multiAnglePhotos) || !selectedStyle || isGenerating) return;
     

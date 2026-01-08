@@ -1,0 +1,5 @@
+# 依赖目录
+node_modules/
+
+# 包管理器锁文件（如果不需要跟踪）
+# package-lock.json
