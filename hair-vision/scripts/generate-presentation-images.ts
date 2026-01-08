@@ -5,7 +5,9 @@
 // 注意：这个脚本需要 Node.js 环境，建议使用 API 路由方式生成
 // 运行: curl -X POST http://localhost:3000/api/presentation/generate-all-images
 
-export {};
+import fs from 'fs';
+import path from 'path';
+import { generatePresentationImage, PRESENTATION_IMAGE_PROMPTS } from '../src/lib/presentation-image-generator';
 
 /**
  * 将 base64 data URL 转换为文件并保存
