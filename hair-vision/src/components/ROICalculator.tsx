@@ -8,10 +8,11 @@ interface ROICalculatorProps {
   className?: string;
 }
 
+// 50%竞品定价策略 + 1个月免费试用 (竞品: Boulevard $175-325, Zenoti $300-500)
 const PLAN_PRICES = {
-  essential: 199,
-  professional: 499,
-  enterprise: 999,
+  essential: 79,
+  professional: 149,
+  enterprise: 249,
 };
 
 export function ROICalculator({ defaultPlan = 'professional', className }: ROICalculatorProps) {
