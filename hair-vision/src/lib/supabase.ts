@@ -1,12 +1,12 @@
 // Supabase client setup
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
-
 // 使用占位符 URL 防止构建时错误，但实际功能需要配置真实凭据
 const placeholderUrl = 'https://placeholder.supabase.co';
 const placeholderKey = 'placeholder-key';
+
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || placeholderUrl;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || placeholderKey;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.warn('Supabase credentials not configured. Outreach features will not work.');

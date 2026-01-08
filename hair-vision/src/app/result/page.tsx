@@ -16,7 +16,9 @@ import { GeneratingAnimation } from '@/components/ui/Loading';
 import { ImageComparison, ToggleComparison } from '@/components/ImageComparison';
 import { ViewAngleSelector } from '@/components/ViewAngleSelector';
 import { BackgroundSelector } from '@/components/BackgroundSelector';
+import { SessionProgressModal, SessionProgressButton } from '@/components/SessionProgressModal';
 import { useStore } from '@/hooks/useStore';
+import { useSessionProgress } from '@/hooks/useSessionProgress';
 import { downloadImage, shareImage, generateId } from '@/lib/utils';
 import type { ViewAngle, GenerationResult } from '@/types';
 
@@ -34,13 +36,20 @@ export default function ResultPage() {
     setBackground,
     setViewAngle,
     setGeneratedResult,
-    setIsGenerating,
     addToHistory,
     resetSession,
   } = useStore();
 
   const [error, setError] = useState<string | null>(null);
   const [comparisonMode, setComparisonMode] = useState<'slider' | 'toggle'>('toggle');
+  
+  // 会话进度追踪 - 使用 startSession 来初始化会话
+  const { startSession } = useSessionProgress();
+  
+  // 初始化会话
+  useEffect(() => {
+    startSession();
+  }, [startSession]);
 
   // Redirect if missing required data
   useEffect(() => {
@@ -65,7 +74,7 @@ export default function ResultPage() {
     setError(null);
 
     try {
-      const requestBody: any = {
+      const requestBody: Record<string, unknown> = {
         styleId: selectedStyle.id,
         colorId: selectedColor?.id,
         viewAngle: angle,
@@ -88,8 +97,30 @@ export default function ResultPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        // 记录失败的尝试
+        addAttempt({
+          originalPhoto: currentPhoto || multiAnglePhotos?.front || '',
+          resultPhoto: '',
+          style: selectedStyle,
+          color: selectedColor || undefined,
+          viewAngle: angle,
+          background: selectedBackground,
+          status: 'error',
+          errorMessage: data.error || '生成失败',
+        });
         throw new Error(data.error || '生成失败');
       }
+
+      // 记录成功的尝试
+      addAttempt({
+        originalPhoto: currentPhoto || multiAnglePhotos?.front || '',
+        resultPhoto: data.resultUrl,
+        style: selectedStyle,
+        color: selectedColor || undefined,
+        viewAngle: angle,
+        background: selectedBackground,
+        status: 'success',
+      });
 
       setGeneratedResult(angle, data.resultUrl);
     } catch (err) {
@@ -154,6 +185,8 @@ export default function ResultPage() {
 
   // Handle done
   const handleDone = () => {
+    const { clearSession } = useSessionProgress.getState();
+    clearSession(); // 清除会话进度记录
     resetSession();
     router.push('/');
   };
@@ -179,21 +212,28 @@ export default function ResultPage() {
             <ArrowLeft className="w-6 h-6" />
           </motion.button>
         </Link>
-        <div className="text-center">
+        <div className="text-center flex-1 mx-2">
           <h1 className="text-lg font-medium">效果预览</h1>
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-gray-500 truncate">
             {selectedStyle.name}
             {selectedColor && ` · ${selectedColor.name}`}
           </p>
         </div>
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          onClick={handleDone}
-          className="p-2 rounded-full hover:bg-gray-100"
-        >
-          <Home className="w-6 h-6" />
-        </motion.button>
+        <div className="flex items-center gap-2">
+          {/* 会话进度按钮 */}
+          <SessionProgressButton />
+          <motion.button
+            whileTap={{ scale: 0.9 }}
+            onClick={handleDone}
+            className="p-2 rounded-full hover:bg-gray-100"
+          >
+            <Home className="w-6 h-6" />
+          </motion.button>
+        </div>
       </header>
+      
+      {/* 会话进度模态框 */}
+      <SessionProgressModal />
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col">
