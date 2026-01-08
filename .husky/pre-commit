@@ -1,0 +1,1 @@
+cd hair-vision && npx lint-staged

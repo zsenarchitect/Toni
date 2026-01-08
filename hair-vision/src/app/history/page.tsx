@@ -2,10 +2,11 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Trash2, Download, X } from 'lucide-react';
+import { ArrowLeft, Trash2, Download, X, Maximize2 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
+import { EnlargedImageModal } from '@/components/ui/EnlargedImageModal';
 import { useStore } from '@/hooks/useStore';
 import { formatDate, downloadImage } from '@/lib/utils';
 import type { GenerationResult } from '@/types';
@@ -14,6 +15,7 @@ export default function HistoryPage() {
   const { history, removeFromHistory, clearHistory } = useStore();
   const [selectedItem, setSelectedItem] = useState<GenerationResult | null>(null);
   const [showClearConfirm, setShowClearConfirm] = useState(false);
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
 
   const handleDownload = (item: GenerationResult) => {
     downloadImage(
@@ -77,6 +79,7 @@ export default function HistoryPage() {
                   item={item}
                   onClick={() => setSelectedItem(item)}
                   onDelete={() => removeFromHistory(item.id)}
+                  onEnlarge={() => setEnlargedImage(item.resultPhoto)}
                 />
               </motion.div>
             ))}
@@ -93,12 +96,20 @@ export default function HistoryPage() {
       >
         {selectedItem && (
           <div className="space-y-4">
-            <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100">
+            <div className="aspect-[3/4] rounded-xl overflow-hidden bg-gray-100 relative group">
               <img
                 src={selectedItem.resultPhoto}
                 alt={selectedItem.style.name}
                 className="w-full h-full object-cover"
               />
+              {/* 放大按钮 */}
+              <button
+                onClick={() => setEnlargedImage(selectedItem.resultPhoto)}
+                className="absolute bottom-3 right-3 p-2.5 bg-black/50 text-white rounded-full backdrop-blur-sm hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
+                aria-label="放大查看"
+              >
+                <Maximize2 className="w-5 h-5" />
+              </button>
             </div>
             
             <div className="space-y-2">
@@ -189,6 +200,14 @@ export default function HistoryPage() {
           </div>
         </div>
       </Modal>
+
+      {/* 放大图片模态框 */}
+      <EnlargedImageModal
+        isOpen={!!enlargedImage}
+        onClose={() => setEnlargedImage(null)}
+        imageSrc={enlargedImage || ''}
+        alt="效果图"
+      />
     </div>
   );
 }
@@ -197,13 +216,14 @@ interface HistoryCardProps {
   item: GenerationResult;
   onClick: () => void;
   onDelete: () => void;
+  onEnlarge: () => void;
 }
 
-function HistoryCard({ item, onClick, onDelete }: HistoryCardProps) {
+function HistoryCard({ item, onClick, onDelete, onEnlarge }: HistoryCardProps) {
   return (
     <div className="bg-white rounded-2xl overflow-hidden border border-gray-100">
       <div
-        className="aspect-[3/4] relative cursor-pointer"
+        className="aspect-[3/4] relative cursor-pointer group"
         onClick={onClick}
       >
         <img
@@ -211,6 +231,7 @@ function HistoryCard({ item, onClick, onDelete }: HistoryCardProps) {
           alt={item.style.name}
           className="w-full h-full object-cover"
         />
+        {/* 删除按钮 */}
         <button
           onClick={(e) => {
             e.stopPropagation();
@@ -219,6 +240,17 @@ function HistoryCard({ item, onClick, onDelete }: HistoryCardProps) {
           className="absolute top-2 right-2 p-1.5 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors"
         >
           <X className="w-4 h-4" />
+        </button>
+        {/* 放大按钮 */}
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            onEnlarge();
+          }}
+          className="absolute bottom-2 right-2 p-1.5 bg-black/50 rounded-full text-white hover:bg-black/70 transition-colors opacity-0 group-hover:opacity-100"
+          aria-label="放大查看"
+        >
+          <Maximize2 className="w-4 h-4" />
         </button>
       </div>
       <div className="p-3">

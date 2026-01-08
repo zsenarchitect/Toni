@@ -13,6 +13,8 @@ import {
   Calendar,
   TrendingUp,
   Zap,
+  Building2,
+  MapPin,
 } from 'lucide-react';
 import Link from 'next/link';
 
@@ -120,7 +122,25 @@ export default function OutreachDashboard() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          {/* NYC 高端理发店 - 新增入口 */}
+          <Link href="/admin/outreach/nyc-barbershops">
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              className="bg-gradient-to-br from-amber-50 to-orange-50 p-6 rounded-lg shadow-sm border-2 border-amber-200 cursor-pointer"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-12 h-12 bg-amber-100 rounded-lg flex items-center justify-center">
+                  <Building2 className="w-6 h-6 text-amber-600" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">NYC 高端理发店</h3>
+                  <p className="text-sm text-gray-600">研究数据与客户池</p>
+                </div>
+              </div>
+            </motion.div>
+          </Link>
+
           <Link href="/admin/outreach/contacts">
             <motion.div
               whileHover={{ scale: 1.02 }}

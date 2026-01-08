@@ -2,7 +2,9 @@
 
 import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Maximize2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { EnlargedImageModal } from '@/components/ui/EnlargedImageModal';
 
 interface ImageComparisonProps {
   beforeImage: string;
@@ -12,6 +14,7 @@ interface ImageComparisonProps {
 
 export function ImageComparison({ beforeImage, afterImage, className }: ImageComparisonProps) {
   const [sliderPosition, setSliderPosition] = useState(50);
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const isDragging = useRef(false);
 
@@ -94,6 +97,23 @@ export function ImageComparison({ beforeImage, afterImage, className }: ImageCom
       <div className="absolute top-4 right-4 px-3 py-1 bg-amber-500/90 text-white text-sm rounded-full backdrop-blur-sm">
         效果
       </div>
+
+      {/* 放大按钮 */}
+      <button
+        onClick={() => setEnlargedImage(afterImage)}
+        className="absolute bottom-4 right-4 p-2.5 bg-black/50 text-white rounded-full backdrop-blur-sm hover:bg-black/70 transition-colors"
+        aria-label="放大查看"
+      >
+        <Maximize2 className="w-5 h-5" />
+      </button>
+
+      {/* 放大模态框 */}
+      <EnlargedImageModal
+        isOpen={!!enlargedImage}
+        onClose={() => setEnlargedImage(null)}
+        imageSrc={enlargedImage || ''}
+        alt="效果图"
+      />
     </div>
   );
 }
@@ -107,11 +127,15 @@ interface ToggleComparisonProps {
 
 export function ToggleComparison({ beforeImage, afterImage, className }: ToggleComparisonProps) {
   const [showBefore, setShowBefore] = useState(false);
+  const [enlargedImage, setEnlargedImage] = useState<string | null>(null);
+
+  // 当前显示的图片
+  const currentImage = showBefore ? beforeImage : afterImage;
 
   return (
     <div className={cn('relative', className)}>
       <motion.img
-        src={showBefore ? beforeImage : afterImage}
+        src={currentImage}
         alt={showBefore ? 'Before' : 'After'}
         className="w-full h-full object-cover rounded-2xl"
         initial={false}
@@ -119,16 +143,36 @@ export function ToggleComparison({ beforeImage, afterImage, className }: ToggleC
         key={showBefore ? 'before' : 'after'}
       />
       
+      {/* 底部操作栏 */}
+      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-3">
+        <button
+          onMouseDown={() => setShowBefore(true)}
+          onMouseUp={() => setShowBefore(false)}
+          onMouseLeave={() => setShowBefore(false)}
+          onTouchStart={() => setShowBefore(true)}
+          onTouchEnd={() => setShowBefore(false)}
+          className="px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium shadow-lg"
+        >
+          {showBefore ? '显示效果图' : '按住查看原图'}
+        </button>
+      </div>
+
+      {/* 放大按钮 - 右下角 */}
       <button
-        onMouseDown={() => setShowBefore(true)}
-        onMouseUp={() => setShowBefore(false)}
-        onMouseLeave={() => setShowBefore(false)}
-        onTouchStart={() => setShowBefore(true)}
-        onTouchEnd={() => setShowBefore(false)}
-        className="absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-full text-sm font-medium shadow-lg"
+        onClick={() => setEnlargedImage(afterImage)}
+        className="absolute bottom-4 right-4 p-2.5 bg-black/50 text-white rounded-full backdrop-blur-sm hover:bg-black/70 transition-colors"
+        aria-label="放大查看"
       >
-        {showBefore ? '显示效果图' : '按住查看原图'}
+        <Maximize2 className="w-5 h-5" />
       </button>
+
+      {/* 放大模态框 */}
+      <EnlargedImageModal
+        isOpen={!!enlargedImage}
+        onClose={() => setEnlargedImage(null)}
+        imageSrc={enlargedImage || ''}
+        alt="效果图"
+      />
     </div>
   );
 }
