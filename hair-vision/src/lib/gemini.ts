@@ -78,7 +78,7 @@ Generate a single high-quality photorealistic image.`;
 export async function generateHairstyle(params: GenerateParams): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.0-flash-exp-image-generation',
+      model: 'gemini-2.0-flash-preview-image-generation',
       generationConfig: {
         responseModalities: ['Text', 'Image'],
       } as unknown as Record<string, unknown>,

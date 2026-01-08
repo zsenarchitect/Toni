@@ -22,8 +22,8 @@ export default function HomePage() {
             <Scissors className="w-6 h-6 text-amber-400" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">HairVision AI</h1>
-            <p className="text-sm text-gray-500">智能发型预览系统</p>
+            <h1 className="text-2xl font-bold text-gray-900">HairVision</h1>
+            <p className="text-sm text-gray-500">Salon Style Preview</p>
           </div>
         </motion.div>
       </header>
@@ -43,11 +43,11 @@ export default function HomePage() {
           <div className="relative z-10">
             <Sparkles className="w-10 h-10 text-amber-400 mb-4" />
             <h2 className="text-2xl font-bold text-white mb-2">
-              AI 驱动的发型预览
+              预见您的完美造型
             </h2>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              拍摄一张照片，选择心仪的发型和颜色，
-              AI 将为您生成逼真的效果预览图
+              在剪发前预览您的新发型，
+              与造型师轻松沟通，实现理想效果
             </p>
             
             <Link href="/capture">
@@ -68,23 +68,23 @@ export default function HomePage() {
         >
           <FeatureCard
             icon="💇"
-            title="发型库"
-            description="精选流行发型"
+            title="精选发型"
+            description="时尚流行款式"
           />
           <FeatureCard
             icon="🎨"
-            title="染发预览"
+            title="染发效果"
             description="多种颜色可选"
           />
           <FeatureCard
             icon="🔄"
-            title="多视角"
+            title="多角度"
             description="正面/侧面/背面"
           />
           <FeatureCard
             icon="📸"
-            title="高清输出"
-            description="专业级效果图"
+            title="专业呈现"
+            description="高品质效果图"
           />
         </motion.div>
 
@@ -102,8 +102,8 @@ export default function HomePage() {
                     <History className="w-5 h-5 text-gray-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900">历史记录</p>
-                    <p className="text-sm text-gray-500">{history.length} 个造型</p>
+                    <p className="font-medium text-gray-900">我的造型</p>
+                    <p className="text-sm text-gray-500">{history.length} 个造型记录</p>
                   </div>
                 </div>
                 <ChevronRight className="w-5 h-5 text-gray-400" />
@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer className="px-6 py-8 text-center">
         <p className="text-sm text-gray-400">
-          Powered by Google Gemini AI
+          Exclusively for Premium Salons
         </p>
       </footer>
     </div>

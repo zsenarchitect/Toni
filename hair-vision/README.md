@@ -1,8 +1,8 @@
-# HairVision AI 💇
+# HairVision 💇
 
-> AI-powered hairstyle preview system for premium hair salons
+> Professional hairstyle preview system for premium salons
 
-HairVision AI 是一款为高端理发沙龙设计的智能发型预览系统。使用 Google Gemini AI 技术，让顾客在剪发前就能看到效果图，大幅减少沟通成本，提升服务体验。
+HairVision 是一款为高端理发沙龙设计的专业发型预览系统。让顾客在剪发前就能看到效果图，大幅减少沟通成本，提升服务体验。
 
 ## ✨ 功能特点
 
@@ -12,7 +12,7 @@ HairVision AI 是一款为高端理发沙龙设计的智能发型预览系统。
 - 🔄 **多视角生成** - 正面、侧面、背面效果图
 - 🖼️ **背景切换** - 沙龙、白色、户外、渐变背景
 - 📊 **效果对比** - 滑动/按住对比原图和效果图
-- 💾 **历史记录** - 本地保存生成记录
+- 💾 **造型记录** - 本地保存生成记录
 - 📱 **PWA 支持** - 可安装为原生应用体验
 
 ## 🚀 快速开始
@@ -45,7 +45,7 @@ npm run dev
 
 ### 获取 Gemini API Key
 
-1. 访问 [Google AI Studio](https://makersuite.google.com/app/apikey)
+1. 访问 [Google AI Studio](https://aistudio.google.com/apikey)
 2. 创建新的 API Key
 3. 将 Key 添加到 `.env.local` 文件
 
@@ -56,7 +56,7 @@ npm run dev
 - **样式**: TailwindCSS
 - **动画**: Framer Motion
 - **状态管理**: Zustand
-- **AI**: Google Gemini 2.0 Flash
+- **图像生成**: Google Gemini 2.0 Flash
 - **部署**: Vercel
 
 ## 📁 项目结构
@@ -70,13 +70,12 @@ hair-vision/
 │   │   ├── styles/         # 发型选择页面
 │   │   ├── color/          # 颜色选择页面
 │   │   ├── result/         # 结果页面
-│   │   └── history/        # 历史记录页面
+│   │   └── history/        # 造型记录页面
 │   ├── components/          # React 组件
 │   │   ├── ui/             # 基础 UI 组件
 │   │   ├── Camera.tsx      # 相机组件
 │   │   ├── StyleGrid.tsx   # 发型网格
-│   │   ├── ColorPicker.tsx # 颜色选择器
-│   │   └── ...
+│   │   └── ColorPicker.tsx # 颜色选择器
 │   ├── data/               # 静态数据
 │   │   ├── hairstyles.ts   # 发型库
 │   │   ├── colors.ts       # 颜色库
@@ -91,21 +90,14 @@ hair-vision/
 ## 🖥️ 页面流程
 
 ```
-首页 → 拍照 → 选发型 → 选颜色 → AI生成 → 查看/保存
+首页 → 拍照 → 选发型 → 选颜色 → 效果预览 → 保存/分享
 ```
-
-1. **首页**: 产品介绍和入口
-2. **拍照页**: 拍摄或上传顾客照片
-3. **发型选择**: 浏览和选择目标发型
-4. **颜色选择**: 选择染发颜色（可选）
-5. **结果页**: 查看 AI 生成的效果图，支持多视角和背景切换
 
 ## ⚙️ 环境变量
 
 | 变量名 | 必需 | 描述 |
 |--------|------|------|
 | `GEMINI_API_KEY` | ✅ | Google Gemini API Key |
-| `NEXT_PUBLIC_GA_ID` | ❌ | Google Analytics ID |
 
 ## 🚢 部署到 Vercel
 
@@ -125,21 +117,17 @@ hair-vision/
 - PWA 全屏模式
 - 手势操作支持
 
-## 🔐 安全说明
+## 🔐 安全与隐私
 
 - 所有照片处理通过 HTTPS
-- 图片不会存储在服务器（仅本地）
-- API 调用有速率限制
-- 支持 GDPR 合规（用户可删除数据）
+- 图片仅存储在用户设备本地
+- 不收集用户个人信息
+- 支持数据删除
 
 ## 📄 License
 
 MIT License
 
-## 🤝 贡献
-
-欢迎提交 Issue 和 Pull Request！
-
 ---
 
-Built with ❤️ for premium hair salons
+Exclusively designed for premium salons

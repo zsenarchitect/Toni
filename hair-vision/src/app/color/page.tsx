@@ -88,7 +88,7 @@ export default function ColorPage() {
           onClick={() => router.push('/result')}
         >
           <Sparkles className="w-5 h-5 mr-2" />
-          生成效果图
+          预览效果
         </Button>
       </div>
     </div>

@@ -9,13 +9,13 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: 'HairVision AI - 智能发型预览',
-  description: '使用AI技术预览您的新发型，帮助您与造型师更好地沟通',
+  title: 'HairVision - Salon Style Preview',
+  description: '专业发型预览系统，助您与造型师完美沟通',
   manifest: '/manifest.json',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
-    title: 'HairVision AI',
+    title: 'HairVision',
   },
   icons: {
     icon: '/icon.svg',

@@ -46,10 +46,10 @@ export function GeneratingAnimation() {
           transition={{ duration: 1.5, repeat: Infinity }}
           className="text-lg font-medium text-gray-900"
         >
-          AI 正在创作您的新造型...
+          正在为您生成造型效果...
         </motion.p>
         <p className="text-sm text-gray-500 mt-2">
-          请稍候，通常需要 5-10 秒
+          请稍候，马上呈现
         </p>
       </div>
       

@@ -1,7 +1,7 @@
 {
-  "name": "HairVision AI",
+  "name": "HairVision",
   "short_name": "HairVision",
-  "description": "AI-powered hairstyle preview for professional salons",
+  "description": "Professional hairstyle preview for premium salons",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",
