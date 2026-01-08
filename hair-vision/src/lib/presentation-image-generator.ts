@@ -69,5 +69,11 @@ export const PRESENTATION_IMAGE_PROMPTS = {
   
   // 客户使用场景
   customerUsing: 'Professional photo of a customer using an iPad in a modern salon, stylist showing hairstyle preview on screen, elegant and professional atmosphere, realistic photography style, 4K quality.',
+  
+  // 等候室体验
+  waitingRoomExperience: 'Professional photo of a modern salon waiting area, elegant and comfortable seating, customers browsing hairstyle previews on iPad tablets mounted on stands, warm ambient lighting, premium salon atmosphere, realistic photography style, 4K quality. Show multiple customers casually browsing different hairstyles on screens while waiting.',
+  
+  // iPad 镜子体验
+  ipadMirrorExperience: 'Professional photo of a customer sitting in front of a salon mirror, holding an iPad showing their hairstyle preview result, comparing the preview on the iPad screen with their reflection in the mirror, elegant salon setting, professional lighting, realistic photography style, 4K quality. The customer should be looking at both the iPad screen and the mirror reflection.',
 };
 

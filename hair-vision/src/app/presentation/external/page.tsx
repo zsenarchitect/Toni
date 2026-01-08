@@ -164,6 +164,30 @@ export default function ExternalPresentation() {
       tagline: 'To customers, this is your salon\'s exclusive technology',
     },
     {
+      type: 'experience-waiting-room',
+      title: 'Waiting Area Experience',
+      subtitle: 'Turn waiting time into revenue opportunity',
+      description: 'Transform your waiting area into an interactive experience. Customers explore different hairstyles and colors on iPad displays, building excitement and increasing service upgrades before their appointment.',
+      valuePoints: [
+        'Reduce perceived wait time',
+        'Increase service conversion by 20%+',
+        'Build anticipation and excitement',
+        'Showcase your premium technology',
+      ],
+    },
+    {
+      type: 'experience-ipad-mirror',
+      title: 'See It Before You Commit',
+      subtitle: 'The moment that closes the sale',
+      description: 'Customers view their personalized style preview on iPad while sitting in front of the mirror, comparing the digital preview with their current look. This visual confirmation dramatically increases confidence and conversion.',
+      valuePoints: [
+        'Eliminate customer hesitation',
+        'Increase color service conversion',
+        'Reduce "redo" requests',
+        'Build trust through transparency',
+      ],
+    },
+    {
       type: 'value-upsell-detail',
       title: 'Upsell Conversion Scenarios',
       scenarios: [
@@ -456,6 +480,8 @@ function ExternalSlideRenderer({ slide }: { slide: SlideData }) {
     case 'value-upsell-detail': return <ValueUpsellDetailSlide {...slide} />;
     case 'value-stylist-empowerment': return <ValueStylistEmpowermentSlide {...slide} />;
     case 'value-brand': return <ValueBrandSlide {...slide} />;
+    case 'experience-waiting-room': return <ExperienceWaitingRoomSlide {...slide} />;
+    case 'experience-ipad-mirror': return <ExperienceIpadMirrorSlide {...slide} />;
     case 'testimonial': return <TestimonialSlide {...slide} />;
     case 'pricing': return <PricingSlide {...slide} />;
     case 'roi': return <RoiSlide {...slide} />;
@@ -697,6 +723,146 @@ function ValueBrandSlide({ title, points, tagline }: SlideData) {
         ))}
       </div>
       <p className="text-center text-amber-500 text-xl mt-8">{tagline as string}</p>
+    </div>
+  );
+}
+
+function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints }: SlideData) {
+  const [image, setImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const points = valuePoints as string[] | undefined;
+
+  useEffect(() => {
+    // 生成等候室体验图片
+    if (process.env.NEXT_PUBLIC_ENABLE_AI_CHARTS === 'true') {
+      fetch('/api/presentation/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ promptKey: 'waitingRoomExperience', resolution: '2K' }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.imageUrl) {
+            setImage(data.imageUrl);
+          }
+        })
+        .catch(err => console.error('Failed to generate waiting room image:', err))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  return (
+    <div className="h-full p-8 flex flex-col bg-gradient-to-br from-amber-50 to-white">
+      <div className="text-center mb-4">
+        <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
+        {subtitle && (
+          <p className="text-lg text-amber-600 font-semibold">{subtitle as string}</p>
+        )}
+      </div>
+      <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
+        <div className="flex items-center justify-center">
+          {loading ? (
+            <div className="text-center text-gray-400">
+              <div className="w-12 h-12 border-4 border-amber-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <p className="text-xs">生成图片中...</p>
+            </div>
+          ) : image ? (
+            <img 
+              src={image} 
+              alt="Waiting Room Experience" 
+              className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
+            />
+          ) : (
+            <div className="text-center text-gray-400">
+              <Users className="w-16 h-16 mx-auto mb-2 text-gray-300" />
+              <p className="text-xs">等候室体验图片</p>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col justify-center space-y-2">
+          {points && points.map((point, i) => (
+            <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-3 shadow-sm">
+              <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-gray-700">{point}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      {description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description as string}</p>
+      )}
+    </div>
+  );
+}
+
+function ExperienceIpadMirrorSlide({ title, subtitle, description, valuePoints }: SlideData) {
+  const [image, setImage] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const points = valuePoints as string[] | undefined;
+
+  useEffect(() => {
+    // 生成 iPad 镜子体验图片
+    if (process.env.NEXT_PUBLIC_ENABLE_AI_CHARTS === 'true') {
+      fetch('/api/presentation/generate-image', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ promptKey: 'ipadMirrorExperience', resolution: '2K' }),
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success && data.imageUrl) {
+            setImage(data.imageUrl);
+          }
+        })
+        .catch(err => console.error('Failed to generate iPad mirror image:', err))
+        .finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
+
+  return (
+    <div className="h-full p-8 flex flex-col bg-gradient-to-br from-blue-50 to-white">
+      <div className="text-center mb-4">
+        <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
+        {subtitle && (
+          <p className="text-lg text-blue-600 font-semibold">{subtitle as string}</p>
+        )}
+      </div>
+      <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
+        <div className="flex items-center justify-center">
+          {loading ? (
+            <div className="text-center text-gray-400">
+              <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+              <p className="text-xs">生成图片中...</p>
+            </div>
+          ) : image ? (
+            <img 
+              src={image} 
+              alt="iPad Mirror Experience" 
+              className="max-w-full max-h-full object-contain rounded-xl shadow-lg"
+            />
+          ) : (
+            <div className="text-center text-gray-400">
+              <Camera className="w-16 h-16 mx-auto mb-2 text-gray-300" />
+              <p className="text-xs">iPad 镜子体验图片</p>
+            </div>
+          )}
+        </div>
+        <div className="flex flex-col justify-center space-y-2">
+          {points && points.map((point, i) => (
+            <div key={i} className="flex items-start gap-2 bg-white rounded-lg p-3 shadow-sm">
+              <Check className="w-5 h-5 text-green-500 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-gray-700">{point}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+      {description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description as string}</p>
+      )}
     </div>
   );
 }
