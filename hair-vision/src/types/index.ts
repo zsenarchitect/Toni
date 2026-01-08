@@ -33,6 +33,9 @@ export interface Background {
 // 视角类型
 export type ViewAngle = 'front' | 'side' | 'back';
 
+// 图像分辨率类型 (成本优化)
+export type ImageResolution = '1K' | '2K' | '4K';
+
 // 生成请求
 export interface GenerateRequest {
   photo: string; // base64
@@ -40,6 +43,7 @@ export interface GenerateRequest {
   colorId?: string;
   viewAngle: ViewAngle;
   backgroundId: string;
+  resolution?: ImageResolution; // 可选，默认从环境变量读取
 }
 
 // 生成结果

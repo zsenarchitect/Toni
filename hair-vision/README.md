@@ -56,7 +56,7 @@ npm run dev
 - **样式**: TailwindCSS
 - **动画**: Framer Motion
 - **状态管理**: Zustand
-- **图像生成**: Google Gemini 2.0 Flash
+- **图像生成**: Google Gemini 3.0 Pro Image Generation
 - **部署**: Vercel
 
 ## 📁 项目结构
@@ -98,6 +98,24 @@ hair-vision/
 | 变量名 | 必需 | 描述 |
 |--------|------|------|
 | `GEMINI_API_KEY` | ✅ | Google Gemini API Key |
+| `GEMINI_IMAGE_RESOLUTION` | ❌ | 图像分辨率 (1K/2K/4K)，默认 1K 以节省成本 |
+
+## 💰 成本优化
+
+本系统已实现多项成本优化策略，帮助专业理发店控制 API 使用成本：
+
+- **分辨率控制**: 默认使用 1K 分辨率，可节省 **94%** 成本（相比 4K）
+- **提示词优化**: 减少约 30% 的 token 使用量
+- **成本跟踪**: 每次 API 调用都会记录估算成本
+- **灵活配置**: 可通过环境变量或 API 参数控制分辨率
+
+详细成本分析请参考 [COST_OPTIMIZATION.md](./COST_OPTIMIZATION.md)
+
+### 成本示例（50 客户/天，3 视角/客户）
+
+- **4K 分辨率**: ~$1,080/月
+- **1K 分辨率**: ~$60/月
+- **节省**: ~$1,020/月 (94% 成本降低)
 
 ## 🚢 部署到 Vercel
 

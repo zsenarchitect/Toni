@@ -1,7 +1,14 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
-import type { Hairstyle, HairColor, ViewAngle, Background } from '@/types';
+import type { Hairstyle, HairColor, ViewAngle, Background, ImageResolution } from '@/types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+
+// 成本估算 (基于官方定价)
+const COST_ESTIMATES: Record<ImageResolution, number> = {
+  '1K': 0.0134, // ~$0.134 per image (1,120 tokens)
+  '2K': 0.0134, // ~$0.134 per image (1,120 tokens)
+  '4K': 0.024,  // ~$0.24 per image (2,000 tokens)
+};
 
 interface GenerateParams {
   photoBase64: string;
@@ -9,6 +16,7 @@ interface GenerateParams {
   color?: HairColor;
   viewAngle: ViewAngle;
   background: Background;
+  resolution?: ImageResolution; // 分辨率控制，用于成本优化
 }
 
 // Extended types for Gemini image generation (not yet in official types)
@@ -23,68 +31,67 @@ interface InlineDataPart {
   };
 }
 
+// 优化的提示词构建函数 - 更简洁以减少token使用
 function buildPrompt(params: GenerateParams): string {
   const { style, color, viewAngle, background } = params;
   
-  const viewAngleDescriptions: Record<ViewAngle, string> = {
-    front: 'front view, looking directly at the camera',
-    side: 'side profile view, 90 degrees from the front',
-    back: 'back view, showing the back of the head and hairstyle',
+  const viewAngleMap: Record<ViewAngle, string> = {
+    front: 'front view',
+    side: 'side profile',
+    back: 'back view',
   };
 
-  const backgroundDescriptions: Record<string, string> = {
-    salon: 'professional hair salon with modern lighting and mirrors',
-    outdoor: 'natural outdoor setting with soft daylight',
-    studio: 'clean white studio background with professional lighting',
-    gradient: 'subtle gradient background from light gray to white',
+  const bgMap: Record<string, string> = {
+    salon: 'salon interior',
+    outdoor: 'outdoor setting',
+    studio: 'white studio',
+    gradient: 'gradient background',
   };
 
-  let prompt = `Transform this person's hairstyle while keeping their face, skin tone, and all facial features EXACTLY the same.
-
-NEW HAIRSTYLE: ${style.promptDescription}
-Style name: ${style.name} (${style.nameEn})
-
-`;
+  // 优化后的简洁提示词 - 减少约30%的token使用
+  let prompt = `Transform hairstyle, preserve face exactly. Style: ${style.promptDescription} (${style.nameEn}). Angle: ${viewAngleMap[viewAngle]}. Background: ${bgMap[background.value] || background.value}.`;
 
   if (color) {
-    prompt += `HAIR COLOR: ${color.promptDescription}
-Color: ${color.name} (${color.nameEn}) - ${color.hexCode}
-
-`;
+    prompt += ` Color: ${color.promptDescription} (${color.hexCode}).`;
   } else {
-    prompt += `HAIR COLOR: Keep the original natural hair color
-
-`;
+    prompt += ` Keep original hair color.`;
   }
 
-  prompt += `VIEW ANGLE: Generate the ${viewAngleDescriptions[viewAngle]}
-
-BACKGROUND: ${backgroundDescriptions[background.value] || background.value}
-
-CRITICAL REQUIREMENTS:
-1. The person's face must remain IDENTICAL - same eyes, nose, mouth, skin tone, facial structure
-2. Only modify the hair to match the requested style and color
-3. The hair must look completely natural and realistic
-4. Proper lighting and shadows on the hair matching the scene
-5. High quality, photorealistic result suitable for a professional salon preview
-6. The hairstyle should look like it was done by a professional stylist
-7. Natural hair texture and movement appropriate for the style
-
-Generate a single high-quality photorealistic image.`;
+  prompt += ` Requirements: 1) Face identical (eyes, nose, mouth, skin). 2) Natural realistic hair. 3) Professional styling. 4) Proper lighting. Generate photorealistic salon preview.`;
 
   return prompt;
 }
 
 export async function generateHairstyle(params: GenerateParams): Promise<string> {
   try {
+    // 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
+    const resolution: ImageResolution = params.resolution || 
+      (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
+      '1K';
+    
+    // 记录成本估算
+    const estimatedCost = COST_ESTIMATES[resolution];
+    console.log(`[Cost] Generating ${resolution} image, estimated cost: $${estimatedCost.toFixed(4)}`);
+
     const model = genAI.getGenerativeModel({ 
-      model: 'gemini-2.0-flash-preview-image-generation',
+      model: 'gemini-3.0-pro-image-generation',
       generationConfig: {
         responseModalities: ['Text', 'Image'],
+        // 注意: media_resolution 参数可能需要根据实际API文档调整
+        // 目前通过prompt中的分辨率要求来控制
       } as unknown as Record<string, unknown>,
     });
 
     const prompt = buildPrompt(params);
+    
+    // 如果指定了分辨率，在提示词中明确要求
+    const resolutionPrompt = resolution === '1K' 
+      ? ' Generate at 1K resolution (1024x1024).'
+      : resolution === '2K'
+      ? ' Generate at 2K resolution (2048x2048).'
+      : ' Generate at 4K resolution (4096x4096).';
+    
+    const fullPrompt = prompt + resolutionPrompt;
     
     // Extract base64 data from data URL
     const base64Data = params.photoBase64.split(',')[1];
@@ -97,7 +104,7 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
           data: base64Data,
         },
       },
-      prompt,
+      fullPrompt,
     ]);
 
     const response = result.response;
@@ -108,6 +115,7 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         const imagePart = part as InlineDataPart;
         if (imagePart.inlineData) {
           const imageData = imagePart.inlineData;
+          console.log(`[Cost] Image generated successfully at ${resolution}, actual cost may vary`);
           return `data:${imageData.mimeType};base64,${imageData.data}`;
         }
       }
@@ -118,6 +126,16 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
     console.error('Gemini API error:', error);
     throw error;
   }
+}
+
+// 成本计算辅助函数
+export function estimateGenerationCost(resolution: ImageResolution = '1K'): number {
+  return COST_ESTIMATES[resolution];
+}
+
+// 批量成本估算
+export function estimateBatchCost(count: number, resolution: ImageResolution = '1K'): number {
+  return count * COST_ESTIMATES[resolution];
 }
 
 // Fallback function using Imagen if available

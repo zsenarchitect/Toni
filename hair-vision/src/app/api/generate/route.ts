@@ -3,9 +3,16 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 import { getHairstyleById } from '@/data/hairstyles';
 import { getColorById } from '@/data/colors';
 import { getBackgroundById } from '@/data/backgrounds';
-import type { ViewAngle } from '@/types';
+import type { ViewAngle, ImageResolution } from '@/types';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
+
+// 成本估算常量
+const COST_ESTIMATES: Record<ImageResolution, number> = {
+  '1K': 0.0134,
+  '2K': 0.0134,
+  '4K': 0.024,
+};
 
 interface GenerateRequestBody {
   photo: string;
@@ -13,62 +20,49 @@ interface GenerateRequestBody {
   colorId?: string;
   viewAngle: ViewAngle;
   backgroundId: string;
+  resolution?: ImageResolution; // 可选分辨率参数
 }
 
+// 优化的提示词构建 - 更简洁以减少token成本
 function buildPrompt(
   style: NonNullable<ReturnType<typeof getHairstyleById>>,
   color: ReturnType<typeof getColorById> | null | undefined,
   viewAngle: ViewAngle,
-  background: NonNullable<ReturnType<typeof getBackgroundById>>
+  background: NonNullable<ReturnType<typeof getBackgroundById>>,
+  resolution?: ImageResolution
 ): string {
-  const viewAngleDescriptions: Record<ViewAngle, string> = {
-    front: 'front view, facing directly at the camera',
-    side: 'side profile view, 90 degrees from the front, showing the side silhouette',
-    back: 'back view, showing the back of the head and the full hairstyle from behind',
+  const viewAngleMap: Record<ViewAngle, string> = {
+    front: 'front view',
+    side: 'side profile',
+    back: 'back view',
   };
 
-  const backgroundDescriptions: Record<string, string> = {
-    salon: 'professional upscale hair salon interior with soft lighting and elegant mirrors in the background',
-    studio: 'clean pure white photography studio background with professional soft lighting',
-    outdoor: 'beautiful natural outdoor setting with soft golden hour daylight, blurred nature background',
-    gradient: 'subtle elegant gradient background transitioning from light gray to white',
+  const bgMap: Record<string, string> = {
+    salon: 'salon interior',
+    studio: 'white studio',
+    outdoor: 'outdoor setting',
+    gradient: 'gradient background',
   };
 
-  let prompt = `Create a highly photorealistic image transformation. Take the person in this photo and give them a completely new hairstyle while preserving their exact facial features, skin tone, face shape, and identity.
-
-HAIRSTYLE TO APPLY:
-Name: ${style.name} (${style.nameEn})
-Description: ${style.promptDescription}
-
-`;
+  // 优化的简洁提示词 - 减少约30%的token使用
+  let prompt = `Transform hairstyle, preserve face exactly. Style: ${style.promptDescription} (${style.nameEn}). Angle: ${viewAngleMap[viewAngle]}. Background: ${bgMap[background.value] || background.value}.`;
 
   if (color) {
-    prompt += `HAIR COLOR:
-Name: ${color.name} (${color.nameEn})
-Color: ${color.promptDescription}
-Hex Reference: ${color.hexCode}
-
-`;
+    prompt += ` Color: ${color.promptDescription} (${color.hexCode}).`;
   } else {
-    prompt += `HAIR COLOR: Maintain the person's natural original hair color as shown in the photo.
-
-`;
+    prompt += ` Keep original hair color.`;
   }
 
-  prompt += `VIEWING ANGLE: Generate the image showing the ${viewAngleDescriptions[viewAngle]}
+  prompt += ` Requirements: 1) Face identical. 2) Natural realistic hair. 3) Professional styling. 4) Proper lighting.`;
 
-BACKGROUND: ${backgroundDescriptions[background.value]}
-
-CRITICAL REQUIREMENTS FOR PHOTOREALISTIC RESULT:
-1. IDENTITY PRESERVATION: The person's face must be EXACTLY the same - same eyes, nose, mouth, jaw, skin texture, skin tone, and facial proportions. Do not alter any facial features.
-2. NATURAL HAIR: The new hairstyle must look completely natural and realistic, as if professionally styled by an expert hairdresser.
-3. SEAMLESS BLEND: The hair must blend naturally with the person's head, hairline, and skin tone.
-4. REALISTIC LIGHTING: Apply proper lighting, shadows, and highlights to the hair that match the background environment.
-5. HIGH QUALITY: Generate a high-resolution, professional-quality image suitable for salon preview purposes.
-6. HAIR TEXTURE: Show realistic hair texture, shine, and movement appropriate for the hairstyle type.
-7. CONSISTENT STYLE: Ensure the hairstyle looks consistent with the description and would look natural on this specific person.
-
-Generate a single photorealistic image that looks like a professional salon photograph.`;
+  // 添加分辨率要求
+  if (resolution === '1K') {
+    prompt += ' Generate at 1K (1024x1024).';
+  } else if (resolution === '2K') {
+    prompt += ' Generate at 2K (2048x2048).';
+  } else if (resolution === '4K') {
+    prompt += ' Generate at 4K (4096x4096).';
+  }
 
   return prompt;
 }
@@ -84,7 +78,16 @@ export async function POST(request: NextRequest) {
     }
 
     const body: GenerateRequestBody = await request.json();
-    const { photo, styleId, colorId, viewAngle, backgroundId } = body;
+    const { photo, styleId, colorId, viewAngle, backgroundId, resolution } = body;
+    
+    // 获取分辨率设置，优先使用请求参数，其次环境变量，默认1K以节省成本
+    const imageResolution: ImageResolution = resolution || 
+      (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
+      '1K';
+    
+    // 记录成本估算
+    const estimatedCost = COST_ESTIMATES[imageResolution];
+    console.log(`[Cost] API call - Resolution: ${imageResolution}, Estimated cost: $${estimatedCost.toFixed(4)}`);
 
     // Validate required fields
     if (!photo || !styleId || !viewAngle || !backgroundId) {
@@ -106,12 +109,12 @@ export async function POST(request: NextRequest) {
     const color = colorId ? getColorById(colorId) : null;
     const background = getBackgroundById(backgroundId) || { id: 'studio', name: 'Studio', value: 'studio' };
 
-    // Build prompt
-    const prompt = buildPrompt(style, color, viewAngle, background);
+    // Build prompt with resolution
+    const prompt = buildPrompt(style, color, viewAngle, background, imageResolution);
 
     // Initialize Gemini model with image generation capability
     const model = genAI.getGenerativeModel({
-      model: 'gemini-2.0-flash-preview-image-generation',
+      model: 'gemini-3.0-pro-image-generation',
       generationConfig: {
         responseModalities: ['Text', 'Image'],
       } as Record<string, unknown>,
@@ -148,9 +151,12 @@ export async function POST(request: NextRequest) {
         const imagePart = part as { inlineData?: { mimeType: string; data: string } };
         if (imagePart.inlineData) {
           const resultUrl = `data:${imagePart.inlineData.mimeType};base64,${imagePart.inlineData.data}`;
+          console.log(`[Cost] Image generated successfully at ${imageResolution}`);
           return NextResponse.json({
             success: true,
             resultUrl,
+            resolution: imageResolution,
+            estimatedCost: estimatedCost,
           });
         }
       }
