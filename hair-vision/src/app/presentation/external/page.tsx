@@ -302,29 +302,30 @@ export default function ExternalPresentation() {
     // Pricing
     {
       type: 'pricing',
-      title: 'Simple, Transparent Pricing',
+      title: 'Half the Price, Full the Power',
+      subtitle: '50% below competitors + 1 Month FREE Trial',
       tiers: [
         { 
           name: 'Essential',
-          price: '$149',
+          price: '$79',
           period: '/month',
           desc: 'Perfect for single location',
-          features: ['System style library', 'Basic brand customization', '300 generations/month'],
+          features: ['System style library', 'Basic brand customization', '300 generations/month', '🎁 1 Month FREE'],
         },
         { 
           name: 'Professional',
-          price: '$299',
+          price: '$149',
           period: '/month',
           desc: 'Most Popular',
-          features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month'],
+          features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month', '🎁 1 Month FREE'],
           popular: true,
         },
         { 
           name: 'Enterprise',
-          price: '$599',
+          price: '$249',
           period: '/month',
           desc: 'For salon chains',
-          features: ['2500 generations/month', 'Analytics dashboard', 'API access', 'Multi-location management'],
+          features: ['2500 generations/month', 'Analytics dashboard', 'API access', 'Multi-location management', '🎁 1 Month FREE'],
         },
       ],
     },
@@ -332,10 +333,10 @@ export default function ExternalPresentation() {
       type: 'roi',
       title: 'Return on Investment',
       calculation: {
-        investment: '$299/month (Professional)',
-        scenario: 'Just 2 customers upgrade to color after "seeing the preview"',
-        return: '2 × $165 = $330 extra revenue',
-        conclusion: 'Pays for itself in the first week',
+        investment: '$149/month (Professional) — First Month FREE',
+        scenario: 'Just 1 customer upgrades to color after "seeing the preview"',
+        return: '1 × $165 = $165 extra revenue',
+        conclusion: 'Pays for itself with just ONE upgrade',
       },
       // chartImage 将在组件中动态生成
     },
@@ -358,7 +359,7 @@ export default function ExternalPresentation() {
       type: 'roi-detailed',
       title: 'Detailed ROI Calculation',
       example: {
-        tier: 'Professional Plan ($299/month)',
+        tier: 'Professional Plan ($149/month) + 1 Month FREE',
         assumptions: [
           'Monthly customers: 300',
           'Upgrade conversion rate: 15%',
@@ -367,10 +368,10 @@ export default function ExternalPresentation() {
         calculation: [
           'Extra revenue = 300 × 15% × $165',
           '= $7,425/month',
-          'ROI = ($7,425 - $299) / $299',
-          '= 2,384%',
+          'ROI = ($7,425 - $149) / $149',
+          '= 4,883%',
         ],
-        note: 'Even with just 2 upgrades, you break even',
+        note: 'First month is FREE — try risk-free!',
       },
     },
     {
