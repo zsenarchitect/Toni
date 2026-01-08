@@ -1,37 +1,42 @@
 import type { SubscriptionTier, CreditBalance, CreditUsage, SubscriptionPlan, ImageResolution, GeminiModel } from '@/types';
 
-// 订阅套餐配置
-// 定价策略：主要收入来自订阅，按需付费接近成本价以鼓励订阅
+// 订阅套餐配置 (2026-01更新，50%竞品定价策略 + 1个月免费试用)
+// 定价策略：竞品价格的50% + 免费试用，快速获取市场份额
+// 竞品参考：Boulevard $175-$325, Zenoti $300-$500
+// 我们的定价 = 竞品50%，降低客户决策门槛
+//
 // 基于 Gemini 3 Pro 官方 API 成本：
-// - 1K/2K 图像：~$0.134 per image (1,120 tokens × $120/1M tokens)
-// - 4K 图像：~$0.24 per image (2,000 tokens × $120/1M tokens)
-// - 输入成本：~$0.001 per request (100-200 tokens × $2/1M tokens)
-// 总成本约 $0.135 per 1K image
-// 按需付费价格接近成本价，主要目的是鼓励用户升级到更高套餐
+// - 1K/2K 图像：~$0.134 per image
+// - 总成本约 $0.135 per 1K image
+// 
+// 免费试用策略：1个月免费，让沙龙零风险体验产品价值
 export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
   essential: {
     tier: 'essential',
     name: 'Essential',
-    monthlyPrice: 199,
-    baseCredits: 200, // 200 generations/month
-    payAsYouGoPrice: 0.15, // $0.15 per additional credit (接近成本价 $0.135，仅覆盖运营成本)
-    features: ['System style library', 'Basic brand customization', '200 generations/month'],
+    monthlyPrice: 79, // 50% of Boulevard entry ($175) ≈ $87 → $79
+    baseCredits: 300, // 300次/月
+    payAsYouGoPrice: 0.15, // $0.15 per additional credit
+    features: ['System style library', 'Basic brand customization', '300 generations/month', '1 month free trial'],
+    freeTrialDays: 30, // 1个月免费试用
   },
   professional: {
     tier: 'professional',
     name: 'Professional',
-    monthlyPrice: 499,
-    baseCredits: 500, // 500 generations/month
-    payAsYouGoPrice: 0.14, // $0.14 per additional credit (接近成本价，鼓励升级)
-    features: ['Custom style library', 'Full white-label', 'Service recommendations', '500 generations/month'],
+    monthlyPrice: 149, // 50% of Boulevard mid ($300) = $150 → $149
+    baseCredits: 800, // 800次/月
+    payAsYouGoPrice: 0.14, // $0.14 per additional credit
+    features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month', '1 month free trial'],
+    freeTrialDays: 30, // 1个月免费试用
   },
   enterprise: {
     tier: 'enterprise',
     name: 'Enterprise',
-    monthlyPrice: 999,
-    baseCredits: 2000, // 2000 generations/month
-    payAsYouGoPrice: 0.13, // $0.13 per additional credit (接近成本价，最大优惠)
-    features: ['Unlimited custom styles', 'Analytics dashboard', 'API access', '2000 generations/month'],
+    monthlyPrice: 249, // 50% of Zenoti ($500) = $250 → $249
+    baseCredits: 2500, // 2500次/月
+    payAsYouGoPrice: 0.13, // $0.13 per additional credit
+    features: ['Unlimited custom styles', 'Analytics dashboard', 'API access', '2500 generations/month', '1 month free trial'],
+    freeTrialDays: 30, // 1个月免费试用
   },
 };
 

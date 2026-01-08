@@ -10,7 +10,8 @@ interface RevenueCalculatorProps {
 export function RevenueCalculator({ className }: RevenueCalculatorProps) {
   const [currentMonthlyRevenue, setCurrentMonthlyRevenue] = useState(50000);
   const [currentCustomers, setCurrentCustomers] = useState(400);
-  const [averageServicePrice, setAverageServicePrice] = useState(125);
+  // 高端沙龙平均票据 $150-$350 (来源: Professional Beauty Association)
+  const [averageServicePrice, setAverageServicePrice] = useState(165);
   const [conversionRate, setConversionRate] = useState(15);
   const [averageUpgrade, setAverageUpgrade] = useState(150);
 
