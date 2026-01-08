@@ -20,6 +20,9 @@ import {
   Quote,
   ArrowRight,
 } from 'lucide-react';
+import { ROICalculator } from '@/components/ROICalculator';
+import { RevenueCalculator } from '@/components/RevenueCalculator';
+import { ProductSalesCalculator } from '@/components/ProductSalesCalculator';
 
 // External Sales Presentation
 export default function ExternalPresentation() {
@@ -66,6 +69,12 @@ export default function ExternalPresentation() {
       quotes: [
         { text: '"I showed her a picture of a lob and she gave me a mom bob. Now I have to wait 6 months to fix it."', source: 'Reddit r/Hair' },
         { text: '"Told him I wanted subtle highlights, walked out looking like a zebra"', source: 'Instagram #haircutfail' },
+      ],
+    },
+    {
+      type: 'pain-real-quotes',
+      title: 'Real Customer Feedback (Continued)',
+      quotes: [
         { text: '"Paid $400 for a cut and it looks exactly like my $40 cuts"', source: 'Yelp Review' },
         { text: '"Spent $300 on a color correction because the first stylist didn\'t understand what I wanted"', source: 'Real Customer' },
       ],
@@ -254,6 +263,21 @@ export default function ExternalPresentation() {
       // chartImage 将在组件中动态生成
     },
     {
+      type: 'roi-calculator',
+      title: 'Calculate Your ROI',
+      subtitle: 'Enter your salon\'s numbers to see the potential',
+    },
+    {
+      type: 'revenue-calculator',
+      title: 'Revenue Growth Potential',
+      subtitle: 'See how MeRROR can increase your monthly revenue',
+    },
+    {
+      type: 'product-sales-calculator',
+      title: 'Product Sales Potential',
+      subtitle: 'Calculate additional revenue from product upsells',
+    },
+    {
       type: 'roi-detailed',
       title: 'Detailed ROI Calculation',
       example: {
@@ -435,6 +459,9 @@ function ExternalSlideRenderer({ slide }: { slide: SlideData }) {
     case 'testimonial': return <TestimonialSlide {...slide} />;
     case 'pricing': return <PricingSlide {...slide} />;
     case 'roi': return <RoiSlide {...slide} />;
+    case 'roi-calculator': return <ROICalculatorSlide {...slide} />;
+    case 'revenue-calculator': return <RevenueCalculatorSlide {...slide} />;
+    case 'product-sales-calculator': return <ProductSalesCalculatorSlide {...slide} />;
     case 'roi-detailed': return <RoiDetailedSlide {...slide} />;
     case 'competitive-advantage': return <CompetitiveAdvantageSlide {...slide} />;
     case 'cta-demo': return <CtaDemoSlide {...slide} />;
@@ -824,14 +851,14 @@ function EndSlide({ title, subtitle, contact }: SlideData) {
 function PainRealQuotesSlide({ title, quotes }: SlideData) {
   const quotesData = quotes as { text: string; source: string }[];
   return (
-    <div className="h-full p-12 flex flex-col bg-red-50 overflow-hidden">
-      <h2 className="text-4xl font-bold mb-6 text-center">{title as string}</h2>
-      <div className="flex-1 space-y-3 overflow-auto">
+    <div className="h-full p-12 flex flex-col bg-red-50">
+      <h2 className="text-4xl font-bold mb-8 text-center">{title as string}</h2>
+      <div className="flex-1 flex flex-col items-center justify-center gap-6">
         {quotesData.map((q, i) => (
-          <div key={i} className="bg-white rounded-2xl p-4 border-l-4 border-red-500">
-            <Quote className="w-6 h-6 text-red-300 mb-2" />
-            <p className="text-base text-gray-800 mb-2 italic">"{q.text}"</p>
-            <p className="text-xs text-gray-500">— {q.source}</p>
+          <div key={i} className="bg-white rounded-2xl p-6 border-l-4 border-red-500 w-full max-w-4xl">
+            <Quote className="w-6 h-6 text-red-300 mb-3" />
+            <p className="text-lg text-gray-800 mb-3 italic leading-relaxed">"{q.text}"</p>
+            <p className="text-sm text-gray-500">— {q.source}</p>
           </div>
         ))}
       </div>
@@ -842,25 +869,25 @@ function PainRealQuotesSlide({ title, quotes }: SlideData) {
 function PainHiddenCostsSlide({ title, costs, conclusion }: SlideData) {
   const costsData = costs as { category: string; items: string[] }[];
   return (
-    <div className="h-full p-12 flex flex-col">
-      <h2 className="text-4xl font-bold mb-8 text-center">{title as string}</h2>
-      <div className="flex-1 grid grid-cols-2 gap-6">
+    <div className="h-full p-10 flex flex-col">
+      <h2 className="text-3xl font-bold mb-6 text-center">{title as string}</h2>
+      <div className="flex-1 grid grid-cols-2 gap-5 mb-4">
         {costsData.map((cost, i) => (
-          <div key={i} className="bg-red-50 rounded-2xl p-6">
-            <h3 className="font-bold text-xl mb-4 text-red-700">{cost.category}</h3>
-            <ul className="space-y-2">
+          <div key={i} className="bg-red-50 rounded-2xl p-5 flex flex-col">
+            <h3 className="font-bold text-lg mb-3 text-red-700">{cost.category}</h3>
+            <ul className="space-y-1.5 flex-1">
               {cost.items.map((item, j) => (
-                <li key={j} className="flex gap-2 text-gray-700">
+                <li key={j} className="flex gap-2 text-sm text-gray-700">
                   <span className="text-red-500">•</span>
-                  {item}
+                  <span>{item}</span>
                 </li>
               ))}
             </ul>
           </div>
         ))}
       </div>
-      <div className="bg-amber-500 text-white rounded-xl p-4 text-center mt-4">
-        <p className="text-xl font-bold">{conclusion as string}</p>
+      <div className="bg-amber-500 text-white rounded-xl p-3 text-center">
+        <p className="text-lg font-bold">{conclusion as string}</p>
       </div>
     </div>
   );
@@ -869,29 +896,29 @@ function PainHiddenCostsSlide({ title, costs, conclusion }: SlideData) {
 function ValueUpsellDetailSlide({ title, scenarios, calculation }: SlideData) {
   const scenariosData = scenarios as { from: string; to: string; increase: string; conversion: string }[];
   return (
-    <div className="h-full p-12 flex flex-col">
-      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
-      <div className="flex-1 space-y-4">
+    <div className="h-full p-10 flex flex-col">
+      <h2 className="text-3xl font-bold text-center mb-6">{title as string}</h2>
+      <div className="flex-1 space-y-3 mb-4">
         {scenariosData.map((s, i) => (
-          <div key={i} className="bg-gray-50 rounded-xl p-6">
-            <div className="flex items-center gap-4 mb-2">
-              <div className="flex-1">
-                <p className="text-gray-600">{s.from}</p>
+          <div key={i} className="bg-gray-50 rounded-xl p-5">
+            <div className="flex items-center gap-3">
+              <div className="flex-1 min-w-0">
+                <p className="text-sm text-gray-600 truncate">{s.from}</p>
               </div>
-              <ArrowRight className="w-6 h-6 text-amber-500" />
-              <div className="flex-1">
-                <p className="font-medium">{s.to}</p>
+              <ArrowRight className="w-5 h-5 text-amber-500 flex-shrink-0" />
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium truncate">{s.to}</p>
               </div>
-              <div className="text-right">
-                <span className="text-2xl font-bold text-green-600">{s.increase}</span>
-                <p className="text-sm text-gray-500">Conversion Rate: {s.conversion}</p>
+              <div className="text-right flex-shrink-0">
+                <span className="text-xl font-bold text-green-600">{s.increase}</span>
+                <p className="text-xs text-gray-500">Rate: {s.conversion}</p>
               </div>
             </div>
           </div>
         ))}
       </div>
-      <div className="bg-green-500 text-white rounded-xl p-4 text-center mt-4">
-        <p className="text-xl font-bold">{calculation as string}</p>
+      <div className="bg-green-500 text-white rounded-xl p-3 text-center">
+        <p className="text-lg font-bold">{calculation as string}</p>
       </div>
     </div>
   );
@@ -900,28 +927,82 @@ function ValueUpsellDetailSlide({ title, scenarios, calculation }: SlideData) {
 function ValueStylistEmpowermentSlide({ title, comparison, keyPoint }: SlideData) {
   const comp = comparison as { traditional: { title: string; flow: string[] }; withMeRROR: { title: string; flow: string[] } };
   return (
-    <div className="h-full p-12 flex flex-col">
-      <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
-      <div className="flex-1 grid grid-cols-2 gap-6">
-        <div className="bg-gray-100 rounded-2xl p-6">
-          <h3 className="font-bold text-xl mb-4 text-gray-600">{comp.traditional.title}</h3>
-          <ul className="space-y-2">
+    <div className="h-full p-10 flex flex-col">
+      <h2 className="text-3xl font-bold text-center mb-6">{title as string}</h2>
+      <div className="flex-1 grid grid-cols-2 gap-5 mb-4">
+        <div className="bg-gray-100 rounded-2xl p-5 flex flex-col">
+          <h3 className="font-bold text-lg mb-3 text-gray-600">{comp.traditional.title}</h3>
+          <ul className="space-y-1.5 flex-1">
             {comp.traditional.flow.map((step, i) => (
-              <li key={i} className="text-sm text-gray-700">• {step}</li>
+              <li key={i} className="text-xs text-gray-700 leading-relaxed">• {step}</li>
             ))}
           </ul>
         </div>
-        <div className="bg-green-50 rounded-2xl p-6 border-2 border-green-500">
-          <h3 className="font-bold text-xl mb-4 text-green-700">{comp.withMeRROR.title}</h3>
-          <ul className="space-y-2">
+        <div className="bg-green-50 rounded-2xl p-5 border-2 border-green-500 flex flex-col">
+          <h3 className="font-bold text-lg mb-3 text-green-700">{comp.withMeRROR.title}</h3>
+          <ul className="space-y-1.5 flex-1">
             {comp.withMeRROR.flow.map((step, i) => (
-              <li key={i} className="text-sm text-gray-700">• {step}</li>
+              <li key={i} className="text-xs text-gray-700 leading-relaxed">• {step}</li>
             ))}
           </ul>
         </div>
       </div>
-      <div className="bg-amber-500 text-white rounded-xl p-4 text-center mt-4">
-        <p className="text-lg font-bold">{keyPoint as string}</p>
+      <div className="bg-amber-500 text-white rounded-xl p-3 text-center">
+        <p className="text-base font-bold">{keyPoint as string}</p>
+      </div>
+    </div>
+  );
+}
+
+function ROICalculatorSlide({ title, subtitle }: SlideData) {
+  return (
+    <div className="h-full p-12 flex flex-col overflow-auto">
+      <div className="text-center mb-6">
+        <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
+        {subtitle && (
+          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        )}
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-5xl">
+          <ROICalculator defaultPlan="professional" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function RevenueCalculatorSlide({ title, subtitle }: SlideData) {
+  return (
+    <div className="h-full p-12 flex flex-col overflow-auto">
+      <div className="text-center mb-6">
+        <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
+        {subtitle && (
+          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        )}
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-5xl">
+          <RevenueCalculator />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ProductSalesCalculatorSlide({ title, subtitle }: SlideData) {
+  return (
+    <div className="h-full p-12 flex flex-col overflow-auto">
+      <div className="text-center mb-6">
+        <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
+        {subtitle && (
+          <p className="text-xl text-gray-600">{subtitle as string}</p>
+        )}
+      </div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="w-full max-w-5xl">
+          <ProductSalesCalculator />
+        </div>
       </div>
     </div>
   );
@@ -930,28 +1011,28 @@ function ValueStylistEmpowermentSlide({ title, comparison, keyPoint }: SlideData
 function RoiDetailedSlide({ title, example }: SlideData) {
   const ex = example as { tier: string; assumptions: string[]; calculation: string[]; note: string };
   return (
-    <div className="h-full p-12 flex flex-col overflow-auto">
-      <h2 className="text-4xl font-bold text-center mb-6">{title as string}</h2>
-      <div className="flex-1 bg-gray-50 rounded-2xl p-6 max-w-3xl mx-auto w-full overflow-auto">
-        <h3 className="font-bold text-lg mb-4">{ex.tier}</h3>
-        <div className="mb-4">
-          <h4 className="font-semibold mb-2 text-sm">Assumptions:</h4>
-          <ul className="space-y-1 text-sm">
+    <div className="h-full p-12 flex flex-col">
+      <h2 className="text-3xl font-bold text-center mb-6">{title as string}</h2>
+      <div className="flex-1 bg-gray-50 rounded-2xl p-8 max-w-4xl mx-auto w-full flex flex-col justify-center">
+        <h3 className="font-bold text-xl mb-6 text-center">{ex.tier}</h3>
+        <div className="mb-6">
+          <h4 className="font-semibold mb-3 text-base">Assumptions:</h4>
+          <ul className="space-y-2 text-sm">
             {ex.assumptions.map((a, i) => (
               <li key={i} className="text-gray-700">• {a}</li>
             ))}
           </ul>
         </div>
-        <div className="mb-4">
-          <h4 className="font-semibold mb-2 text-sm">Calculation:</h4>
-          <div className="bg-white rounded-lg p-3 font-mono text-xs space-y-1">
+        <div className="mb-6">
+          <h4 className="font-semibold mb-3 text-base">Calculation:</h4>
+          <div className="bg-white rounded-lg p-4 font-mono text-sm space-y-2">
             {ex.calculation.map((c, i) => (
-              <div key={i} className={i === ex.calculation.length - 1 ? 'text-green-600 font-bold' : ''}>{c}</div>
+              <div key={i} className={i === ex.calculation.length - 1 ? 'text-green-600 font-bold text-base' : ''}>{c}</div>
             ))}
           </div>
         </div>
-        <div className="bg-amber-500 text-white rounded-xl p-3 text-center">
-          <p className="font-bold text-sm">{ex.note}</p>
+        <div className="bg-amber-500 text-white rounded-xl p-4 text-center">
+          <p className="font-bold">{ex.note}</p>
         </div>
       </div>
     </div>
