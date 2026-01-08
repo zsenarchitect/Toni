@@ -814,8 +814,8 @@ function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints 
     <div className="h-full p-8 flex flex-col bg-gradient-to-br from-amber-50 to-white">
       <div className="text-center mb-4">
         <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
-        {subtitle && (
-          <p className="text-lg text-amber-600 font-semibold">{subtitle as string}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-amber-600 font-semibold">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
