@@ -190,7 +190,7 @@ export async function validateNYCSalonCount(): Promise<MarketResearchData> {
 export function addResearchData(data: Omit<MarketResearchData, 'id' | 'date'>): MarketResearchData {
   const research: MarketResearchData = {
     ...data,
-    id: `research-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+    id: `research-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
     date: new Date(),
   };
   

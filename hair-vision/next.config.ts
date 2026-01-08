@@ -12,7 +12,16 @@ const nextConfig: NextConfig = {
         hostname: '**',
       },
     ],
+    // 优化图片加载性能
+    formats: ['image/avif', 'image/webp'],
+    minimumCacheTTL: 60,
   },
+  
+  // 性能优化
+  compress: true,
+  
+  // 生产环境优化
+  poweredByHeader: false,
   
   // Headers for PWA and security
   async headers() {
@@ -31,6 +40,10 @@ const nextConfig: NextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
         ],
       },

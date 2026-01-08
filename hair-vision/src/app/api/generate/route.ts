@@ -172,6 +172,14 @@ export async function POST(request: NextRequest) {
       // 只有在 API 错误时才会在 generateHairstyle 内部自动降级
     });
 
+    // 检查是否成功生成图片
+    if (!resultUrl) {
+      return NextResponse.json(
+        { error: 'Failed to generate image. Please try again.' },
+        { status: 500 }
+      );
+    }
+
     // 如果生成成功，扣除信用
     if (salonId && creditBalance && creditsRequired > 0) {
       try {
@@ -180,7 +188,7 @@ export async function POST(request: NextRequest) {
         
         // 记录使用历史（始终使用 Pro 模型记录，因为服务始终使用 Pro）
         await recordCreditUsage({
-          id: `usage-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+          id: `usage-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
           salonId,
           creditsUsed: creditsRequired,
           model: 'gemini-3.0-pro-image-generation', // 始终记录为 Pro 模型
@@ -215,12 +223,6 @@ export async function POST(request: NextRequest) {
       // 不返回信用信息给前端客户界面
       // 信用信息只在admin API中可见
     });
-
-    // If no image was generated, return error
-    return NextResponse.json(
-      { error: 'Failed to generate image. Please try again.' },
-      { status: 500 }
-    );
 
   } catch (error) {
     console.error('Generation error:', error);

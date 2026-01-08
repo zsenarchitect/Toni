@@ -8,6 +8,15 @@
   "functions": {
     "src/app/api/generate/route.ts": {
       "maxDuration": 60
+    },
+    "src/app/api/contacts/scrape/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/presentation/generate-all-images/route.ts": {
+      "maxDuration": 300
+    },
+    "src/app/api/presentation/generate-image/route.ts": {
+      "maxDuration": 60
     }
   },
   "headers": [
@@ -20,7 +29,15 @@
         },
         {
           "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
         }
       ]
     }

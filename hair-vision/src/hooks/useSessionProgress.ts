@@ -42,7 +42,7 @@ interface SessionProgressState {
 }
 
 // 生成唯一ID
-const generateId = () => `attempt-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+const generateId = () => `attempt-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`;
 
 export const useSessionProgress = create<SessionProgressState>((set) => ({
   // 初始状态
