@@ -1,11 +1,26 @@
 'use client';
 
+/**
+ * MeRROR 首页 - 新拟态（Neumorphism）设计风格
+ * 
+ * 设计理念说明：
+ * 我们选择新拟态风格是因为它完美契合目标客户（高端沙龙）的品牌调性：
+ * 
+ * 1. 温暖感 (Warmth) - 柔和的阴影和圆润的边角传递出温馨、专业的服务氛围
+ * 2. 高科技感 (High-tech) - 现代简约的UI展示沙龙的技术领先形象
+ * 3. 中性色调 (Neutral) - 不抢眼的配色让客户照片和发型效果成为视觉焦点
+ * 4. 柔和不激进 (Soft & Non-aggressive) - 避免强烈对比，营造轻松的咨询体验
+ * 
+ * 这些特质与高端沙龙追求的"专业、舒适、信任"完全吻合，
+ * 帮助造型师与客户建立更好的沟通基础。
+ */
+
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Camera, History, Sparkles, ChevronRight, Scissors, Presentation, Users, Palette } from 'lucide-react';
 import { useStore } from '@/hooks/useStore';
 
-// 新拟态样式工具类
+// 新拟态样式工具类 - Neumorphism Style Utilities
 const neu = {
   // 凸起效果 - 元素看起来从背景中凸起
   raised: 'bg-[#e8eef5] rounded-2xl shadow-[8px_8px_16px_#c5cad1,-8px_-8px_16px_#ffffff]',
