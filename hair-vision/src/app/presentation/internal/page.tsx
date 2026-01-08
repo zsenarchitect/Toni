@@ -242,26 +242,27 @@ CRITICAL REQUIREMENTS:
         tiers: [
           { 
             name: 'Essential', 
-            price: '$199', 
+            price: '$79', 
             period: '/月',
-            features: ['系统发型库', '基础生成 200次/月', 'Logo + 主色调定制'],
+            features: ['系统发型库', '基础生成 300次/月', 'Logo + 主色调定制', '🎁 首月免费'],
             highlight: false,
           },
           { 
             name: 'Professional', 
-            price: '$499', 
+            price: '$149', 
             period: '/月',
-            features: ['自定义发型 10款', '服务关联推荐', '完全白标', '自定义域名', '500次/月'],
+            features: ['自定义发型 10款', '服务关联推荐', '完全白标', '800次/月', '🎁 首月免费'],
             highlight: true,
           },
           { 
             name: 'Enterprise', 
-            price: '$999', 
+            price: '$249', 
             period: '/月',
-            features: ['无限自定义', '数据分析', 'API接入', '专属支持'],
+            features: ['无限自定义', '数据分析', 'API接入', '2500次/月', '🎁 首月免费'],
             highlight: false,
           },
         ],
+        note: '竞品价格的50% + 首月免费试用',
       },
     },
     {
@@ -272,26 +273,27 @@ CRITICAL REQUIREMENTS:
         scenarios: [
           { 
             label: '保守 (Year 1)', 
-            salons: 20, 
-            avgPrice: 350, 
-            monthly: '$7,000',
-            annual: '$84,000',
+            salons: 30, 
+            avgPrice: 130, 
+            monthly: '$3,900',
+            annual: '$46,800',
           },
           { 
             label: '目标 (Year 1)', 
-            salons: 50, 
-            avgPrice: 400, 
-            monthly: '$20,000',
-            annual: '$240,000',
+            salons: 80, 
+            avgPrice: 150, 
+            monthly: '$12,000',
+            annual: '$144,000',
           },
           { 
             label: '乐观 (Year 2)', 
-            salons: 150, 
-            avgPrice: 450, 
-            monthly: '$67,500',
-            annual: '$810,000',
+            salons: 250, 
+            avgPrice: 180, 
+            monthly: '$45,000',
+            annual: '$540,000',
           },
         ],
+        note: '低价策略吸引更多客户，通过规模取胜',
       },
     },
     {
@@ -310,9 +312,9 @@ CRITICAL REQUIREMENTS:
     {
       type: 'highlight',
       title: 'ROI 卖点',
-      highlight: '3个升级 = 回本',
-      subtitle: '每月只需3个客户因"看到效果"而升级染发，即可回本',
-      description: '客户升级率提升20%，平均+$150 → 每月$15,000+额外收入 (以400客户/月计算)',
+      highlight: '1个升级 = 回本',
+      subtitle: '首月免费，之后每月只需1个客户升级即可回本',
+      description: '客户升级率提升20%，平均+$165 → 每月$9,900+额外收入 (以300客户/月计算)\n\n💡 对客户的话术: "第一个月完全免费，您可以零风险体验"',
     },
     {
       type: 'content',
@@ -580,8 +582,12 @@ CRITICAL REQUIREMENTS:
             script: '"我们专门为高端沙龙开发了造型预览系统，让您的客户在剪发前就看到效果，减少沟通时间和决策焦虑。"',
           },
           {
-            scenario: '造型师价值',
-            script: '"这不是取代造型师，而是让造型师的专业判断被客户\'看见\'。您说\'这款更适合您\'，她能直接看到为什么。"',
+            scenario: '造型师专业价值',
+            script: '"您多年积累的专业经验是无价的——读懂脸型、理解客户需求、给出完美建议。MeRROR让这些专业判断被\'看见\'，客户不再只是\'相信您\'，而是\'亲眼看到\'您为什么是对的。"',
+          },
+          {
+            scenario: '延伸现有专长',
+            script: '"您的咨询流程完全不变——分析脸型、了解生活方式、推荐造型。唯一的区别是，现在您可以说\'让我展示给您看\'，而不只是\'相信我\'。"',
           },
           {
             scenario: '增值销售',
@@ -610,12 +616,44 @@ CRITICAL REQUIREMENTS:
       },
     },
     {
+      type: 'highlight',
+      title: '核心理念',
+      highlight: '延伸专长，而非取代',
+      subtitle: '真正的理发师和造型师拥有无法自动化的核心价值',
+      description: '多年积累的审美眼光、读懂客户的沟通技巧、与客户建立信任的人际能力——这些是AI无法替代的。MeRROR让这些专业能力被"看见"，帮助店主轻松延伸现有专长。',
+    },
+    {
+      type: 'content',
+      title: '造型师不可替代的核心价值',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '专业技能',
+          items: [
+            '读懂脸型、发质、肤色的专业眼光',
+            '根据客户生活方式推荐合适造型',
+            '精准的剪发、调色、造型技术',
+            '多年经验积累的审美判断',
+          ],
+        },
+        right: {
+          title: '沟通艺术',
+          items: [
+            '询问正确的问题理解客户真实需求',
+            '解读模糊的表达，翻译成具体方案',
+            '建立长期信任关系，留住回头客',
+            '传统咨询技巧——在对话中找到最佳答案',
+          ],
+        },
+      },
+    },
+    {
       type: 'content',
       title: '造型师赋能策略',
       content: {
         layout: 'stylist-empowerment',
         keyPoints: [
-          { point: '定位', desc: '专业助手，不是AI设计师' },
+          { point: '定位', desc: '专业助手，不是AI设计师——延伸而非取代' },
           { point: '流程', desc: '造型师问诊 → 专业分析 → 推荐方案 → MeRROR可视化 → 客户决策' },
           { point: '价值', desc: '让专业判断被"看见"，增强说服力' },
           { point: '话术', desc: '"这款更适合您的脸型" + 可视化效果 = 客户信服' },

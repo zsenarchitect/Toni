@@ -20,6 +20,9 @@ interface AppState {
   // Loading state
   isGenerating: boolean;
   
+  // Error state
+  error: string | null;
+  
   // History
   history: GenerationResult[];
   
@@ -32,6 +35,7 @@ interface AppState {
   setViewAngle: (angle: ViewAngle) => void;
   setGeneratedResult: (angle: ViewAngle, result: string) => void;
   setIsGenerating: (isGenerating: boolean) => void;
+  setError: (error: string | null) => void;
   addToHistory: (result: GenerationResult) => void;
   removeFromHistory: (id: string) => void;
   clearHistory: () => void;
@@ -54,6 +58,7 @@ export const useStore = create<AppState>()(
         back: null,
       },
       isGenerating: false,
+      error: null,
       history: [],
       
       // Actions
@@ -92,6 +97,8 @@ export const useStore = create<AppState>()(
         })),
       
       setIsGenerating: (isGenerating) => set({ isGenerating }),
+      
+      setError: (error) => set({ error }),
       
       addToHistory: (result) =>
         set((state) => ({
