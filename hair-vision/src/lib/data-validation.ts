@@ -1,5 +1,5 @@
 // 市场研究数据验证工具 - 使用多种来源收集支持数据
-import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 
 // 验证结果接口
 export interface ValidationResult {
@@ -350,10 +350,10 @@ export async function validateClaim(claimId: string): Promise<ValidationResult> 
   else status = 'unconfirmed';
   
   // 整合验证值
-  let validatedValue = claim.value;
+  let validatedValue: string | null = claim.value;
   if (sources.length > 0) {
     // 从来源中提取数值（简化处理）
-    validatedValue = `${claim.value} (已验证)`;
+    validatedValue = `${claim.value} (已验证)` as string;
   }
 
   return {
