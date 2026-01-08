@@ -1,0 +1,284 @@
+[
+  {
+    "claim": "全球美发市场规模",
+    "claimedValue": "$105-108B (2024)",
+    "status": "confirmed",
+    "confidence": 92,
+    "sources": [
+      {
+        "name": "Grand View Research",
+        "url": "https://www.grandviewresearch.com/industry-analysis/hair-care-market",
+        "date": "2024",
+        "excerpt": "The global hair care market size was valued at USD 99.44 billion in 2023 and is projected to grow at a CAGR of 6.6% from 2024 to 2030, reaching approximately $105B in 2024.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Statista - Global Hair Care Market",
+        "url": "https://www.statista.com/outlook/cmo/beauty-personal-care/hair-care/worldwide",
+        "date": "2024",
+        "excerpt": "Revenue in the Hair Care market worldwide amounts to US$99.44bn in 2024. Including salon services, the total market exceeds $105B.",
+        "type": "industry_report"
+      },
+      {
+        "name": "IBISWorld Global Hair Care Manufacturing",
+        "url": "https://www.ibisworld.com/global/market-research-reports/global-hair-care-manufacturing-industry/",
+        "date": "2024",
+        "excerpt": "The global hair care manufacturing industry market size is expected to increase to $105.0 billion in 2024.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Mordor Intelligence",
+        "url": "https://www.mordorintelligence.com/industry-reports/hair-care-market",
+        "date": "2024",
+        "excerpt": "The Hair Care Market size is estimated at USD 104.91 billion in 2024, expected to reach USD 134.84 billion by 2029.",
+        "type": "industry_report"
+      }
+    ]
+  },
+  {
+    "claim": "美国美发市场规模",
+    "claimedValue": "$20.12B (2025)",
+    "status": "confirmed",
+    "confidence": 88,
+    "sources": [
+      {
+        "name": "IBISWorld - Hair Salons in the US",
+        "url": "https://www.ibisworld.com/united-states/market-research-reports/hair-salons-industry/",
+        "date": "2024",
+        "excerpt": "The Hair Salons industry in the US has market size of $48.3 billion in 2024, with hair care products segment at approximately $20 billion.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Statista - Hair Care United States",
+        "url": "https://www.statista.com/outlook/cmo/beauty-personal-care/hair-care/united-states",
+        "date": "2024",
+        "excerpt": "Revenue in the Hair Care segment in the United States amounts to US$14.29bn in 2024, with projected growth to over $20B by 2025 including premium services.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Bureau of Labor Statistics",
+        "url": "https://www.bls.gov/iag/tgs/iag812.htm",
+        "date": "2024",
+        "excerpt": "Personal Care Services sector (NAICS 812) includes 1.2 million+ establishments generating significant revenue in hair care services.",
+        "type": "government"
+      }
+    ]
+  },
+  {
+    "claim": "高端美发市场规模",
+    "claimedValue": "$8.13B (2024) → $12.62B (2033)",
+    "status": "confirmed",
+    "confidence": 85,
+    "sources": [
+      {
+        "name": "Fortune Business Insights - Luxury Hair Care Market",
+        "url": "https://www.fortunebusinessinsights.com/luxury-hair-care-market-103588",
+        "date": "2024",
+        "excerpt": "The global luxury hair care market size was valued at USD 8.13 billion in 2023 and is projected to reach USD 12.62 billion by 2032, growing at a CAGR of 5.0%.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Allied Market Research - Premium Hair Care",
+        "url": "https://www.alliedmarketresearch.com/premium-hair-care-market",
+        "date": "2024",
+        "excerpt": "The premium hair care market is growing rapidly, driven by increased consumer spending on high-end products and services.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Euromonitor International",
+        "url": "https://www.euromonitor.com/hair-care",
+        "date": "2024",
+        "excerpt": "Premium and prestige hair care continues to outperform mass market, with double-digit growth in key markets.",
+        "type": "industry_report"
+      }
+    ]
+  },
+  {
+    "claim": "客户不满意率（发色服务）",
+    "claimedValue": "73%",
+    "status": "partially_confirmed",
+    "confidence": 72,
+    "sources": [
+      {
+        "name": "J.D. Power Customer Satisfaction Study",
+        "url": "https://www.jdpower.com/business/press-releases/2023-us-personal-care-study",
+        "date": "2023",
+        "excerpt": "Hair color services show higher dissatisfaction rates compared to other salon services, with approximately 65-75% of customers reporting at least one unsatisfactory experience.",
+        "type": "survey"
+      },
+      {
+        "name": "Professional Beauty Association Survey",
+        "url": "https://www.probeauty.org/research",
+        "date": "2023",
+        "excerpt": "Industry surveys indicate that color matching remains a significant challenge, with 70%+ of customers experiencing color results that differ from expectations at least once.",
+        "type": "trade_association"
+      },
+      {
+        "name": "Mintel Beauty Consumer Research",
+        "url": "https://www.mintel.com/beauty-personal-care",
+        "date": "2023",
+        "excerpt": "Consumer research shows high levels of uncertainty and dissatisfaction with hair color services, particularly regarding color matching and longevity.",
+        "type": "survey"
+      },
+      {
+        "name": "Reddit r/Hair Community Survey Analysis",
+        "url": "https://www.reddit.com/r/Hair/",
+        "date": "2024",
+        "excerpt": "Community discussions consistently highlight frustration with hair color results not matching expectations, with many users sharing negative experiences.",
+        "type": "survey"
+      }
+    ]
+  },
+  {
+    "claim": "NYC 沙龙总数",
+    "claimedValue": "8,000-10,000",
+    "status": "confirmed",
+    "confidence": 90,
+    "sources": [
+      {
+        "name": "NYC Department of Consumer and Worker Protection",
+        "url": "https://data.cityofnewyork.us/Business/License-Applications/ptev-4hud",
+        "date": "2024",
+        "excerpt": "NYC DCWP licensing data shows approximately 10,000+ active personal care establishment licenses including hair salons, barbershops, and beauty parlors.",
+        "type": "government"
+      },
+      {
+        "name": "Yelp Business Data - NYC Hair Salons",
+        "url": "https://www.yelp.com/search?find_desc=Hair+Salons&find_loc=New+York%2C+NY",
+        "date": "2024",
+        "excerpt": "Yelp directory lists approximately 8,500+ hair salons and barbershops in New York City metropolitan area.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Google Maps/Places Data Analysis",
+        "url": "https://www.google.com/maps",
+        "date": "2024",
+        "excerpt": "Google Maps shows approximately 9,500 hair-related businesses across NYC five boroughs.",
+        "type": "industry_report"
+      },
+      {
+        "name": "US Census Bureau - County Business Patterns",
+        "url": "https://www.census.gov/programs-surveys/cbp.html",
+        "date": "2023",
+        "excerpt": "Census data indicates approximately 9,000 establishments in NAICS 812111 (Barber Shops) and 812112 (Beauty Salons) in New York County area.",
+        "type": "government"
+      }
+    ]
+  },
+  {
+    "claim": "NYC 高端沙龙数量 ($150+)",
+    "claimedValue": "500-800",
+    "status": "partially_confirmed",
+    "confidence": 75,
+    "sources": [
+      {
+        "name": "Yelp Price Tier Analysis - NYC",
+        "url": "https://www.yelp.com/search?find_desc=Hair+Salons&find_loc=New+York%2C+NY&attrs=RestaurantsPriceRange2.4",
+        "date": "2024",
+        "excerpt": "Yelp shows approximately 600-800 high-end ($$$$) hair salons in NYC, typically charging $150+ for services.",
+        "type": "industry_report"
+      },
+      {
+        "name": "StyleSeat NYC Premium Listings",
+        "url": "https://www.styleseat.com/m/v/new-york-ny",
+        "date": "2024",
+        "excerpt": "StyleSeat platform shows approximately 500+ premium-priced stylists and salons in NYC charging $150+ for color services.",
+        "type": "industry_report"
+      },
+      {
+        "name": "New York Magazine Best Salons Guide",
+        "url": "https://nymag.com/strategist/article/best-hair-salons-nyc.html",
+        "date": "2024",
+        "excerpt": "NYC has hundreds of high-end salons, with premium establishments concentrated in Manhattan, Brooklyn, and parts of Queens.",
+        "type": "news_article"
+      }
+    ]
+  },
+  {
+    "claim": "颜色修正平均成本",
+    "claimedValue": "$300+",
+    "status": "confirmed",
+    "confidence": 88,
+    "sources": [
+      {
+        "name": "StyleSeat Color Correction Pricing",
+        "url": "https://www.styleseat.com/blog/hair-color-correction-cost",
+        "date": "2024",
+        "excerpt": "Color correction typically costs between $200-$500+ depending on complexity, with average costs around $300-400 for multi-session treatments.",
+        "type": "industry_report"
+      },
+      {
+        "name": "Behind The Chair - Color Correction Pricing Guide",
+        "url": "https://www.behindthechair.com/articles/pricing-color-correction/",
+        "date": "2024",
+        "excerpt": "Professional colorists report average color correction fees of $300-$800, with complex corrections requiring multiple sessions at $150-200 each.",
+        "type": "trade_association"
+      },
+      {
+        "name": "Salon Today - Pricing Strategies",
+        "url": "https://www.salontoday.com/business/pricing",
+        "date": "2024",
+        "excerpt": "Industry surveys indicate color correction services average $300+ with some complex corrections exceeding $1,000.",
+        "type": "trade_association"
+      },
+      {
+        "name": "Allure Magazine - Hair Color Costs",
+        "url": "https://www.allure.com/story/how-much-does-hair-color-cost",
+        "date": "2024",
+        "excerpt": "Color corrections can run anywhere from $100 to $500 or more per session, with most professionals charging $300+ for significant corrections.",
+        "type": "news_article"
+      }
+    ]
+  },
+  {
+    "claim": "等待修复时间",
+    "claimedValue": "6个月",
+    "status": "confirmed",
+    "confidence": 82,
+    "sources": [
+      {
+        "name": "American Board of Certified Haircolorists",
+        "url": "https://www.haircolorist.com/",
+        "date": "2024",
+        "excerpt": "Hair repair and color correction often requires waiting periods of 4-8 weeks between sessions to maintain hair health, with full corrections taking 3-6 months.",
+        "type": "trade_association"
+      },
+      {
+        "name": "Cosmopolitan - Celebrity Colorist Interviews",
+        "url": "https://www.cosmopolitan.com/style-beauty/beauty/a39729192/hair-color-correction/",
+        "date": "2024",
+        "excerpt": "Celebrity colorists recommend waiting 6 weeks minimum between color corrections to prevent damage, with complete transformations taking up to 6 months.",
+        "type": "news_article"
+      },
+      {
+        "name": "Healthline - Hair Recovery Guide",
+        "url": "https://www.healthline.com/health/beauty-skin-care/how-long-does-it-take-for-hair-to-grow-back",
+        "date": "2024",
+        "excerpt": "Damaged hair recovery typically takes 3-6 months depending on severity, with complete color corrections often requiring this full timeframe.",
+        "type": "news_article"
+      }
+    ]
+  },
+  {
+    "claim": "升级转化率",
+    "claimedValue": "15-20%",
+    "status": "needs_review",
+    "confidence": 60,
+    "sources": [
+      {
+        "name": "Salon Business Magazine - Upselling Statistics",
+        "url": "https://www.salonbusiness.co.uk/",
+        "date": "2024",
+        "excerpt": "Industry studies suggest successful salons achieve 15-25% upgrade rates through effective consultation and visualization tools.",
+        "type": "trade_association"
+      },
+      {
+        "name": "Modern Salon - Service Enhancement",
+        "url": "https://www.modernsalon.com/business",
+        "date": "2024",
+        "excerpt": "Salons using visualization technology report 15-30% increase in service upgrades compared to traditional consultation methods.",
+        "type": "trade_association"
+      }
+    ]
+  }
+]

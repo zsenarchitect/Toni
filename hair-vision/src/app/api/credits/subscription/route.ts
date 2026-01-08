@@ -23,10 +23,9 @@ export async function PUT(request: NextRequest) {
       );
     }
 
-    const validatedTier = tier as SubscriptionTier;
-    const balance = await updateSubscription(salonId, validatedTier);
+    const balance = await updateSubscription(salonId, tier as SubscriptionTier);
     const stats = getCreditStats(balance);
-    const plan = SUBSCRIPTION_PLANS[validatedTier];
+    const plan = SUBSCRIPTION_PLANS[tier as SubscriptionTier];
 
     return NextResponse.json({
       success: true,

@@ -361,29 +361,30 @@ export default function ExternalPresentation() {
     // Pricing
     {
       type: 'pricing',
-      title: 'Simple, Transparent Pricing',
+      title: 'Half the Price, Full the Power',
+      subtitle: '50% below competitors + 1 Month FREE Trial',
       tiers: [
         { 
           name: 'Essential',
-          price: '$199',
+          price: '$79',
           period: '/month',
           desc: 'Perfect for single location',
-          features: ['System style library', 'Basic brand customization', '200 generations/month'],
+          features: ['System style library', 'Basic brand customization', '300 generations/month', '🎁 1 Month FREE'],
         },
         { 
           name: 'Professional',
-          price: '$499',
+          price: '$149',
           period: '/month',
           desc: 'Most Popular',
-          features: ['Custom style library', 'Full white-label', 'Service recommendations', '500 generations/month'],
+          features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month', '🎁 1 Month FREE'],
           popular: true,
         },
         { 
           name: 'Enterprise',
-          price: 'Contact Us',
-          period: '',
+          price: '$249',
+          period: '/month',
           desc: 'For salon chains',
-          features: ['Unlimited generations', 'Custom development', 'API access', 'Multi-location management'],
+          features: ['2500 generations/month', 'Analytics dashboard', 'API access', 'Multi-location management', '🎁 1 Month FREE'],
         },
       ],
     },
@@ -391,10 +392,10 @@ export default function ExternalPresentation() {
       type: 'roi',
       title: 'Return on Investment',
       calculation: {
-        investment: '$499/month (Professional)',
-        scenario: 'Just 3 customers upgrade to color after "seeing the preview"',
-        return: '3 × $150 = $450 extra revenue',
-        conclusion: 'Pays for itself in one week',
+        investment: '$149/month (Professional) — First Month FREE',
+        scenario: 'Just 1 customer upgrades to color after "seeing the preview"',
+        return: '1 × $165 = $165 extra revenue',
+        conclusion: 'Pays for itself with just ONE upgrade',
       },
       // chartImage 将在组件中动态生成
     },
@@ -417,19 +418,19 @@ export default function ExternalPresentation() {
       type: 'roi-detailed',
       title: 'Detailed ROI Calculation',
       example: {
-        tier: 'Professional Plan ($499/month)',
+        tier: 'Professional Plan ($149/month) + 1 Month FREE',
         assumptions: [
-          'Monthly customers: 400',
+          'Monthly customers: 300',
           'Upgrade conversion rate: 15%',
-          'Average upgrade amount: $150',
+          'Average upgrade amount: $165',
         ],
         calculation: [
-          'Extra revenue = 400 × 15% × $150',
-          '= $9,000/month',
-          'ROI = ($9,000 - $499) / $499',
-          '= 2,156%',
+          'Extra revenue = 300 × 15% × $165',
+          '= $7,425/month',
+          'ROI = ($7,425 - $149) / $149',
+          '= 4,883%',
         ],
-        note: 'Even with just 3 upgrades, you break even',
+        note: 'First month is FREE — try risk-free!',
       },
     },
     {
@@ -963,8 +964,8 @@ function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints 
     <div className="h-full p-8 flex flex-col bg-gradient-to-br from-amber-50 to-white">
       <div className="text-center mb-4">
         <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
-        {subtitleText && (
-          <p className="text-lg text-amber-600 font-semibold">{subtitleText}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-amber-600 font-semibold">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
@@ -996,8 +997,8 @@ function ExperienceWaitingRoomSlide({ title, subtitle, description, valuePoints 
           ))}
         </div>
       </div>
-      {descriptionText && (
-        <p className="text-center text-gray-600 text-sm px-4">{descriptionText}</p>
+      {typeof description === 'string' && description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description}</p>
       )}
     </div>
   );
@@ -1035,8 +1036,13 @@ function ExperienceIpadMirrorSlide({ title, subtitle, description, valuePoints }
     <div className="h-full p-8 flex flex-col bg-gradient-to-br from-blue-50 to-white">
       <div className="text-center mb-4">
         <h2 className="text-3xl font-bold mb-1">{title as string}</h2>
+<<<<<<< HEAD
         {subtitleText && (
           <p className="text-lg text-blue-600 font-semibold">{subtitleText}</p>
+=======
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-blue-600 font-semibold">{subtitle}</p>
+>>>>>>> origin/main
         )}
       </div>
       <div className="flex-1 grid grid-cols-2 gap-4 mb-3">
@@ -1068,8 +1074,8 @@ function ExperienceIpadMirrorSlide({ title, subtitle, description, valuePoints }
           ))}
         </div>
       </div>
-      {descriptionText && (
-        <p className="text-center text-gray-600 text-sm px-4">{descriptionText}</p>
+      {typeof description === 'string' && description && (
+        <p className="text-center text-gray-600 text-sm px-4">{description}</p>
       )}
     </div>
   );
@@ -1227,8 +1233,8 @@ function DataSourcesSlide({ title, subtitle, sources }: SlideData) {
     <div className="h-full p-10 flex flex-col bg-gradient-to-br from-gray-50 to-white">
       <div className="text-center mb-6">
         <h2 className="text-3xl font-bold mb-2">{title as string}</h2>
-        {subtitleText && (
-          <p className="text-lg text-gray-600">{subtitleText}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-lg text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 space-y-4 overflow-auto">
@@ -1396,8 +1402,8 @@ function ROICalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitleText && (
-          <p className="text-xl text-gray-600">{subtitleText}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">
@@ -1415,8 +1421,8 @@ function RevenueCalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitleText && (
-          <p className="text-xl text-gray-600">{subtitleText}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">
@@ -1434,8 +1440,8 @@ function ProductSalesCalculatorSlide({ title, subtitle }: SlideData) {
     <div className="h-full p-12 flex flex-col overflow-auto">
       <div className="text-center mb-6">
         <h2 className="text-4xl font-bold mb-2">{title as string}</h2>
-        {subtitleText && (
-          <p className="text-xl text-gray-600">{subtitleText}</p>
+        {typeof subtitle === 'string' && subtitle && (
+          <p className="text-xl text-gray-600">{subtitle}</p>
         )}
       </div>
       <div className="flex-1 flex items-center justify-center">
