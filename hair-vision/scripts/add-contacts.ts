@@ -146,7 +146,7 @@ async function addContacts() {
   console.log(`\n准备添加 ${contacts.length} 个联系人到数据库...\n`);
 
   const results = {
-    success: [] as any[],
+    success: [] as Array<Record<string, unknown>>,
     errors: [] as Array<{ contact: string; error: string }>,
   };
 
@@ -176,7 +176,7 @@ async function addContacts() {
         });
       }
     } catch (error) {
-      const errorMsg = error instanceof Error ? error.message : '网络错误';
+      const errorMsg = error instanceof Error ? error.message : String(error || '网络错误');
       console.log(`  ✗ 错误: ${contact.business_name} - ${errorMsg}`);
       results.errors.push({
         contact: contact.business_name,
