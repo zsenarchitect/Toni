@@ -35,23 +35,130 @@ export default function InternalPresentation() {
       subtitle: '高端沙龙造型预览系统',
       footer: '内部商业计划 | January 2026',
     },
-    // 目录
+    // 执行摘要 - 核心价值主张
+    {
+      type: 'highlight',
+      title: '执行摘要',
+      highlight: 'MeRROR：高端沙龙造型预览系统',
+      subtitle: '让客户在剪发前看到效果，减少沟通失败，提升服务转化',
+      description: '市场规模: $105B | 目标市场: 500-800 NYC高端沙龙 | 盈亏平衡: 6个客户 (Month 5-6) | 12个月目标: 25-40客户，$5K-7.5K MRR',
+    },
+    // 目录 - 重新排序以体现风险意识和财务稳健
     {
       type: 'toc',
-      title: '目录',
+      title: '目录（风险意识和财务稳健导向）',
       items: [
-        { icon: <Target />, text: '项目概述与核心价值' },
-        { icon: <Code />, text: '技术架构与实现' },
-        { icon: <DollarSign />, text: '商业模式与定价' },
-        { icon: <TrendingUp />, text: '市场研究与分析' },
-        { icon: <MessageSquare />, text: '销售策略与话术' },
-        { icon: <Calendar />, text: '执行计划与里程碑' },
+        { icon: <TrendingUp />, text: '1. 市场验证与数据（先验证，后执行）' },
+        { icon: <Target />, text: '2. 问题与机会' },
+        { icon: <Layers />, text: '3. 解决方案' },
+        { icon: <DollarSign />, text: '4. 商业模式与财务分析（关键决策数据）' },
+        { icon: <Shield />, text: '5. 风险评估与缓解（在执行前）' },
+        { icon: <Users />, text: '6. 市场分析与竞争' },
+        { icon: <MessageSquare />, text: '7. 销售策略与执行' },
+        { icon: <Calendar />, text: '8. 执行计划与里程碑（修正后）' },
+        { icon: <Code />, text: '9. 技术架构（附录）' },
       ],
     },
-    // 项目概述
+    // ========== 第一部分：市场验证（风险先行）==========
     {
       type: 'section',
-      title: '项目概述',
+      title: '市场验证与数据',
+      icon: <TrendingUp className="w-16 h-16" />,
+    },
+    {
+      type: 'content',
+      title: '市场规模分析',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '市场背景',
+          items: [
+            '全球美发市场: $105-108B (2024)',
+            '美国美发市场: $20.12B (2025), 年增长4.57%',
+            '高端美发市场: $8.13B (2024) → $12.62B (2033)',
+            '沙龙软件市场: $2-3B 全球',
+          ],
+        },
+        right: {
+          title: '目标市场 (NYC)',
+          items: [
+            '总沙龙数: 8,000-10,000 (置信度90%)',
+            '高端沙龙 ($150+): 500-800 (置信度75%)',
+            '目标客户 (ICP): 200-300 (需验证)',
+            'SAM: $960K-$1.44M/年 (需验证)',
+            '数据来源: 使用 /admin/research 工具验证',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '数据验证状态',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '✅ 已验证数据',
+          items: [
+            '全球美发市场: $105-108B (置信度92%)',
+            '美国美发市场: $20.12B (置信度88%)',
+            'NYC 沙龙总数: 8,000-10,000 (置信度90%)',
+            '颜色修正成本: $300+ (置信度88%)',
+            '等待修复时间: 6个月 (置信度82%)',
+            'NYC 高端沙龙: 500-800 (置信度75%)',
+          ],
+        },
+        right: {
+          title: '⚠️ 待验证假设（关键风险）',
+          items: [
+            '73% 客户不满意率 (置信度72%，部分确认)',
+            '升级转化率 15-20% (置信度60%，需审核)',
+            '定价接受度 (需客户访谈验证)',
+            '试点客户ROI数据 (需收集实际数据)',
+            'CAC和LTV (需实际数据验证)',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '市场研究验证报告摘要',
+      content: {
+        layout: 'challenges',
+        items: [
+          { 
+            challenge: '✅ 全球美发市场规模 $105-108B', 
+            solution: '置信度: 92%, 来源: 4个权威报告',
+            status: '已验证',
+          },
+          { 
+            challenge: '✅ NYC 沙龙总数 8,000-10,000', 
+            solution: '置信度: 90%, 来源: 政府数据 + API验证',
+            status: '已验证',
+          },
+          { 
+            challenge: '⚠️ 客户不满意率 73%', 
+            solution: '置信度: 72%, 部分确认，建议独立调查',
+            status: '部分确认',
+          },
+          { 
+            challenge: '❓ 升级转化率 15-20%', 
+            solution: '置信度: 60%, 来源有限，需试点数据验证',
+            status: '需审核',
+          },
+        ],
+      },
+    },
+    {
+      type: 'highlight',
+      title: '关键验证需求',
+      highlight: '在规模化前必须验证',
+      subtitle: '1. 73%不满意率 | 2. 15-20%升级转化率 | 3. 定价接受度 | 4. CAC/LTV',
+      description: '⚠️ 风险控制: 前3-5个试点客户收集真实数据，验证ROI故事后再扩展。使用 /admin/research 工具收集和验证市场数据。',
+    },
+    // ========== 第二部分：问题与解决方案 ==========
+    {
+      type: 'section',
+      title: '问题与机会',
       icon: <Target className="w-16 h-16" />,
     },
     {
@@ -101,11 +208,11 @@ export default function InternalPresentation() {
         ],
       },
     },
-    // 技术架构
+    // ========== 第三部分：解决方案（在市场验证后）==========
     {
       type: 'section',
-      title: '技术架构',
-      icon: <Code className="w-16 h-16" />,
+      title: '解决方案',
+      icon: <Layers className="w-16 h-16" />,
     },
     {
       type: 'content',
@@ -228,10 +335,10 @@ CRITICAL REQUIREMENTS:
         value: '顾客看不到任何第三方标识，完全融入沙龙品牌',
       },
     },
-    // 商业模式
+    // ========== 第四部分：商业模式与财务分析（关键决策数据）==========
     {
       type: 'section',
-      title: '商业模式',
+      title: '商业模式与财务分析',
       icon: <DollarSign className="w-16 h-16" />,
     },
     {
@@ -585,6 +692,77 @@ CRITICAL REQUIREMENTS:
       },
     },
     {
+      type: 'content',
+      title: 'CAC/LTV 财务健康度分析',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '客户获取成本 (CAC)',
+          items: [
+            '"作为客户"策略: $350/月 ÷ 0.1转换率 ÷ 10次 = $350/CAC',
+            '数字营销策略: $650/月 ÷ 0.03转换率 ÷ 500点击 = $433/CAC',
+            '混合策略平均CAC: ~$400',
+            '目标: 通过优化降至 $300-350',
+          ],
+        },
+        right: {
+          title: '客户生命周期价值 (LTV)',
+          items: [
+            '平均订阅时长: 18个月（保守，B2B SaaS平均36个月）',
+            '平均月收入: $120 (混合Essential和Professional)',
+            'LTV = $120 × 18 = $2,160',
+            'LTV/CAC比率 = $2,160 / $400 = 5.4x ✅',
+            '行业标准: 3x+为健康，我们超过目标',
+          ],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '现金流预测（考虑CAC摊销和流失）',
+      content: {
+        layout: 'revenue-scenarios',
+        scenarios: [
+          { 
+            label: 'Month 1-2', 
+            revenue: 0, 
+            costs: 900, 
+            profit: -900, 
+            margin: -100.0,
+            breakdown: '验证阶段：2-3个试点（免费），营销成本$900/月，CAC摊销: -$800',
+            status: '投入期',
+          },
+          { 
+            label: 'Month 3-4', 
+            revenue: 476, 
+            costs: 1320, 
+            profit: -844, 
+            margin: -177.3,
+            breakdown: '4个付费客户($476)，但CAC摊销(-$1,600)和营销成本($1,200)导致负现金流',
+            status: '亏损',
+          },
+          { 
+            label: 'Month 5-6', 
+            revenue: 952, 
+            costs: 1100, 
+            profit: -148, 
+            margin: -15.5,
+            breakdown: '8个客户($952)，CAC摊销(-$1,200)，接近盈亏平衡',
+            status: '接近平衡',
+          },
+          { 
+            label: 'Month 7-8', 
+            revenue: 1428, 
+            costs: 950, 
+            profit: 478, 
+            margin: 33.5,
+            breakdown: '12个客户($1,428)，CAC摊销完成，开始稳定盈利',
+            status: '已盈利',
+          },
+        ],
+      },
+    },
+    {
       type: 'highlight',
       title: 'ROI 卖点',
       highlight: '1个升级 = 回本',
@@ -658,11 +836,139 @@ CRITICAL REQUIREMENTS:
         ],
       },
     },
-    // 市场研究
+    // ========== 第五部分：风险评估与缓解（在执行前）==========
     {
       type: 'section',
-      title: '市场研究与分析',
-      icon: <TrendingUp className="w-16 h-16" />,
+      title: '风险评估与缓解',
+      icon: <Shield className="w-16 h-16" />,
+    },
+    {
+      type: 'content',
+      title: '关键风险识别与缓解措施',
+      content: {
+        layout: 'challenges',
+        items: [
+          { 
+            challenge: '⚠️ 市场假设未验证', 
+            solution: '在Month 1-3完成10个沙龙深度访谈，验证73%不满意率和15-20%升级率假设',
+            risk: '中-高',
+            mitigation: '如果假设被推翻，重新定位问题陈述或调整价值主张',
+          },
+          { 
+            challenge: '⚠️ CAC可能被低估', 
+            solution: '保守估计CAC $400-500，预留20%缓冲。如果CAC超过$600，暂停付费营销',
+            risk: '中',
+            mitigation: '专注内容营销和转介绍，降低CAC',
+          },
+          { 
+            challenge: '⚠️ 客户流失率未知', 
+            solution: '假设5%/月流失率（保守），目标降至3%。建立客户成功流程',
+            risk: '中',
+            mitigation: '早期客户深度支持，建立使用习惯，提高留存',
+          },
+          { 
+            challenge: '⚠️ 现金流断裂风险', 
+            solution: '保持6个月运营资金储备。Month 6如果客户<5，启动应急预案',
+            risk: '中',
+            mitigation: '严格控制成本，考虑提前融资或成本削减',
+          },
+          { 
+            challenge: '⚠️ 技术依赖风险', 
+            solution: 'Gemini API价格变化、服务中断。准备多API提供商备份(OpenAI, Anthropic)',
+            risk: '低-中',
+            mitigation: '建立API成本监控警报，成本>预算时自动切换',
+          },
+          { 
+            challenge: '⚠️ 竞争风险', 
+            solution: '大公司（L\'Oréal）可能快速进入。建立客户锁定机制（数据、工作流）',
+            risk: '低-中',
+            mitigation: '快速迭代，保持功能领先，关注利基市场（高端沙龙B2B）',
+          },
+          { 
+            challenge: '⚠️ 执行风险', 
+            solution: '单点故障（依赖创始人个人）。Month 4-6招聘兼职BD/销售',
+            risk: '中',
+            mitigation: '文档化所有流程，考虑技术联合创始人或顾问',
+          },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '战略缺陷与修正',
+      content: {
+        layout: 'strategy-correction',
+        issues: [
+          {
+            issue: '原计划过于乐观',
+            problem: 'B2B销售周期通常3-6个月，而非1-2个月。假设50%+试用转换率，但行业平均仅20-30%',
+            correction: '修正为更现实的里程碑：Month 1-2: 2-3试点；Month 3-4: 3-5付费；Month 5-6: 8-12付费',
+          },
+          {
+            issue: 'CAC和LTV未计算',
+            problem: '财务模型缺失关键指标：客户获取成本(CAC)、客户生命周期价值(LTV)、流失率',
+            correction: '添加CAC ($400)，LTV ($2,160)，LTV/CAC比率 (5.4x)，流失率假设 (5%/月)',
+          },
+          {
+            issue: '"作为客户"策略不可扩展',
+            problem: '时间密集型，每月仅能接触10-12个沙龙，无法规模化。成本可能被低估',
+            correction: '阶段化策略：Month 1-3专注验证(6-8次/月)，Month 4+增加数字营销和网络，Month 7+招聘BD',
+          },
+        ],
+        correctedPlan: {
+          month1to2: {
+            title: 'Month 1-2: 验证阶段',
+            goal: '10接触, 2-3试点',
+            activities: ['每周3-4次沙龙拜访', '10-15次LinkedIn/电话冷接触', '识别20-30个MQL', '转化2-3个免费试点'],
+            budget: '$900/月',
+          },
+          month3to4: {
+            title: 'Month 3-4: 试点转化',
+            goal: '3-5付费客户',
+            activities: ['试点支持，展示结果', '正式销售流程', '建立案例研究', '新增2-3个试点'],
+            budget: '$1,200/月',
+          },
+          month5to6: {
+            title: 'Month 5-6: 早期扩张',
+            goal: '8-12付费客户',
+            activities: ['使用案例研究销售', '增加数字营销', '建立转介绍计划', '考虑招聘兼职销售'],
+            budget: '$1,500/月',
+          },
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '应急预案（如果关键指标未达标）',
+      content: {
+        layout: 'two-column',
+        left: {
+          title: '触发条件',
+          items: [
+            'Month 6客户 < 5 → 重新评估产品定位',
+            '流失率 > 10%/月 → 紧急客户成功计划',
+            'CAC > $600 → 暂停付费营销，专注内容',
+            '现金流 < 3个月 → 启动融资或成本削减',
+            '关键假设被推翻 → 重新验证或转型',
+          ],
+        },
+        right: {
+          title: '缓解行动',
+          items: [
+            '重新定位：从"沟通工具"转向"转化工具"',
+            '客户成功：1对1深度支持，建立使用习惯',
+            '营销调整：从付费转向内容+转介绍',
+            '成本削减：暂停非核心功能开发',
+            '产品迭代：基于客户反馈快速调整',
+          ],
+        },
+      },
+    },
+    // ========== 第六部分：市场分析与竞争 ==========
+    {
+      type: 'section',
+      title: '市场分析与竞争',
+      icon: <Users className="w-16 h-16" />,
     },
     {
       type: 'content',
@@ -716,173 +1022,32 @@ CRITICAL REQUIREMENTS:
     },
     {
       type: 'content',
-      title: '关键发现与风险',
-      content: {
-        layout: 'challenges',
-        items: [
-          { 
-            challenge: '✓ 问题真实存在', 
-            solution: '沟通失败在沙龙中确实存在，有数据支持',
-            risk: '低',
-          },
-          { 
-            challenge: '⚠ 市场规模未验证', 
-            solution: '需要验证73%不满意率等关键假设',
-            risk: '中',
-          },
-          { 
-            challenge: '⚠ 定价可能过高', 
-            solution: '建议启动时使用"创始人定价" $99-$199',
-            risk: '中',
-          },
-          { 
-            challenge: '⚠ 销售周期较长', 
-            solution: 'B2B沙龙销售通常3-6个月，需调整预期',
-            risk: '中',
-          },
-          { 
-            challenge: '✓ 竞争护城河', 
-            solution: '白标定位是明智的差异化策略',
-            risk: '低',
-          },
-        ],
-      },
-    },
-    {
-      type: 'content',
-      title: '定价策略建议',
+      title: '关键发现',
       content: {
         layout: 'two-column',
         left: {
-          title: '当前定价',
+          title: '✓ 已验证',
           items: [
-            'Essential: $199/月',
-            'Professional: $499/月',
-            'Enterprise: $999/月',
+            '问题真实存在 - 沟通失败在沙龙中确实存在',
+            '竞争护城河 - 白标定位是明智的差异化策略',
+            '市场规模 - 全球$105B，NYC高端市场500-800沙龙',
           ],
         },
         right: {
-          title: '建议调整',
+          title: '⚠ 需验证',
           items: [
-            '启动期: "创始人定价" $99-$249',
-            '收集ROI数据证明价值',
-            '6个月后逐步提升至$199-$499',
-            '基于实际转化数据调整',
+            '73%不满意率假设（置信度72%）',
+            '15-20%升级转化率（置信度60%）',
+            '定价接受度（需客户访谈）',
+            '销售周期（假设3-6个月）',
           ],
         },
       },
     },
-    {
-      type: 'content',
-      title: '销售策略修正（基于批判性评估）',
-      content: {
-        layout: 'strategy-correction',
-        issues: [
-          {
-            issue: '原计划过于乐观',
-            problem: 'B2B销售周期通常3-6个月，而非1-2个月。假设50%+试用转换率，但行业平均仅20-30%',
-            correction: '修正为更现实的里程碑：Month 1-2: 2-3试点；Month 3-4: 3-5付费；Month 5-6: 8-12付费',
-          },
-          {
-            issue: 'CAC和LTV未计算',
-            problem: '财务模型缺失关键指标：客户获取成本(CAC)、客户生命周期价值(LTV)、流失率',
-            correction: '添加CAC ($400)，LTV ($2,160)，LTV/CAC比率 (5.4x)，流失率假设 (5%/月)',
-          },
-          {
-            issue: '"作为客户"策略不可扩展',
-            problem: '时间密集型，每月仅能接触10-12个沙龙，无法规模化。成本可能被低估',
-            correction: '阶段化策略：Month 1-3专注验证(6-8次/月)，Month 4+增加数字营销和网络，Month 7+招聘BD',
-          },
-        ],
-        correctedPlan: {
-          month1to2: {
-            title: 'Month 1-2: 验证阶段',
-            goal: '10接触, 2-3试点',
-            activities: ['每周3-4次沙龙拜访', '10-15次LinkedIn/电话冷接触', '识别20-30个MQL', '转化2-3个免费试点'],
-            budget: '$900/月',
-          },
-          month3to4: {
-            title: 'Month 3-4: 试点转化',
-            goal: '3-5付费客户',
-            activities: ['试点支持，展示结果', '正式销售流程', '建立案例研究', '新增2-3个试点'],
-            budget: '$1,200/月',
-          },
-          month5to6: {
-            title: 'Month 5-6: 早期扩张',
-            goal: '8-12付费客户',
-            activities: ['使用案例研究销售', '增加数字营销', '建立转介绍计划', '考虑招聘兼职销售'],
-            budget: '$1,500/月',
-          },
-        },
-      },
-    },
-    {
-      type: 'highlight',
-      title: '关键验证需求',
-      highlight: '在规模化前必须验证',
-      subtitle: '1. 73%不满意率 | 2. 15-20%升级转化率 | 3. $199-499价格接受度',
-      description: '建议: 前3-5个试点客户收集真实数据，验证ROI故事后再扩展。使用 /admin/research 工具收集和验证市场数据。',
-    },
-    {
-      type: 'content',
-      title: '数据验证状态',
-      content: {
-        layout: 'two-column',
-        left: {
-          title: '✅ 已验证数据',
-          items: [
-            '全球美发市场: $105-108B (置信度92%)',
-            '美国美发市场: $20.12B (置信度88%)',
-            'NYC 沙龙总数: 8,000-10,000 (置信度90%)',
-            '颜色修正成本: $300+ (置信度88%)',
-            '等待修复时间: 6个月 (置信度82%)',
-            'NYC 高端沙龙: 500-800 (置信度75%)',
-          ],
-        },
-        right: {
-          title: '⚠️ 待验证假设',
-          items: [
-            '73% 客户不满意率 (置信度72%，部分确认)',
-            '升级转化率 15-20% (置信度60%，需审核)',
-            '定价接受度 (需客户访谈验证)',
-            '试点客户ROI数据 (需收集实际数据)',
-          ],
-        },
-      },
-    },
-    {
-      type: 'content',
-      title: '市场研究验证报告摘要',
-      content: {
-        layout: 'challenges',
-        items: [
-          { 
-            challenge: '✅ 全球美发市场规模 $105-108B', 
-            solution: '置信度: 92%, 来源: 4个权威报告',
-            status: '已验证',
-          },
-          { 
-            challenge: '✅ NYC 沙龙总数 8,000-10,000', 
-            solution: '置信度: 90%, 来源: 政府数据 + API验证',
-            status: '已验证',
-          },
-          { 
-            challenge: '⚠️ 客户不满意率 73%', 
-            solution: '置信度: 72%, 部分确认，建议独立调查',
-            status: '部分确认',
-          },
-          { 
-            challenge: '❓ 升级转化率 15-20%', 
-            solution: '置信度: 60%, 来源有限，需试点数据验证',
-            status: '需审核',
-          },
-        ],
-      },
-    },
-    // 销售策略
+    // ========== 第七部分：销售策略与执行 ==========
     {
       type: 'section',
-      title: '销售策略',
+      title: '销售策略与执行',
       icon: <MessageSquare className="w-16 h-16" />,
     },
     {
@@ -1116,22 +1281,22 @@ CRITICAL REQUIREMENTS:
         },
       },
     },
-    // 执行计划
+    // ========== 第八部分：执行计划与里程碑（修正后）==========
     {
       type: 'section',
-      title: '执行计划',
+      title: '执行计划与里程碑',
       icon: <Calendar className="w-16 h-16" />,
     },
     {
       type: 'content',
-      title: '里程碑计划',
+      title: '里程碑计划（修正后 - 更现实）',
       content: {
         layout: 'timeline',
         milestones: [
-          { phase: 'Month 1-2', title: '冷启动', tasks: ['走访20+沙龙', '产品演示', '收集反馈', '签约5家试用'] },
-          { phase: 'Month 3-4', title: '验证期', tasks: ['迭代产品', '转化付费', '案例研究', '优化话术'] },
-          { phase: 'Month 5-6', title: '扩张期', tasks: ['签约30+客户', '招聘销售', '扩展LA/Miami'] },
-          { phase: 'Year 2', title: '规模化', tasks: ['100+客户', '国际扩展', '融资准备'] },
+          { phase: 'Month 1-2', title: '验证阶段', tasks: ['走访10-15沙龙', '深度访谈10个沙龙', '2-3个免费试点', '验证关键假设'] },
+          { phase: 'Month 3-4', title: '试点转化', tasks: ['3-5个付费客户', '建立案例研究', '优化产品', '迭代销售流程'] },
+          { phase: 'Month 5-6', title: '早期扩张', tasks: ['8-12个付费客户', '数字营销启动', '建立转介绍计划', '接近盈亏平衡'] },
+          { phase: 'Month 7-12', title: '稳定增长', tasks: ['20-40客户', '招聘兼职BD', '扩展LA/Miami', '产品迭代'] },
         ],
       },
     },
@@ -1177,10 +1342,122 @@ CRITICAL REQUIREMENTS:
         total: '~$1,000/月 (初期)',
       },
     },
-    // 技术文档
+    // ========== 第九部分：技术架构（附录 - 次要信息）==========
     {
       type: 'section',
-      title: '技术文档与工具',
+      title: '技术架构',
+      icon: <Code className="w-16 h-16" />,
+    },
+    {
+      type: 'content',
+      title: '技术栈',
+      content: {
+        layout: 'tech-stack',
+        items: [
+          { category: 'Frontend', techs: ['Next.js 14', 'React', 'TailwindCSS', 'Framer Motion', 'PWA Support'] },
+          { category: 'Backend', techs: ['Vercel Serverless', 'Edge Functions', 'API Routes'] },
+          { category: 'AI', techs: ['Google Gemini 2.0 Flash', 'Image Generation API', 'Prompt Engineering'] },
+          { category: 'Storage', techs: ['Supabase (Database + Auth)', 'Cloudinary (Images)'] },
+          { category: 'DevOps', techs: ['Vercel (Deployment)', 'GitHub Actions (CI/CD)', 'Sentry (Monitoring)'] },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '系统架构',
+      content: {
+        layout: 'architecture',
+        layers: [
+          { name: 'Frontend Layer', desc: 'Next.js 14 App Router, iPad优化响应式设计' },
+          { name: 'API Layer', desc: 'Vercel Serverless Functions, Edge Functions' },
+          { name: 'AI Layer', desc: 'Google Gemini API, 图像生成与处理' },
+          { name: 'Data Layer', desc: 'Supabase (用户/沙龙/生成记录), Cloudinary (图片存储)' },
+        ],
+      },
+    },
+    {
+      type: 'content',
+      title: '核心技术挑战',
+      content: {
+        layout: 'challenges',
+        items: [
+          { 
+            challenge: '多角度一致性', 
+            solution: '多张参考图输入 + Prompt工程优化',
+            status: 'V1.5',
+          },
+          { 
+            challenge: '持续编辑不变形', 
+            solution: '参数化Prompt + 基于前图编辑',
+            status: 'V1.5',
+          },
+          { 
+            challenge: '生成速度', 
+            solution: 'Edge Functions + 流式响应',
+            status: '已实现',
+          },
+          { 
+            challenge: '白标主题系统', 
+            solution: 'CSS变量 + ThemeProvider',
+            status: '已实现',
+          },
+        ],
+      },
+    },
+    {
+      type: 'code',
+      title: 'Gemini Prompt 策略',
+      code: `// 核心Prompt结构
+const prompt = \`
+Transform this person's hairstyle while keeping 
+their face EXACTLY the same.
+
+HAIRSTYLE: \${style.promptDescription}
+HAIR COLOR: \${color?.promptDescription || 'Keep original'}
+VIEW ANGLE: \${viewAngle}
+
+CRITICAL REQUIREMENTS:
+1. Face must remain IDENTICAL
+2. Hair must look natural and realistic
+3. Professional salon quality output
+\`;`,
+    },
+    {
+      type: 'content',
+      title: '多角度一致性方案',
+      content: {
+        layout: 'multi-angle',
+        current: {
+          approach: '单张正面照片 + AI想象',
+          pros: ['操作简单', '降低使用门槛', '快速出图'],
+          cons: ['侧面/背面可能不准确', '个人特征无法精确呈现', '不同角度可能不一致'],
+        },
+        future: {
+          approach: '多角度拍摄输入 (V1.5)',
+          features: ['正面(必需) + 左侧45度(可选) + 右侧45度(可选) + 背面(可选)', '多张参考图提高一致性', '更准确的个人特征'],
+        },
+      },
+    },
+    {
+      type: 'content',
+      title: '持续编辑功能设计',
+      content: {
+        layout: 'editing-features',
+        features: [
+          { name: '长度调整', desc: '滑块: -5cm 到 +5cm', status: 'V1.5' },
+          { name: '层次感', desc: '滑块: 0-100%', status: 'V1.5' },
+          { name: '卷度大小', desc: '5档选择: 直发/微卷/中卷/大卷/小卷', status: 'V1.5' },
+          { name: '光泽度', desc: '滑块: 0-100%', status: 'V1.5' },
+          { name: '颜色深浅', desc: '滑块: -50 到 +50', status: 'V1.5' },
+          { name: '刘海长度', desc: '5档选择', status: 'V1.5' },
+        ],
+        strategy: '基于前图的编辑指令 + 参数化Prompt',
+      },
+    },
+    // 技术工具与支持
+    {
+      type: 'section',
+      title: '技术工具与支持',
       icon: <Code className="w-16 h-16" />,
     },
     {
