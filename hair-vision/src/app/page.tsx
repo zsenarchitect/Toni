@@ -6,7 +6,7 @@
  * Design Principles:
  * - Neomorphic style with soft shadows
  * - White/off-white background
- * - Turquoise etching accents
+ * - Teal etching accents
  * - Clean typography (Inter)
  * - Minimal emoji usage
  */
@@ -28,7 +28,7 @@ export default function HomePage() {
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-4"
         >
-          {/* Logo 容器 - 新拟物凸起效果 + 青绿色蚀刻 */}
+          {/* Logo 容器 - 新拟物凸起效果 + 青色蚀刻 */}
           <div className="neo-icon-circle neo-etching w-14 h-14 flex items-center justify-center">
             <Scissors className="w-6 h-6 neo-text-accent" />
           </div>
@@ -39,7 +39,7 @@ export default function HomePage() {
         </motion.div>
       </header>
 
-      {/* 青绿色蚀刻分隔线 */}
+      {/* 青色蚀刻分隔线 */}
       <div className="px-6">
         <div className="neo-divider" />
       </div>

@@ -4,16 +4,21 @@ import { cn } from '@/lib/utils';
 
 interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   selected?: boolean;
+  variant?: 'raised' | 'inset';
 }
 
-export function Card({ className, selected, children, ...props }: CardProps) {
+export function Card({ className, selected, variant = 'raised', children, ...props }: CardProps) {
+  const baseStyles = variant === 'inset' ? 'neo-card-inset' : 'neo-card';
+  const selectedStyles = selected 
+    ? 'neo-etching-glow border-[rgba(20,184,166,0.3)]' 
+    : '';
+  
   return (
     <div
       className={cn(
-        'rounded-2xl bg-white border-2 transition-all duration-200',
-        selected 
-          ? 'border-amber-500 shadow-lg shadow-amber-500/20' 
-          : 'border-gray-100 hover:border-gray-200 hover:shadow-md',
+        baseStyles,
+        selectedStyles,
+        'transition-all duration-300',
         className
       )}
       {...props}

@@ -23,7 +23,7 @@ export function ColorPicker({ selectedColor, onSelect }: ColorPickerProps) {
         className={cn(
           'w-full p-4 rounded-xl border-2 flex items-center gap-3 transition-all',
           selectedColor === null
-            ? 'border-amber-500 bg-amber-50'
+            ? 'border-[#14b8a6] bg-[rgba(20,184,166,0.08)]'
             : 'border-gray-200 hover:border-gray-300'
         )}
         whileTap={{ scale: 0.98 }}
@@ -39,7 +39,7 @@ export function ColorPicker({ selectedColor, onSelect }: ColorPickerProps) {
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="ml-auto w-6 h-6 bg-amber-500 rounded-full flex items-center justify-center"
+            className="ml-auto w-6 h-6 bg-[#14b8a6] rounded-full flex items-center justify-center"
           >
             <Check className="w-4 h-4 text-white" />
           </motion.div>
@@ -117,7 +117,7 @@ function ColorSwatch({ color, isSelected, onClick }: ColorSwatchProps) {
         className={cn(
           'w-12 h-12 rounded-full transition-all relative',
           isSelected
-            ? 'ring-2 ring-offset-2 ring-amber-500'
+            ? 'ring-2 ring-offset-2 ring-[#14b8a6]'
             : 'hover:ring-2 hover:ring-offset-2 hover:ring-gray-300'
         )}
         style={{ backgroundColor: color.hexCode }}

@@ -5,20 +5,21 @@ import { cn } from '@/lib/utils';
 import { Loader2 } from 'lucide-react';
 
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline' | 'ghost';
+  variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'neo';
   size?: 'sm' | 'md' | 'lg' | 'icon';
   isLoading?: boolean;
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, variant = 'primary', size = 'md', isLoading, children, disabled, ...props }, ref) => {
-    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed active:scale-95';
+    const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed';
     
     const variants = {
-      primary: 'bg-black text-white hover:bg-gray-800 focus:ring-gray-900',
-      secondary: 'bg-amber-500 text-white hover:bg-amber-600 focus:ring-amber-500',
-      outline: 'border-2 border-gray-200 bg-white text-gray-900 hover:bg-gray-50 focus:ring-gray-500',
-      ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-500',
+      primary: 'neo-btn-primary text-white',
+      secondary: 'neo-btn text-gray-700 hover:text-gray-900',
+      outline: 'neo-btn border border-[rgba(20,184,166,0.3)] text-gray-700 hover:text-gray-900',
+      ghost: 'text-gray-600 hover:bg-gray-100 focus:ring-gray-500 rounded-xl',
+      neo: 'neo-btn text-gray-700 hover:text-gray-900',
     };
     
     const sizes = {
