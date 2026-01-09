@@ -39,7 +39,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-CN" className={inter.className}>
-      <body className="min-h-screen bg-gray-50 safe-area-top safe-area-bottom">
+      <body className="min-h-screen neo-bg safe-area-top safe-area-bottom">
         <ClientProvider>
           {children}
         </ClientProvider>

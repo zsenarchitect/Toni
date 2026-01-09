@@ -118,6 +118,40 @@ export const urbanIndustrial: SalonTheme = {
   },
 };
 
+// 新拟物风 - 白色背景 + 青绿色蚀刻
+export const neomorphicTurquoise: SalonTheme = {
+  ...defaultTheme,
+  id: 'neomorphic-turquoise',
+  colors: {
+    primary: '#14b8a6',           // 青绿色主色
+    primaryLight: '#5eead4',      // 浅青绿
+    primaryDark: '#0d9488',       // 深青绿
+    secondary: '#a3b1c6',         // 软灰色阴影色
+    background: '#f0f0f3',        // 新拟物背景色
+    backgroundSecondary: '#ffffff', // 纯白卡片背景
+    text: '#1a1a1a',              // 深色文字
+    textSecondary: '#4a5568',     // 次要文字
+    textMuted: '#718096',         // 淡化文字
+    border: 'rgba(20, 184, 166, 0.2)', // 青绿色边框
+    success: '#22C55E',
+    error: '#EF4444',
+  },
+  typography: {
+    fontFamily: "'Inter', -apple-system, sans-serif",
+  },
+  borderRadius: {
+    sm: '12px',
+    md: '16px',
+    lg: '20px',
+    xl: '24px',
+  },
+  customCSS: `
+    /* 新拟物白色背景 + 青绿色蚀刻样式 */
+    .neo-bg { background: linear-gradient(145deg, #ffffff 0%, #f5f5f7 100%); }
+    .neo-card { box-shadow: 8px 8px 16px rgba(163,177,198,0.5), -8px -8px 16px #ffffff; }
+  `,
+};
+
 // 主题预设集合
 export const themePresets = {
   'classic-black-gold': defaultTheme,
@@ -125,6 +159,7 @@ export const themePresets = {
   'luxury-dark': luxuryDark,
   'soft-feminine': softFeminine,
   'urban-industrial': urbanIndustrial,
+  'neomorphic-turquoise': neomorphicTurquoise,
 };
 
 // 创建沙龙定制主题

@@ -54,7 +54,8 @@ export type ThemePreset =
   | 'modern-minimal' 
   | 'luxury-dark' 
   | 'soft-feminine' 
-  | 'urban-industrial';
+  | 'urban-industrial'
+  | 'neomorphic-turquoise';
 
 // 沙龙配置（包含主题）
 export interface SalonConfig {
