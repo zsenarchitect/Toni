@@ -41,7 +41,7 @@ export default function InternalPresentation() {
       title: '执行摘要',
       highlight: 'MeRROR：高端沙龙造型预览系统',
       subtitle: '让客户在剪发前看到效果，减少沟通失败，提升服务转化',
-      description: '市场规模: $105B | 目标市场: 500-800 NYC高端沙龙 | 盈亏平衡: 6个客户 (Month 5-6) | 12个月目标: 25-40客户，$5K-7.5K MRR',
+      description: '市场规模: $105B | 目标市场: 500-800 NYC高端沙龙 | 盈亏平衡: 6个客户 (Month 5-6) | 12个月目标: 10-20客户，$1.2K-2.4K MRR（单人运营）',
     },
     // 目录 - 重新排序以体现风险意识和财务稳健
     {
@@ -52,7 +52,7 @@ export default function InternalPresentation() {
         { icon: <Target />, text: '2. 问题与机会' },
         { icon: <Layers />, text: '3. 解决方案' },
         { icon: <DollarSign />, text: '4. 商业模式与财务分析（关键决策数据）' },
-        { icon: <Shield />, text: '5. 风险评估与缓解（在执行前）' },
+        { icon: <Shield />, text: '5. 风险评估与缓解（单人运营视角）' },
         { icon: <Users />, text: '6. 市场分析与竞争' },
         { icon: <MessageSquare />, text: '7. 销售策略与执行' },
         { icon: <Calendar />, text: '8. 执行计划与里程碑（修正后）' },
@@ -192,6 +192,36 @@ export default function InternalPresentation() {
       highlight: '头发剪短不能变长',
       subtitle: '不可挽回性 = 我们的核心卖点',
       description: '一次沟通失败的代价：$300返工 + 3-12个月等待 + 客户终身流失 + 社交差评',
+    },
+    {
+      type: 'content',
+      title: '真实客户案例：揭示隐藏机会',
+      content: {
+        layout: 'customer-stories',
+        stories: [
+          {
+            number: '#1',
+            title: '信任但无法想象',
+            scenario: '去理发店做基础剪发，多年来一直是同样的发型',
+            problem: '店主推荐了一张很帅的烫发照片，我很好奇，但无法想象自己烫发后的样子',
+            action: '我信任了他，但无法理解他的描述',
+            result: '结果让我震惊，我不知道该说什么',
+            insight: '揭示了核心痛点：即使信任专业人士，客户也无法在没有可视化的情况下做出决策',
+            opportunity: 'MeRROR让客户在做出不可逆转的决定前"看到"效果',
+          },
+          {
+            number: '#2',
+            title: '紧急专业需求',
+            scenario: '紧急需要专业头像用于会议申请，时间紧迫',
+            problem: '当天头发非常凌乱，急需专业形象',
+            action: '请同事尝试用Photoshop修复头发，但效果不自然，而且很慢',
+            result: '这让我思考：如何更好地处理这种情况？',
+            insight: '揭示了隐藏需求：不仅仅是日常剪发，还有专业形象、紧急场合的需求',
+            opportunity: 'MeRROR不仅用于沙龙，还能解决专业形象预览、紧急修复预览等场景',
+          },
+        ],
+        keyTakeaway: '这些真实故事反映了客户真实想法，揭示了被忽视的市场机会',
+      },
     },
     {
       type: 'content',
@@ -844,7 +874,7 @@ CRITICAL REQUIREMENTS:
     },
     {
       type: 'content',
-      title: '关键风险识别与缓解措施',
+      title: '关键风险识别与缓解措施（单人运营视角）',
       content: {
         layout: 'challenges',
         items: [
@@ -870,7 +900,7 @@ CRITICAL REQUIREMENTS:
             challenge: '⚠️ 现金流断裂风险', 
             solution: '保持6个月运营资金储备。Month 6如果客户<5，启动应急预案',
             risk: '中',
-            mitigation: '严格控制成本，考虑提前融资或成本削减',
+            mitigation: '严格控制成本，保持低运营成本（$400-450/月），专注达到盈亏平衡',
           },
           { 
             challenge: '⚠️ 技术依赖风险', 
@@ -885,10 +915,10 @@ CRITICAL REQUIREMENTS:
             mitigation: '快速迭代，保持功能领先，关注利基市场（高端沙龙B2B）',
           },
           { 
-            challenge: '⚠️ 执行风险', 
-            solution: '单点故障（依赖创始人个人）。Month 4-6招聘兼职BD/销售',
+            challenge: '⚠️ 执行风险（单人运营）', 
+            solution: '单人运营，时间有限。专注核心活动，避免过度承诺',
             risk: '中',
-            mitigation: '文档化所有流程，考虑技术联合创始人或顾问',
+            mitigation: '保持简单：每月6-8次沙龙拜访，专注质量而非数量。文档化流程便于未来扩展',
           },
         ],
       },
@@ -910,29 +940,29 @@ CRITICAL REQUIREMENTS:
             correction: '添加CAC ($400)，LTV ($2,160)，LTV/CAC比率 (5.4x)，流失率假设 (5%/月)',
           },
           {
-            issue: '"作为客户"策略不可扩展',
-            problem: '时间密集型，每月仅能接触10-12个沙龙，无法规模化。成本可能被低估',
-            correction: '阶段化策略：Month 1-3专注验证(6-8次/月)，Month 4+增加数字营销和网络，Month 7+招聘BD',
+            issue: '"作为客户"策略适合单人运营',
+            problem: '时间密集型，每月仅能接触6-8个沙龙，但这是单人运营的现实',
+            correction: '接受现实：专注质量而非数量。每月6-8次深度接触，建立真实案例，通过转介绍自然增长',
           },
         ],
         correctedPlan: {
           month1to2: {
-            title: 'Month 1-2: 验证阶段',
-            goal: '10接触, 2-3试点',
-            activities: ['每周3-4次沙龙拜访', '10-15次LinkedIn/电话冷接触', '识别20-30个MQL', '转化2-3个免费试点'],
-            budget: '$900/月',
+            title: 'Month 1-2: 验证阶段（单人运营）',
+            goal: '6-8接触, 2-3试点',
+            activities: ['每周1-2次沙龙拜访（作为客户）', '深度访谈，验证假设', '转化2-3个免费试点', '收集真实案例'],
+            budget: '$350/月',
           },
           month3to4: {
             title: 'Month 3-4: 试点转化',
             goal: '3-5付费客户',
-            activities: ['试点支持，展示结果', '正式销售流程', '建立案例研究', '新增2-3个试点'],
-            budget: '$1,200/月',
+            activities: ['试点支持，展示结果', '建立案例研究', '使用案例进行销售', '继续每月6-8次拜访'],
+            budget: '$400/月',
           },
           month5to6: {
-            title: 'Month 5-6: 早期扩张',
-            goal: '8-12付费客户',
-            activities: ['使用案例研究销售', '增加数字营销', '建立转介绍计划', '考虑招聘兼职销售'],
-            budget: '$1,500/月',
+            title: 'Month 5-6: 稳定增长',
+            goal: '6-10付费客户',
+            activities: ['使用案例研究销售', '建立转介绍计划', '继续"作为客户"策略', '专注客户成功和留存'],
+            budget: '$400-450/月',
           },
         },
       },
@@ -948,7 +978,7 @@ CRITICAL REQUIREMENTS:
             'Month 6客户 < 5 → 重新评估产品定位',
             '流失率 > 10%/月 → 紧急客户成功计划',
             'CAC > $600 → 暂停付费营销，专注内容',
-            '现金流 < 3个月 → 启动融资或成本削减',
+            '现金流 < 3个月 → 暂停新客户获取，专注现有客户留存',
             '关键假设被推翻 → 重新验证或转型',
           ],
         },
@@ -957,7 +987,7 @@ CRITICAL REQUIREMENTS:
           items: [
             '重新定位：从"沟通工具"转向"转化工具"',
             '客户成功：1对1深度支持，建立使用习惯',
-            '营销调整：从付费转向内容+转介绍',
+            '营销调整：专注转介绍，现有客户推荐',
             '成本削减：暂停非核心功能开发',
             '产品迭代：基于客户反馈快速调整',
           ],
@@ -1027,7 +1057,7 @@ CRITICAL REQUIREMENTS:
         layout: 'two-column',
         left: {
           title: '✓ 已验证',
-          items: [
+        items: [
             '问题真实存在 - 沟通失败在沙龙中确实存在',
             '竞争护城河 - 白标定位是明智的差异化策略',
             '市场规模 - 全球$105B，NYC高端市场500-800沙龙',
@@ -1293,9 +1323,9 @@ CRITICAL REQUIREMENTS:
       content: {
         layout: 'timeline',
         milestones: [
-          { phase: 'Month 1-2', title: '验证阶段', tasks: ['走访10-15沙龙', '深度访谈10个沙龙', '2-3个免费试点', '验证关键假设'] },
-          { phase: 'Month 3-4', title: '试点转化', tasks: ['3-5个付费客户', '建立案例研究', '优化产品', '迭代销售流程'] },
-          { phase: 'Month 5-6', title: '早期扩张', tasks: ['8-12个付费客户', '数字营销启动', '建立转介绍计划', '接近盈亏平衡'] },
+          { phase: 'Month 1-2', title: '验证阶段（单人）', tasks: ['每月6-8次沙龙拜访', '深度访谈，验证假设', '2-3个免费试点', '收集真实案例'] },
+          { phase: 'Month 3-4', title: '试点转化', tasks: ['3-5个付费客户', '建立案例研究', '优化产品', '继续"作为客户"策略'] },
+          { phase: 'Month 5-6', title: '稳定增长', tasks: ['6-10个付费客户', '建立转介绍计划', '专注客户成功', '接近盈亏平衡'] },
           { phase: 'Month 7-12', title: '稳定增长', tasks: ['20-40客户', '招聘兼职BD', '扩展LA/Miami', '产品迭代'] },
         ],
       },
@@ -1875,6 +1905,7 @@ function ContentSlide({ title, content }: SlideData) {
         {contentData.layout === 'break-even' && <BreakEvenLayout content={contentData} />}
         {contentData.layout === 'marketing-cost-breakdown' && <MarketingCostBreakdownLayout content={contentData} />}
         {contentData.layout === 'customer-strategy' && <CustomerStrategyLayout content={contentData} />}
+        {contentData.layout === 'customer-stories' && <CustomerStoriesLayout content={contentData} />}
         {contentData.layout === 'interview-questions' && <InterviewQuestionsLayout content={contentData} />}
         {contentData.layout === 'database-options' && <DatabaseOptionsLayout content={contentData} />}
         {contentData.layout === 'strategy-correction' && <StrategyCorrectionLayout content={contentData} />}
@@ -2037,7 +2068,7 @@ function PricingLayout({ content }: { content: Record<string, unknown> }) {
           <h3 className="font-bold text-xl">{tier.name}</h3>
           <div className="mt-4 mb-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-4xl font-bold">{tier.price}</span>
+            <span className="text-4xl font-bold">{tier.price}</span>
               <span className={`text-lg ${tier.highlight ? 'text-gray-400' : 'text-gray-500'}`}>{tier.period}</span>
             </div>
             {tier.dailyPrice && (
@@ -2741,6 +2772,96 @@ function CustomerStrategyLayout({ content }: { content: Record<string, unknown> 
   );
 }
 
+function CustomerStoriesLayout({ content }: { content: Record<string, unknown> }) {
+  const stories = content.stories as Array<{
+    number: string;
+    title: string;
+    scenario: string;
+    problem: string;
+    action: string;
+    result: string;
+    insight: string;
+    opportunity: string;
+  }>;
+  const keyTakeaway = content.keyTakeaway as string;
+
+  return (
+    <div className="space-y-6">
+      {/* 两个故事并排显示 */}
+      <div className="grid grid-cols-2 gap-4">
+        {stories.map((story, i) => (
+          <div key={i} className="bg-gradient-to-br from-blue-50 to-purple-50 rounded-xl p-5 border-2 border-blue-300 shadow-lg">
+            {/* 故事编号和标题 */}
+            <div className="flex items-center gap-3 mb-4">
+              <div className="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold text-lg">
+                {story.number}
+              </div>
+              <h4 className="text-lg font-bold text-blue-900">{story.title}</h4>
+            </div>
+
+            {/* 场景 */}
+            <div className="mb-3 bg-blue-50 rounded-lg p-3 border-2 border-blue-300">
+              <p className="text-xs font-semibold text-blue-700 mb-1">场景</p>
+              <p className="text-sm text-gray-700">{story.scenario}</p>
+            </div>
+
+            {/* 问题 */}
+            <div className="mb-3 bg-red-50 rounded-lg p-3 border-2 border-red-300">
+              <p className="text-xs font-semibold text-red-700 mb-1">问题</p>
+              <p className="text-sm text-gray-700">{story.problem}</p>
+            </div>
+
+            {/* 行动 */}
+            <div className="mb-3 bg-amber-50 rounded-lg p-3 border-2 border-amber-300">
+              <p className="text-xs font-semibold text-amber-700 mb-1">行动</p>
+              <p className="text-sm text-gray-700">{story.action}</p>
+            </div>
+
+            {/* 结果 */}
+            <div className="mb-3 bg-purple-50 rounded-lg p-3 border-2 border-purple-300">
+              <p className="text-xs font-semibold text-purple-700 mb-1">结果</p>
+              <p className="text-sm text-gray-700 font-medium">{story.result}</p>
+            </div>
+
+            {/* 洞察 */}
+            <div className="mt-4 bg-green-50 rounded-lg p-3 border-2 border-green-300">
+              <p className="text-xs font-semibold text-green-800 mb-1">💡 关键洞察</p>
+              <p className="text-sm text-gray-700">{story.insight}</p>
+            </div>
+
+            {/* 机会 */}
+            <div className="mt-2 bg-amber-50 rounded-lg p-3 border-2 border-amber-300">
+              <p className="text-xs font-semibold text-amber-800 mb-1">🎯 市场机会</p>
+              <p className="text-sm text-gray-700">{story.opportunity}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* 关键要点总结 */}
+      <div className="bg-gradient-to-r from-purple-100 to-pink-100 rounded-xl p-5 border-2 border-purple-400 shadow-lg">
+        <div className="flex items-start gap-3">
+          <div className="text-3xl">💎</div>
+          <div>
+            <h4 className="font-bold text-lg mb-2 text-purple-900">为什么这些故事很重要</h4>
+            <p className="text-sm text-gray-800 leading-relaxed">{keyTakeaway}</p>
+            <div className="mt-3 grid grid-cols-2 gap-3">
+              <div className="bg-white rounded-lg p-3">
+                <p className="text-xs font-semibold text-purple-700 mb-1">故事#1揭示</p>
+                <p className="text-xs text-gray-700">即使信任专业人士，客户也需要可视化才能做出决定。这是核心痛点。</p>
+              </div>
+              <div className="bg-white rounded-lg p-3">
+                <p className="text-xs font-semibold text-purple-700 mb-1">故事#2揭示</p>
+                <p className="text-xs text-gray-700">市场不仅是日常剪发，还有专业形象、紧急需求等隐藏场景。扩大市场范围。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function InterviewQuestionsLayout({ content }: { content: Record<string, unknown> }) {
   const categories = content.categories as Array<{
     category: string;
@@ -2969,14 +3090,15 @@ function StrategyCorrectionLayout({ content }: { content: Record<string, unknown
       </div>
 
       {/* 关键洞察 */}
-      <div className="bg-blue-50 rounded-xl p-4 border-l-4 border-blue-500">
-        <h4 className="font-bold mb-2">💡 核心修正原则</h4>
+      <div className="bg-blue-50 rounded-xl p-4 border-2 border-blue-500">
+        <h4 className="font-bold mb-2">💡 核心修正原则（单人运营）</h4>
         <ul className="text-sm space-y-1">
           <li>✅ <strong>先验证，后扩展</strong> - 前3个月专注验证，而非快速销售</li>
           <li>✅ <strong>质量&gt;数量</strong> - 深度服务5个客户，好过浅层接触50个</li>
-          <li>✅ <strong>数据驱动</strong> - 每个决策基于数据，而非假设</li>
+          <li>✅ <strong>保持简单</strong> - 单人运营，专注核心：每月6-8次深度接触，建立真实案例</li>
           <li>✅ <strong>保守预测</strong> - 现实预测 + 20%缓冲，好过乐观预测 + 失望</li>
-          <li>✅ <strong>阶段化策略</strong> - "作为客户"策略仅用于验证阶段，随后转向可扩展方法</li>
+          <li>✅ <strong>自然增长</strong> - "作为客户"策略是主要方法，通过转介绍和案例研究自然增长，无需大规模营销</li>
+          <li>✅ <strong>可持续运营</strong> - 目标：10-20个稳定客户，月收入$1,200-2,400，单人可管理</li>
         </ul>
       </div>
     </div>
