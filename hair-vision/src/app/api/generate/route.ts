@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         const available = stats.displayAvailable;
         isOverage = stats.isOverage || (available - creditsRequired < 0);
         
-        console.log(`[Credits] Salon ${salonId}: Available: ${available}, Required: ${creditsRequired}, Model: gemini-3.0-pro-image-generation (always), Overage: ${isOverage}`);
+        console.log(`[Credits] Salon ${salonId}: Available: ${available}, Required: ${creditsRequired}, Model: gemini-1.5-pro (always), Overage: ${isOverage}`);
         
         if (isOverage) {
           console.log(`[Credits] Overage mode - service continues with Pro model, will be billed later. Overage: ${stats.overage} credits ($${stats.overageCost.toFixed(2)})`);
@@ -186,12 +186,12 @@ export async function POST(request: NextRequest) {
         const updatedBalance = useCredits(creditBalance, creditsRequired);
         await updateCreditBalance(updatedBalance);
         
-        // 记录使用历史（始终使用 Pro 模型记录，因为服务始终使用 Pro）
+        // 记录使用历史
         await recordCreditUsage({
           id: `usage-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
           salonId,
           creditsUsed: creditsRequired,
-          model: 'gemini-3.0-pro-image-generation', // 始终记录为 Pro 模型
+          model: 'gemini-1.5-pro', // 使用 Pro 模型
           resolution: imageResolution,
           timestamp: new Date(),
           cost: estimatedCost,

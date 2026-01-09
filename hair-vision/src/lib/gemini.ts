@@ -5,10 +5,52 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 // 成本估算 (基于官方定价)
 const COST_ESTIMATES: Record<ImageResolution, number> = {
-  '1K': 0.0134, // ~$0.134 per image (1,120 tokens)
-  '2K': 0.0134, // ~$0.134 per image (1,120 tokens)
-  '4K': 0.024,  // ~$0.24 per image (2,000 tokens)
+  '1K': 0.0134, // ~$0.0134 per image
+  '2K': 0.0134, // ~$0.0134 per image
+  '4K': 0.024,  // ~$0.024 per image
 };
+
+// 失败保护机制：跟踪1分钟内的失败次数
+interface FailureRecord {
+  timestamp: number;
+  count: number;
+}
+
+let failureHistory: FailureRecord[] = [];
+
+// 检查是否应该停止调用（1分钟内失败5次）
+function shouldStopCalling(): boolean {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000; // 1分钟 = 60000毫秒
+  
+  // 清理1分钟之前的记录
+  failureHistory = failureHistory.filter(record => record.timestamp > oneMinuteAgo);
+  
+  // 计算最近的失败次数
+  const recentFailures = failureHistory.reduce((sum, record) => sum + record.count, 0);
+  
+  if (recentFailures >= 5) {
+    console.warn(`[Gemini API] Rate limit protection: ${recentFailures} failures in the last minute, stopping API calls`);
+    return true;
+  }
+  
+  return false;
+}
+
+// 记录失败
+function recordFailure(): void {
+  const now = Date.now();
+  const oneMinuteAgo = now - 60000;
+  
+  // 清理旧记录
+  failureHistory = failureHistory.filter(record => record.timestamp > oneMinuteAgo);
+  
+  // 添加新的失败记录
+  failureHistory.push({ timestamp: now, count: 1 });
+  
+  const totalFailures = failureHistory.reduce((sum, record) => sum + record.count, 0);
+  console.warn(`[Gemini API] Failure recorded. Total failures in last minute: ${totalFailures}/5`);
+}
 
 interface GenerateParams {
   photoBase64: string; // 主照片（向后兼容）
@@ -84,15 +126,19 @@ function buildPrompt(params: GenerateParams): string {
 }
 
 export async function generateHairstyle(params: GenerateParams): Promise<string> {
+  // 检查失败保护机制
+  if (shouldStopCalling()) {
+    throw new Error('API calls temporarily disabled due to repeated failures. Please try again in a minute.');
+  }
+  
   // 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
   const resolution: ImageResolution = params.resolution || 
     (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
     '1K';
   
-  // 始终使用 Gemini 3.0 Pro 作为首选模型，确保服务质量一致
-  // 只有在 API 错误（不可用/配额限制）时才降级到 Flash
-  const preferredModel: GeminiModel = 'gemini-3.0-pro-image-generation';
-  const fallbackModel: GeminiModel = 'gemini-2.0-flash-preview-image-generation';
+  // 使用 Gemini 1.5 Pro 作为首选模型，Flash 作为降级选项
+  const preferredModel: GeminiModel = 'gemini-1.5-pro';
+  const fallbackModel: GeminiModel = 'gemini-1.5-flash';
   
   // 如果明确指定了模型（用于降级场景），使用指定的模型
   const modelName: GeminiModel = params.model || preferredModel;
@@ -118,8 +164,6 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
       model: modelName,
       generationConfig: {
         responseModalities: ['Text', 'Image'],
-        // 注意: media_resolution 参数可能需要根据实际API文档调整
-        // 目前通过prompt中的分辨率要求来控制
       } as unknown as Record<string, unknown>,
     });
     
@@ -178,6 +222,10 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         if (imagePart.inlineData) {
           const imageData = imagePart.inlineData;
           console.log(`[Cost] Image generated successfully at ${resolution} with ${modelName}, actual cost may vary`);
+          
+          // 成功生成，重置失败记录（可选，或保持历史记录用于监控）
+          // failureHistory = []; // 如果需要立即重置
+          
           return `data:${imageData.mimeType};base64,${imageData.data}`;
         }
       }
@@ -185,9 +233,13 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
 
     throw new Error('No image generated in response');
   } catch (error) {
+    // 记录失败
+    recordFailure();
+    
     // 业务安全方案：如果首选模型失败（不可用/配额限制），尝试降级到 Flash
     // 这确保服务不中断，但只有在技术问题时才降级，而不是因为信用问题
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const isModelNotFoundError = errorMessage.includes('404') || errorMessage.includes('not found');
     const isQuotaOrAvailabilityError = 
       errorMessage.includes('quota') || 
       errorMessage.includes('rate limit') || 
@@ -195,10 +247,21 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
       errorMessage.includes('503') ||
       errorMessage.includes('429');
     
+    // 如果是模型不存在错误，直接抛出（不要尝试降级到同样可能不存在的模型）
+    if (isModelNotFoundError) {
+      console.error(`[Gemini API] Model ${modelName} not found:`, errorMessage);
+      throw new Error(`Model ${modelName} is not available. Please check the model name and API version.`);
+    }
+    
     // 如果已经使用了降级模型，或者不是配额/可用性错误，直接抛出
-    if (modelName !== preferredModel || !isQuotaOrAvailabilityError) {
+    if (modelName !== preferredModel || (!isQuotaOrAvailabilityError && !isModelNotFoundError)) {
       console.error(`[Gemini API] Error with ${modelName}:`, error);
       throw error;
+    }
+    
+    // 检查失败保护
+    if (shouldStopCalling()) {
+      throw new Error('API calls temporarily disabled due to repeated failures. Please try again in a minute.');
     }
     
     // 尝试降级到 Flash 模型（业务安全方案）
@@ -249,7 +312,7 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
         });
       }
       
-      // 重新构建完整提示词（因为在try块中定义的不可访问）
+      // 重新构建完整提示词
       const fallbackPrompt = buildPrompt(params);
       const fallbackResolutionPrompt = resolution === '1K' 
         ? ' Generate at 1K resolution (1024x1024).'
@@ -277,6 +340,7 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
       
       throw new Error('No image generated in fallback response');
     } catch (fallbackError) {
+      recordFailure(); // 记录降级失败
       console.error(`[Gemini API] Fallback model ${fallbackModel} also failed:`, fallbackError);
       throw fallbackError;
     }

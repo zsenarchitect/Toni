@@ -42,12 +42,12 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
 
 // 信用成本映射 (不同模型和分辨率的成本)
 const CREDIT_COST_MAP: Record<GeminiModel, Record<ImageResolution, number>> = {
-  'gemini-3.0-pro-image-generation': {
+  'gemini-1.5-pro': {
     '1K': 1.0, // 1 credit = 1 generation at 1K
     '2K': 1.0,
     '4K': 1.8, // 4K costs more credits
   },
-  'gemini-2.0-flash-preview-image-generation': {
+  'gemini-1.5-flash': {
     '1K': 0.5, // Flash model costs half credits
     '2K': 0.5,
     '4K': 0.9,
@@ -108,7 +108,7 @@ export function hasEnoughCredits(
 export function calculateCreditsRequiredForRequest(
   resolution: ImageResolution
 ): number {
-  const proModel: GeminiModel = 'gemini-3.0-pro-image-generation';
+  const proModel: GeminiModel = 'gemini-1.5-pro';
   return calculateCreditsRequired(proModel, resolution);
 }
 

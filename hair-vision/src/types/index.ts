@@ -48,7 +48,8 @@ export type ImageResolution = '1K' | '2K' | '4K';
 export type SubscriptionTier = 'essential' | 'professional' | 'enterprise';
 
 // 模型类型 (用于降级策略)
-export type GeminiModel = 'gemini-3.0-pro-image-generation' | 'gemini-2.0-flash-preview-image-generation';
+// 注意：Gemini 图像生成使用 gemini-1.5-pro 或 gemini-1.5-flash，通过 responseModalities 配置
+export type GeminiModel = 'gemini-1.5-pro' | 'gemini-1.5-flash';
 
 // 信用系统
 export interface CreditBalance {

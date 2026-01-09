@@ -15,7 +15,7 @@ export async function generatePresentationImage(
 ): Promise<string> {
   try {
     const model = genAI.getGenerativeModel({
-      model: 'gemini-3.0-pro-image-generation',
+      model: 'gemini-1.5-pro',
       generationConfig: {
         responseModalities: ['Text', 'Image'],
       } as unknown as Record<string, unknown>,

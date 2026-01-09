@@ -126,3 +126,4 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_key
 3. **API路由404**: 确保开发服务器正在运行
 4. **缺少必需字段**: 检查数据库schema是否匹配
 
+
