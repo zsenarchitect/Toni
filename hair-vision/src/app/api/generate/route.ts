@@ -225,9 +225,30 @@ export async function POST(request: NextRequest) {
     });
 
   } catch (error) {
-    console.error('Generation error:', error);
-    
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    console.error('Generation error:', errorMessage);
+    
+    // Handle specific error types with appropriate responses
+    
+    // Circuit breaker is open - provide informative message
+    if (errorMessage.includes('temporarily disabled') || errorMessage.includes('repeated failures')) {
+      return NextResponse.json(
+        { 
+          error: 'Service temporarily unavailable due to API issues. Please try again in a minute.',
+          details: errorMessage,
+          debug: 'Check /api/generate/status for circuit breaker status',
+        },
+        { status: 503 }
+      );
+    }
+    
+    // API key not configured
+    if (errorMessage.includes('GEMINI_API_KEY')) {
+      return NextResponse.json(
+        { error: 'API configuration error. Please contact support.' },
+        { status: 500 }
+      );
+    }
     
     // Handle specific Gemini errors
     if (errorMessage.includes('SAFETY')) {
@@ -245,7 +266,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { error: 'Failed to generate image. Please try again.' },
+      { error: 'Failed to generate image. Please try again.', details: errorMessage },
       { status: 500 }
     );
   }

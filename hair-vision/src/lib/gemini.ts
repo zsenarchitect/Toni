@@ -14,42 +14,101 @@ const COST_ESTIMATES: Record<ImageResolution, number> = {
 interface FailureRecord {
   timestamp: number;
   count: number;
+  errorMessage?: string; // 记录错误详情用于调试
 }
 
 let failureHistory: FailureRecord[] = [];
 
+// 熔断器窗口时间（毫秒）
+const CIRCUIT_BREAKER_WINDOW_MS = 60000; // 1分钟
+// 触发熔断的失败阈值
+const CIRCUIT_BREAKER_THRESHOLD = 5;
+
+// 获取熔断器状态（用于调试）
+export function getCircuitBreakerStatus(): {
+  isOpen: boolean;
+  failureCount: number;
+  threshold: number;
+  windowMs: number;
+  recentErrors: string[];
+  oldestFailureAge?: number;
+  timeUntilReset?: number;
+} {
+  const now = Date.now();
+  const windowStart = now - CIRCUIT_BREAKER_WINDOW_MS;
+  
+  // 清理过期记录
+  failureHistory = failureHistory.filter(record => record.timestamp > windowStart);
+  
+  const recentFailures = failureHistory.reduce((sum, record) => sum + record.count, 0);
+  const recentErrors = failureHistory
+    .filter(r => r.errorMessage)
+    .map(r => r.errorMessage!)
+    .slice(-5);
+  
+  const oldestFailure = failureHistory.length > 0 
+    ? Math.min(...failureHistory.map(r => r.timestamp)) 
+    : undefined;
+  
+  return {
+    isOpen: recentFailures >= CIRCUIT_BREAKER_THRESHOLD,
+    failureCount: recentFailures,
+    threshold: CIRCUIT_BREAKER_THRESHOLD,
+    windowMs: CIRCUIT_BREAKER_WINDOW_MS,
+    recentErrors,
+    oldestFailureAge: oldestFailure ? now - oldestFailure : undefined,
+    timeUntilReset: oldestFailure 
+      ? Math.max(0, CIRCUIT_BREAKER_WINDOW_MS - (now - oldestFailure))
+      : undefined,
+  };
+}
+
+// 重置熔断器（用于手动恢复或测试）
+export function resetCircuitBreaker(): void {
+  const status = getCircuitBreakerStatus();
+  console.log(`[Gemini API] Circuit breaker reset. Previous state: ${status.failureCount} failures`);
+  failureHistory = [];
+}
+
 // 检查是否应该停止调用（1分钟内失败5次）
 function shouldStopCalling(): boolean {
-  const now = Date.now();
-  const oneMinuteAgo = now - 60000; // 1分钟 = 60000毫秒
+  const status = getCircuitBreakerStatus();
   
-  // 清理1分钟之前的记录
-  failureHistory = failureHistory.filter(record => record.timestamp > oneMinuteAgo);
-  
-  // 计算最近的失败次数
-  const recentFailures = failureHistory.reduce((sum, record) => sum + record.count, 0);
-  
-  if (recentFailures >= 5) {
-    console.warn(`[Gemini API] Rate limit protection: ${recentFailures} failures in the last minute, stopping API calls`);
+  if (status.isOpen) {
+    const timeUntilReset = status.timeUntilReset 
+      ? Math.ceil(status.timeUntilReset / 1000) 
+      : 60;
+    console.warn(
+      `[Gemini API] Circuit breaker OPEN: ${status.failureCount}/${status.threshold} failures in the last minute. ` +
+      `Auto-reset in ~${timeUntilReset}s. Recent errors: ${status.recentErrors.join(' | ') || 'N/A'}`
+    );
     return true;
   }
   
   return false;
 }
 
-// 记录失败
-function recordFailure(): void {
+// 记录失败（包含错误详情）
+function recordFailure(errorMessage?: string): void {
   const now = Date.now();
-  const oneMinuteAgo = now - 60000;
+  const windowStart = now - CIRCUIT_BREAKER_WINDOW_MS;
   
   // 清理旧记录
-  failureHistory = failureHistory.filter(record => record.timestamp > oneMinuteAgo);
+  failureHistory = failureHistory.filter(record => record.timestamp > windowStart);
   
-  // 添加新的失败记录
-  failureHistory.push({ timestamp: now, count: 1 });
+  // 添加新的失败记录（包含错误信息用于调试）
+  failureHistory.push({ 
+    timestamp: now, 
+    count: 1,
+    errorMessage: errorMessage?.slice(0, 200), // 截断过长的错误信息
+  });
   
-  const totalFailures = failureHistory.reduce((sum, record) => sum + record.count, 0);
-  console.warn(`[Gemini API] Failure recorded. Total failures in last minute: ${totalFailures}/5`);
+  const status = getCircuitBreakerStatus();
+  console.warn(
+    `[Gemini API] Failure recorded: "${errorMessage?.slice(0, 100) || 'Unknown'}". ` +
+    `Total failures: ${status.failureCount}/${status.threshold}. ` +
+    `Circuit breaker: ${status.isOpen ? 'OPEN' : 'CLOSED'}`
+  );
 }
 
 interface GenerateParams {
@@ -126,9 +185,24 @@ function buildPrompt(params: GenerateParams): string {
 }
 
 export async function generateHairstyle(params: GenerateParams): Promise<string> {
+  // 首先检查 API 密钥配置（这不应该触发熔断器）
+  if (!process.env.GEMINI_API_KEY) {
+    throw new Error(
+      'GEMINI_API_KEY is not configured. Please set the environment variable. ' +
+      'This error does not trigger the circuit breaker.'
+    );
+  }
+  
   // 检查失败保护机制
   if (shouldStopCalling()) {
-    throw new Error('API calls temporarily disabled due to repeated failures. Please try again in a minute.');
+    const status = getCircuitBreakerStatus();
+    const timeUntilReset = status.timeUntilReset 
+      ? Math.ceil(status.timeUntilReset / 1000) 
+      : 60;
+    throw new Error(
+      `API calls temporarily disabled due to repeated failures (${status.failureCount}/${status.threshold}). ` +
+      `Auto-reset in ~${timeUntilReset}s. Recent errors: ${status.recentErrors.join(' | ') || 'Check server logs'}`
+    );
   }
   
   // 获取分辨率设置，优先使用参数，其次环境变量，默认1K以节省成本
@@ -233,12 +307,12 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
 
     throw new Error('No image generated in response');
   } catch (error) {
-    // 记录失败
-    recordFailure();
+    // 记录失败（包含错误详情）
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    recordFailure(errorMessage);
     
     // 业务安全方案：如果首选模型失败（不可用/配额限制），尝试降级到 Flash
     // 这确保服务不中断，但只有在技术问题时才降级，而不是因为信用问题
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
     const isModelNotFoundError = errorMessage.includes('404') || errorMessage.includes('not found');
     const isQuotaOrAvailabilityError = 
       errorMessage.includes('quota') || 
@@ -261,7 +335,14 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
     
     // 检查失败保护
     if (shouldStopCalling()) {
-      throw new Error('API calls temporarily disabled due to repeated failures. Please try again in a minute.');
+      const status = getCircuitBreakerStatus();
+      const timeUntilReset = status.timeUntilReset 
+        ? Math.ceil(status.timeUntilReset / 1000) 
+        : 60;
+      throw new Error(
+        `API calls temporarily disabled due to repeated failures (${status.failureCount}/${status.threshold}). ` +
+        `Auto-reset in ~${timeUntilReset}s. Recent errors: ${status.recentErrors.join(' | ') || 'Check server logs'}`
+      );
     }
     
     // 尝试降级到 Flash 模型（业务安全方案）
@@ -340,7 +421,8 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
       
       throw new Error('No image generated in fallback response');
     } catch (fallbackError) {
-      recordFailure(); // 记录降级失败
+      const fallbackErrorMessage = fallbackError instanceof Error ? fallbackError.message : String(fallbackError);
+      recordFailure(fallbackErrorMessage); // 记录降级失败（包含错误详情）
       console.error(`[Gemini API] Fallback model ${fallbackModel} also failed:`, fallbackError);
       throw fallbackError;
     }
