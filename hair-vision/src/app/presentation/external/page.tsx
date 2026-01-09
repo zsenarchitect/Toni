@@ -368,6 +368,7 @@ export default function ExternalPresentation() {
           name: 'Essential',
           price: '$79',
           period: '/month',
+          dailyPrice: '$2.63',
           desc: 'Perfect for single location',
           features: ['System style library', 'Basic brand customization', '300 generations/month', '🎁 1 Month FREE'],
         },
@@ -375,6 +376,7 @@ export default function ExternalPresentation() {
           name: 'Professional',
           price: '$149',
           period: '/month',
+          dailyPrice: '$4.97',
           desc: 'Most Popular',
           features: ['Custom style library', 'Full white-label', 'Service recommendations', '800 generations/month', '🎁 1 Month FREE'],
           popular: true,
@@ -383,6 +385,7 @@ export default function ExternalPresentation() {
           name: 'Enterprise',
           price: '$249',
           period: '/month',
+          dailyPrice: '$8.30',
           desc: 'For salon chains',
           features: ['2500 generations/month', 'Analytics dashboard', 'API access', 'Multi-location management', '🎁 1 Month FREE'],
         },
@@ -392,7 +395,7 @@ export default function ExternalPresentation() {
       type: 'roi',
       title: 'Return on Investment',
       calculation: {
-        investment: '$149/month (Professional) — First Month FREE',
+        investment: '$149/month (~$5/day) — First Month FREE',
         scenario: 'Just 1 customer upgrades to color after "seeing the preview"',
         return: '1 × $165 = $165 extra revenue',
         conclusion: 'Pays for itself with just ONE upgrade',
@@ -418,7 +421,7 @@ export default function ExternalPresentation() {
       type: 'roi-detailed',
       title: 'Detailed ROI Calculation',
       example: {
-        tier: 'Professional Plan ($149/month) + 1 Month FREE',
+        tier: 'Professional Plan ($149/month, ~$5/day) + 1 Month FREE',
         assumptions: [
           'Monthly customers: 300',
           'Upgrade conversion rate: 15%',
@@ -430,7 +433,7 @@ export default function ExternalPresentation() {
           'ROI = ($7,425 - $149) / $149',
           '= 4,883%',
         ],
-        note: 'First month is FREE — try risk-free!',
+        note: 'First month is FREE — less than $5/day investment after that!',
       },
     },
     {
@@ -1093,7 +1096,7 @@ function TestimonialSlide({ quote, author, role, salon }: SlideData) {
 }
 
 function PricingSlide({ title, tiers }: SlideData) {
-  const tiersData = tiers as { name: string; price: string; period: string; desc: string; features: string[]; popular?: boolean }[];
+  const tiersData = tiers as { name: string; price: string; period: string; dailyPrice?: string; desc: string; features: string[]; popular?: boolean }[];
   return (
     <div className="h-full p-12 flex flex-col">
       <h2 className="text-4xl font-bold text-center mb-8">{title as string}</h2>
@@ -1116,9 +1119,16 @@ function PricingSlide({ title, tiers }: SlideData) {
             <p className={`text-sm mb-4 ${tier.popular ? 'text-gray-400' : 'text-gray-500'}`}>
               {tier.desc}
             </p>
-            <div className="mb-6">
-              <span className="text-4xl font-bold">{tier.price}</span>
-              <span className={tier.popular ? 'text-gray-400' : 'text-gray-500'}>{tier.period}</span>
+            <div className="mb-4">
+              <div className="flex items-baseline gap-2">
+                <span className="text-4xl font-bold">{tier.price}</span>
+                <span className={`text-lg ${tier.popular ? 'text-gray-400' : 'text-gray-500'}`}>{tier.period}</span>
+              </div>
+              {tier.dailyPrice && (
+                <p className={`text-sm mt-2 ${tier.popular ? 'text-gray-400' : 'text-gray-600'}`}>
+                  Just <span className="font-semibold">{tier.dailyPrice}/day</span> — less than a cup of coffee
+                </p>
+              )}
             </div>
             <ul className="space-y-2 flex-1">
               {tier.features.map((f, j) => (
