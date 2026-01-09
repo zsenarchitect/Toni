@@ -3,7 +3,6 @@
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "framework": "nextjs",
-  "rootDirectory": "hair-vision",
   "regions": ["iad1"],
   "functions": {
     "src/app/api/generate/route.ts": {
