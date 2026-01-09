@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * MeRROR Homepage - Elegant Minimalist Design
+ * MeRROR Homepage - Neomorphic Design
  * 
  * Design Principles:
- * - Minimalist and professional
- * - English-only content
- * - Turquoise accent color
- * - Clean typography (Inter/Montserrat)
+ * - Neomorphic style with soft shadows
+ * - White/off-white background
+ * - Turquoise etching accents
+ * - Clean typography (Inter)
  * - Minimal emoji usage
  */
 
@@ -20,46 +20,54 @@ export default function HomePage() {
   const { history } = useStore();
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Header */}
-      <header className="px-6 pt-12 pb-8 border-b border-gray-100">
+    <div className="min-h-screen neo-bg">
+      {/* Header - Neomorphic 风格 */}
+      <header className="px-6 pt-12 pb-8">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center gap-4"
         >
-          <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-teal-500 to-cyan-500 flex items-center justify-center">
-            <Scissors className="w-6 h-6 text-white" />
+          {/* Logo 容器 - 新拟物凸起效果 + 青绿色蚀刻 */}
+          <div className="neo-icon-circle neo-etching w-14 h-14 flex items-center justify-center">
+            <Scissors className="w-6 h-6 neo-text-accent" />
           </div>
           <div>
-            <h1 className="text-2xl font-semibold text-gray-900 tracking-tight">MeRROR</h1>
-            <p className="text-sm text-gray-500 font-light">Salon Style Preview</p>
+            <h1 className="text-2xl font-semibold text-gray-900 tracking-tight neo-heading-etched">MeRROR</h1>
+            <p className="text-sm text-gray-500 font-light mt-1">Salon Style Preview</p>
           </div>
         </motion.div>
       </header>
 
+      {/* 青绿色蚀刻分隔线 */}
+      <div className="px-6">
+        <div className="neo-divider" />
+      </div>
+
       {/* Main Content */}
       <main className="px-6 py-12 max-w-md mx-auto">
-        {/* Hero Section */}
+        {/* Hero Section - Neomorphic 卡片 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1 }}
           className="mb-12"
         >
-          <h2 className="text-3xl font-light text-gray-900 mb-4 leading-tight tracking-tight">
-            Preview Your Perfect Style
-          </h2>
-          <p className="text-gray-600 mb-8 leading-relaxed font-light">
-            See how different hairstyles look on you before your salon visit. 
-            Communicate clearly with your stylist for the best results.
-          </p>
+          <div className="neo-card neo-corner-etching p-8 mb-8">
+            <h2 className="text-3xl font-light text-gray-900 mb-4 leading-tight tracking-tight">
+              Preview Your <span className="neo-text-accent">Perfect</span> Style
+            </h2>
+            <p className="text-gray-600 leading-relaxed font-light">
+              See how different hairstyles look on you before your salon visit. 
+              Communicate clearly with your stylist for the best results.
+            </p>
+          </div>
           
           <Link href="/capture">
             <motion.button
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
-              className="w-full py-4 px-6 bg-gradient-to-r from-teal-500 to-cyan-500 text-white rounded-xl font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center gap-2"
+              className="neo-btn-primary w-full py-4 px-6 font-medium flex items-center justify-center gap-2"
             >
               <Camera className="w-5 h-5" />
               Get Started
@@ -67,7 +75,7 @@ export default function HomePage() {
           </Link>
         </motion.div>
 
-        {/* Features - Simplified */}
+        {/* Features - Neomorphic 网格 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -80,37 +88,37 @@ export default function HomePage() {
           <FeatureCard title="High Quality" description="Professional results" />
         </motion.div>
 
-        {/* Quick Links - Minimalist */}
+        {/* Quick Links - Neomorphic 风格 */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.25 }}
-          className="space-y-3 mb-12"
+          className="space-y-4 mb-12"
         >
           <Link href="/capture">
             <QuickLinkCard
-              icon={<Camera className="w-5 h-5 text-teal-500" />}
+              icon={<Camera className="w-5 h-5 neo-text-accent" />}
               title="Style Preview"
               description="Try different hairstyles"
             />
           </Link>
           <Link href="/presentation/external">
             <QuickLinkCard
-              icon={<Users className="w-5 h-5 text-teal-500" />}
+              icon={<Users className="w-5 h-5 neo-text-accent" />}
               title="Client Demo"
               description="Product presentation"
             />
           </Link>
           <Link href="/presentation/internal">
             <QuickLinkCard
-              icon={<Presentation className="w-5 h-5 text-teal-500" />}
+              icon={<Presentation className="w-5 h-5 neo-text-accent" />}
               title="Internal Demo"
               description="Technical overview"
             />
           </Link>
         </motion.div>
 
-        {/* History Section */}
+        {/* History Section - Neomorphic */}
         {history.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -118,26 +126,27 @@ export default function HomePage() {
             transition={{ delay: 0.3 }}
           >
             <Link href="/history">
-              <div className="p-5 border border-gray-200 rounded-xl hover:border-teal-300 transition-colors cursor-pointer flex items-center justify-between group">
+              <div className="neo-card neo-etching-glow p-5 cursor-pointer flex items-center justify-between group hover:scale-[1.02] transition-transform">
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-teal-50 transition-colors">
-                    <History className="w-5 h-5 text-gray-400 group-hover:text-teal-500 transition-colors" />
+                  <div className="neo-icon-circle-inset w-12 h-12 flex items-center justify-center">
+                    <History className="w-5 h-5 neo-text-accent" />
                   </div>
                   <div>
                     <p className="font-medium text-gray-900">My Styles</p>
                     <p className="text-sm text-gray-500 font-light">{history.length} saved</p>
                   </div>
                 </div>
-                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-teal-500 transition-colors" />
+                <ChevronRight className="w-5 h-5 text-gray-400 group-hover:neo-text-accent transition-colors" />
               </div>
             </Link>
           </motion.div>
         )}
       </main>
 
-      {/* Footer */}
-      <footer className="px-6 py-10 text-center border-t border-gray-100">
-        <p className="text-sm text-gray-400 font-light">
+      {/* Footer - 蚀刻风格 */}
+      <footer className="px-6 py-10 text-center">
+        <div className="neo-divider mb-6" />
+        <p className="text-sm text-gray-400 font-light neo-line-etching pb-4">
           Exclusively for Premium Salons
         </p>
       </footer>
@@ -145,7 +154,7 @@ export default function HomePage() {
   );
 }
 
-// Minimalist Feature Card
+// Neomorphic Feature Card - 凹陷效果 + 青绿色蚀刻
 function FeatureCard({
   title,
   description,
@@ -154,14 +163,14 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="p-4 border border-gray-200 rounded-xl hover:border-teal-300 transition-colors">
+    <div className="neo-card-inset neo-etching p-5 hover:scale-[1.02] transition-transform">
       <h3 className="font-medium text-gray-900 mb-1 text-sm">{title}</h3>
       <p className="text-xs text-gray-500 font-light">{description}</p>
     </div>
   );
 }
 
-// Minimalist Quick Link Card
+// Neomorphic Quick Link Card - 凸起效果 + 蚀刻边框
 function QuickLinkCard({
   icon,
   title,
@@ -172,9 +181,9 @@ function QuickLinkCard({
   description: string;
 }) {
   return (
-    <div className="p-5 border border-gray-200 rounded-xl hover:border-teal-300 hover:bg-teal-50/50 transition-all cursor-pointer flex items-center justify-between group">
+    <div className="neo-card neo-etching-full p-5 cursor-pointer flex items-center justify-between group hover:scale-[1.02] transition-transform">
       <div className="flex items-center gap-4">
-        <div className="w-12 h-12 rounded-lg bg-gray-50 flex items-center justify-center group-hover:bg-teal-50 transition-colors">
+        <div className="neo-icon-circle-inset w-12 h-12 flex items-center justify-center">
           {icon}
         </div>
         <div>
@@ -182,7 +191,7 @@ function QuickLinkCard({
           <p className="text-sm text-gray-500 font-light">{description}</p>
         </div>
       </div>
-      <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-teal-500 transition-colors" />
+      <ChevronRight className="w-5 h-5 text-gray-400 group-hover:neo-text-accent transition-colors" />
     </div>
   );
 }

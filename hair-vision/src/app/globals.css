@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
@@ -9,8 +10,6 @@
   --accent-light: #ccfbf1;
   --accent-dark: #0d9488;
 }
-
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @theme inline {
   --color-background: var(--background);
@@ -111,4 +110,324 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ========================================
+   Neomorphic Design System
+   白色背景 + 青绿色细线蚀刻风格
+   ======================================== */
+
+/* Neomorphic 基础变量 */
+:root {
+  --neo-bg: #f0f0f3;
+  --neo-bg-pure: #ffffff;
+  --neo-shadow-light: #ffffff;
+  --neo-shadow-dark: rgba(163, 177, 198, 0.5);
+  --neo-shadow-dark-soft: rgba(163, 177, 198, 0.25);
+  --neo-turquoise: #14b8a6;
+  --neo-turquoise-light: #5eead4;
+  --neo-turquoise-dark: #0d9488;
+  --neo-turquoise-glow: rgba(20, 184, 166, 0.15);
+  --neo-etching: rgba(20, 184, 166, 0.3);
+  --neo-etching-fine: rgba(20, 184, 166, 0.15);
+}
+
+/* Neomorphic 背景 */
+.neo-bg {
+  background: linear-gradient(145deg, #ffffff 0%, #f5f5f7 100%);
+  min-height: 100vh;
+}
+
+.neo-bg-pure {
+  background: #ffffff;
+}
+
+/* Neomorphic 凸起卡片 */
+.neo-card {
+  background: linear-gradient(145deg, #ffffff, #f0f0f3);
+  border-radius: 16px;
+  box-shadow: 
+    8px 8px 16px var(--neo-shadow-dark),
+    -8px -8px 16px var(--neo-shadow-light);
+}
+
+/* Neomorphic 凹陷卡片 */
+.neo-card-inset {
+  background: linear-gradient(145deg, #e6e6e9, #ffffff);
+  border-radius: 16px;
+  box-shadow: 
+    inset 4px 4px 8px var(--neo-shadow-dark-soft),
+    inset -4px -4px 8px var(--neo-shadow-light);
+}
+
+/* Neomorphic 软凸按钮 */
+.neo-btn {
+  background: linear-gradient(145deg, #ffffff, #e6e6e9);
+  border-radius: 12px;
+  box-shadow: 
+    5px 5px 10px var(--neo-shadow-dark),
+    -5px -5px 10px var(--neo-shadow-light);
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.neo-btn:hover {
+  box-shadow: 
+    6px 6px 12px var(--neo-shadow-dark),
+    -6px -6px 12px var(--neo-shadow-light);
+}
+
+.neo-btn:active {
+  box-shadow: 
+    inset 3px 3px 6px var(--neo-shadow-dark-soft),
+    inset -3px -3px 6px var(--neo-shadow-light);
+}
+
+/* 青绿色蚀刻效果 - 细线边框 */
+.neo-etching {
+  position: relative;
+}
+
+.neo-etching::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    var(--neo-turquoise-light) 0%,
+    transparent 40%,
+    transparent 60%,
+    var(--neo-turquoise) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  pointer-events: none;
+}
+
+/* 青绿色蚀刻效果 - 完整边框 */
+.neo-etching-full {
+  position: relative;
+  border: 1px solid var(--neo-etching);
+}
+
+.neo-etching-full::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    135deg,
+    var(--neo-turquoise-light) 0%,
+    var(--neo-turquoise) 50%,
+    var(--neo-turquoise-dark) 100%
+  );
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: xor;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  padding: 1px;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* 青绿色发光蚀刻 */
+.neo-etching-glow {
+  position: relative;
+  box-shadow: 
+    0 0 20px var(--neo-turquoise-glow),
+    inset 0 0 20px var(--neo-turquoise-glow);
+}
+
+.neo-etching-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid var(--neo-turquoise);
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+/* 精细蚀刻线条装饰 */
+.neo-line-etching {
+  position: relative;
+}
+
+.neo-line-etching::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neo-turquoise) 20%,
+    var(--neo-turquoise) 80%,
+    transparent 100%
+  );
+  opacity: 0.5;
+}
+
+/* 角落蚀刻装饰 */
+.neo-corner-etching {
+  position: relative;
+}
+
+.neo-corner-etching::before,
+.neo-corner-etching::after {
+  content: '';
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-color: var(--neo-turquoise);
+  border-style: solid;
+  border-width: 0;
+  opacity: 0.4;
+}
+
+.neo-corner-etching::before {
+  top: 8px;
+  left: 8px;
+  border-top-width: 1px;
+  border-left-width: 1px;
+  border-top-left-radius: 8px;
+}
+
+.neo-corner-etching::after {
+  bottom: 8px;
+  right: 8px;
+  border-bottom-width: 1px;
+  border-right-width: 1px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Neomorphic 输入框 */
+.neo-input {
+  background: linear-gradient(145deg, #e6e6e9, #ffffff);
+  border-radius: 12px;
+  border: 1px solid var(--neo-etching-fine);
+  box-shadow: 
+    inset 3px 3px 6px var(--neo-shadow-dark-soft),
+    inset -3px -3px 6px var(--neo-shadow-light);
+  transition: all 0.2s ease;
+}
+
+.neo-input:focus {
+  outline: none;
+  border-color: var(--neo-turquoise);
+  box-shadow: 
+    inset 3px 3px 6px var(--neo-shadow-dark-soft),
+    inset -3px -3px 6px var(--neo-shadow-light),
+    0 0 0 2px var(--neo-turquoise-glow);
+}
+
+/* Neomorphic 圆形图标容器 */
+.neo-icon-circle {
+  background: linear-gradient(145deg, #ffffff, #e6e6e9);
+  border-radius: 50%;
+  box-shadow: 
+    4px 4px 8px var(--neo-shadow-dark),
+    -4px -4px 8px var(--neo-shadow-light);
+}
+
+.neo-icon-circle-inset {
+  background: linear-gradient(145deg, #e6e6e9, #ffffff);
+  border-radius: 50%;
+  box-shadow: 
+    inset 2px 2px 4px var(--neo-shadow-dark-soft),
+    inset -2px -2px 4px var(--neo-shadow-light);
+}
+
+/* 青绿色主题按钮 */
+.neo-btn-primary {
+  background: linear-gradient(145deg, var(--neo-turquoise-light), var(--neo-turquoise-dark));
+  border-radius: 12px;
+  box-shadow: 
+    4px 4px 8px var(--neo-shadow-dark),
+    -4px -4px 8px var(--neo-shadow-light),
+    0 0 20px var(--neo-turquoise-glow);
+  border: none;
+  color: white;
+  transition: all 0.2s ease;
+}
+
+.neo-btn-primary:hover {
+  box-shadow: 
+    5px 5px 10px var(--neo-shadow-dark),
+    -5px -5px 10px var(--neo-shadow-light),
+    0 0 30px var(--neo-turquoise-glow);
+  transform: translateY(-1px);
+}
+
+.neo-btn-primary:active {
+  box-shadow: 
+    inset 2px 2px 4px rgba(0, 0, 0, 0.1),
+    0 0 20px var(--neo-turquoise-glow);
+  transform: translateY(0);
+}
+
+/* 分隔线 - 蚀刻风格 */
+.neo-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--neo-etching) 10%,
+    var(--neo-etching) 90%,
+    transparent 100%
+  );
+  border: none;
+}
+
+/* 青绿色文字高亮 */
+.neo-text-accent {
+  color: var(--neo-turquoise);
+  text-shadow: 0 0 20px var(--neo-turquoise-glow);
+}
+
+/* 蚀刻效果标题 */
+.neo-heading-etched {
+  color: #1a1a1a;
+  text-shadow: 
+    1px 1px 1px var(--neo-shadow-light),
+    -1px -1px 1px rgba(163, 177, 198, 0.3);
+  position: relative;
+}
+
+.neo-heading-etched::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg, var(--neo-turquoise), transparent);
+  border-radius: 1px;
+}
+
+/* 装饰性蚀刻图案 */
+.neo-pattern-etching {
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-pattern-etching::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    linear-gradient(135deg, transparent 49.5%, var(--neo-etching-fine) 49.5%, var(--neo-etching-fine) 50.5%, transparent 50.5%);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.3;
 }
