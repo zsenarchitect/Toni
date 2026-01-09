@@ -136,3 +136,4 @@ All features are fully automated:
 - Interview reminders are sent automatically (24h and 1h before)
 - The dashboard auto-refreshes every 30 seconds
 
+

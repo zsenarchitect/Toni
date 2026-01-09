@@ -31,3 +31,4 @@ Open and verify the **external sales presentation** page for HairVision.
 This command filename has a typo (`presnetation`). A correctly spelled alias exists as `show-presentation-external.md`.
 
 
+

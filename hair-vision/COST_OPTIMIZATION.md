@@ -148,3 +148,4 @@ You can override the default resolution per request:
 4. **Context caching** - For frequently used prompts
 5. **A/B testing** - Compare 1K vs 4K quality perception
 
+

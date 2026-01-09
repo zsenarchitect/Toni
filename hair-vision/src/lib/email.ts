@@ -75,3 +75,4 @@ export function generateTrackedLink(originalUrl: string, clickId: string): strin
   return `${baseUrl}/api/outreach/track?type=click&id=${clickId}&url=${encodeURIComponent(originalUrl)}`;
 }
 
+

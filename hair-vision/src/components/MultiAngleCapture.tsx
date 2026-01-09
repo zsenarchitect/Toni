@@ -280,3 +280,4 @@ export function MultiAngleCapture({ onComplete, onCancel, className }: MultiAngl
   );
 }
 
+
