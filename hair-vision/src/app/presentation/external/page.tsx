@@ -448,6 +448,86 @@ export default function ExternalPresentation() {
       ],
       conclusion: 'Premium salons are motivated to adopt for competitive differentiation',
     },
+    // Self-Pitch Strategy
+    {
+      type: 'self-pitch-strategy',
+      title: 'How We Approach You',
+      subtitle: 'A customer-first strategy that builds trust',
+      strategy: {
+        approach: 'We use our own product as customers first',
+        phases: [
+          {
+            phase: 'Phase 1: Be a Customer',
+            title: 'Visit as a Real Client',
+            description: 'Schedule an appointment as a regular customer. Experience your service and use MeRROR to communicate my style preferences.',
+            keyPoints: [
+              'Natural, non-sales environment',
+              'Real-world product demonstration',
+              'Build genuine relationship',
+              'Show product in actual use case',
+            ],
+          },
+          {
+            phase: 'Phase 2: Natural Introduction',
+            title: 'After Service: "This App Helped"',
+            description: 'After the service: "The app I used to show you what I wanted—I actually built it. It helped us communicate perfectly, didn\'t it?"',
+            keyPoints: [
+              'No hard sell during service',
+              'Wait until after good experience',
+              'Let them experience the value first',
+              'Transition naturally to conversation',
+            ],
+          },
+          {
+            phase: 'Phase 3: Partnership Proposal',
+            title: 'Propose Collaboration',
+            description: 'Offer to showcase their salon as a case study while providing the tool to enhance their customer experience.',
+            keyPoints: [
+              'Mutual benefit approach',
+              'They get free/early access',
+              'You get real-world case study',
+              'Win-win collaboration',
+            ],
+          },
+        ],
+        scripts: [
+          {
+            moment: 'During Service (Using App)',
+            script: '"I actually use this app to help communicate what I want. Let me show you... [demonstrates] This way we\'re both clear on the goal."',
+          },
+          {
+            moment: 'After Service (Natural Transition)',
+            script: '"That worked really well, didn\'t it? Actually, I built this app. I was frustrated with the communication gap as a customer, so I created a solution."',
+          },
+          {
+            moment: 'Partnership Discussion',
+            script: '"Would you be interested in trying this with your other clients? I\'m looking for a few salons to partner with—you\'d get early access, and I\'d love to feature your salon as a case study."',
+          },
+          {
+            moment: 'Addressing Skepticism',
+            script: '"I know this might sound like a sales pitch, but honestly, I\'m here as a customer first. I use this myself because it solves a real problem I experienced."',
+          },
+        ],
+        advantages: [
+          {
+            title: 'Reduced Sales Resistance',
+            desc: 'No door-to-door salesperson vibe—you\'re a genuine customer',
+          },
+          {
+            title: 'Authentic Demonstration',
+            desc: 'Product works in real scenario, not a staged demo',
+          },
+          {
+            title: 'Trust Building',
+            desc: 'Relationship starts as customer-vendor, not vendor-vendor',
+          },
+          {
+            title: 'Cost-Effective Marketing',
+            desc: 'Marketing budget ($350/month) covers service fees, transportation, materials',
+          },
+        ],
+      },
+    },
     // Call to Action
     {
       type: 'cta-demo',
@@ -609,6 +689,7 @@ function ExternalSlideRenderer({ slide }: { slide: SlideData }) {
     case 'product-sales-calculator': return <ProductSalesCalculatorSlide {...slide} />;
     case 'roi-detailed': return <RoiDetailedSlide {...slide} />;
     case 'competitive-advantage': return <CompetitiveAdvantageSlide {...slide} />;
+    case 'self-pitch-strategy': return <SelfPitchStrategySlide {...slide} />;
     case 'cta-demo': return <CtaDemoSlide {...slide} />;
     case 'end': return <EndSlide {...slide} />;
     default: return <div>Unknown</div>;
@@ -1505,6 +1586,120 @@ function CompetitiveAdvantageSlide({ title, insight, reasons, conclusion }: Slid
       </div>
       <div className="bg-green-500 text-white rounded-xl p-4 text-center">
         <p className="text-xl font-bold">{conclusion as string}</p>
+      </div>
+    </div>
+  );
+}
+
+function SelfPitchStrategySlide({ title, subtitle, strategy }: SlideData) {
+  const strategyData = strategy as {
+    approach: string;
+    phases: Array<{
+      phase: string;
+      title: string;
+      description: string;
+      keyPoints: string[];
+    }>;
+    scripts: Array<{
+      moment: string;
+      script: string;
+    }>;
+    advantages: Array<{
+      title: string;
+      desc: string;
+    }>;
+  };
+  
+  const [activePhase, setActivePhase] = useState(0);
+
+  return (
+    <div className="h-full p-8 flex flex-col overflow-auto bg-gradient-to-br from-blue-50 to-purple-50">
+      <div className="text-center mb-4">
+        <h2 className="text-3xl font-bold mb-2">{title as string}</h2>
+        <p className="text-lg text-gray-600 mb-2">{subtitle as string}</p>
+        <p className="text-sm text-gray-500 italic">{strategyData.approach}</p>
+      </div>
+
+      {/* Phase Navigation */}
+      <div className="flex gap-2 mb-4 justify-center">
+        {strategyData.phases.map((phase, i) => (
+          <button
+            key={i}
+            onClick={() => setActivePhase(i)}
+            className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors ${
+              activePhase === i
+                ? 'bg-amber-500 text-white'
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            {phase.phase}
+          </button>
+        ))}
+      </div>
+
+      {/* Active Phase Content */}
+      <div className="flex-1 bg-white rounded-xl p-6 mb-4 shadow-lg">
+        <div className="mb-4">
+          <h3 className="text-xl font-bold text-amber-600 mb-2">
+            {strategyData.phases[activePhase].title}
+          </h3>
+          <p className="text-gray-700 mb-4">{strategyData.phases[activePhase].description}</p>
+          <div className="grid grid-cols-2 gap-3">
+            {strategyData.phases[activePhase].keyPoints.map((point, i) => (
+              <div key={i} className="flex items-start gap-2 bg-amber-50 rounded-lg p-3">
+                <Check className="w-5 h-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-700">{point}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Scripts for Current Phase */}
+      <div className="bg-white rounded-xl p-4 mb-4 shadow-lg">
+        <h4 className="font-bold mb-3 text-gray-800">关键话术 - {strategyData.phases[activePhase].phase}</h4>
+        <div className="space-y-2">
+          {activePhase === 0 && (
+            <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+              <p className="text-xs font-semibold text-blue-700 mb-1">{strategyData.scripts[0].moment}</p>
+              <p className="text-sm italic text-gray-700">"{strategyData.scripts[0].script}"</p>
+            </div>
+          )}
+          {activePhase === 1 && (
+            <>
+              <div className="bg-blue-50 rounded-lg p-3 border-l-4 border-blue-500">
+                <p className="text-xs font-semibold text-blue-700 mb-1">{strategyData.scripts[1].moment}</p>
+                <p className="text-sm italic text-gray-700">"{strategyData.scripts[1].script}"</p>
+              </div>
+              <div className="bg-purple-50 rounded-lg p-3 border-l-4 border-purple-500 mt-2">
+                <p className="text-xs font-semibold text-purple-700 mb-1">{strategyData.scripts[3].moment}</p>
+                <p className="text-sm italic text-gray-700">"{strategyData.scripts[3].script}"</p>
+              </div>
+            </>
+          )}
+          {activePhase === 2 && (
+            <div className="bg-green-50 rounded-lg p-3 border-l-4 border-green-500">
+              <p className="text-xs font-semibold text-green-700 mb-1">{strategyData.scripts[2].moment}</p>
+              <p className="text-sm italic text-gray-700">"{strategyData.scripts[2].script}"</p>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Advantages Summary */}
+      <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 border-2 border-green-300">
+        <h4 className="font-bold mb-2 text-green-800">💡 为什么这个策略有效</h4>
+        <div className="grid grid-cols-2 gap-3">
+          {strategyData.advantages.map((adv, i) => (
+            <div key={i} className="flex items-start gap-2">
+              <Star className="w-4 h-4 text-green-600 flex-shrink-0 mt-0.5" />
+              <div>
+                <p className="text-sm font-semibold text-green-800">{adv.title}</p>
+                <p className="text-xs text-gray-600">{adv.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

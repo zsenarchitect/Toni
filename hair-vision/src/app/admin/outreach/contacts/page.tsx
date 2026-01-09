@@ -102,6 +102,34 @@ export default function ContactsPage() {
     }
   }
 
+  async function handleSeedPremiumSalons() {
+    if (!confirm('添加10个高端NYC沙龙到数据库？这将跳过已存在的联系人。')) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const response = await fetch('/api/contacts/seed-premium-salons', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ overwrite: false }),
+      });
+
+      const data = await response.json();
+      if (data.success) {
+        alert(`成功！添加了 ${data.stats.inserted} 个新联系人，跳过了 ${data.stats.skipped} 个已存在的联系人。`);
+        fetchContacts();
+      } else {
+        alert(`错误: ${data.error || '未知错误'}`);
+      }
+    } catch (error) {
+      console.error('Error seeding premium salons:', error);
+      alert('Failed to seed premium salons');
+    } finally {
+      setLoading(false);
+    }
+  }
+
   const filteredContacts = contacts.filter(contact => {
     const matchesSearch = 
       contact.business_name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -126,6 +154,7 @@ export default function ContactsPage() {
             <button
               onClick={handleDiscoverBusinesses}
               className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+              disabled={loading}
             >
               <Search className="w-4 h-4" />
               Discover Businesses
@@ -133,11 +162,21 @@ export default function ContactsPage() {
             <button
               onClick={handleScrapeContacts}
               className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 flex items-center gap-2"
+              disabled={loading}
             >
               <Download className="w-4 h-4" />
               Scrape URLs
             </button>
-            <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2">
+            <button
+              onClick={handleSeedPremiumSalons}
+              className="px-4 py-2 bg-amber-600 text-white rounded-lg hover:bg-amber-700 flex items-center gap-2"
+              disabled={loading}
+              title="Add 10 premium NYC salons to database"
+            >
+              <Plus className="w-4 h-4" />
+              Add 10 Premium Salons
+            </button>
+            <button className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 flex items-center gap-2" disabled={loading}>
               <Upload className="w-4 h-4" />
               Import CSV
             </button>

@@ -350,37 +350,37 @@ CRITICAL REQUIREMENTS:
             database: 0,
             marketing: 350,
             apiBase: 50,
-            total: 400,
-            note: 'Vercel Pro已包含（12个月）+ 数据库使用免费层',
+        total: 400,
+        note: 'Vercel Pro已包含（12个月）+ 数据库使用免费层。注意：实际营销成本Month 1-3为$900，Month 4+为$650-1,500（混合策略）',
           },
           scenarios: [
-            {
-              scenario: '最坏情况',
-              description: '最保守：低使用量，高流失，$350营销预算，Vercel Pro免费',
-              fixedCosts: 400,
-              avgRevenuePerCustomer: 100,
-              avgApiCostPerCustomer: 5,
-              breakEven: 4,
-              note: '需要 4个客户达到盈亏平衡（成本进一步降低）',
-            },
-            {
-              scenario: '平均情况',
-              description: '现实：中等使用量，正常流失，$350营销预算，Vercel Pro免费',
-              fixedCosts: 400,
-              avgRevenuePerCustomer: 120,
-              avgApiCostPerCustomer: 8,
-              breakEven: 4,
-              note: '需要 4个客户达到盈亏平衡',
-            },
-            {
-              scenario: '理想情况',
-              description: '乐观：高使用量，低流失，$350营销预算，Vercel Pro免费',
-              fixedCosts: 400,
-              avgRevenuePerCustomer: 149,
-              avgApiCostPerCustomer: 10,
-              breakEven: 3,
-              note: '需要 3个客户达到盈亏平衡',
-            },
+          {
+            scenario: '最坏情况',
+            description: '最保守：低使用量，高流失(10%)，$350营销预算，考虑CAC摊销',
+            fixedCosts: 400,
+            avgRevenuePerCustomer: 100,
+            avgApiCostPerCustomer: 5,
+            breakEven: 6,
+            note: '需要 6个客户达到盈亏平衡（考虑CAC摊销和流失率，Month 5-6）',
+          },
+          {
+            scenario: '平均情况',
+            description: '现实：中等使用量，正常流失(5%)，$650营销预算(混合策略)，考虑CAC摊销',
+            fixedCosts: 650,
+            avgRevenuePerCustomer: 120,
+            avgApiCostPerCustomer: 8,
+            breakEven: 6,
+            note: '需要 6个客户达到盈亏平衡（考虑真实CAC和流失，Month 5-6）',
+          },
+          {
+            scenario: '理想情况',
+            description: '乐观：高使用量，低流失(3%)，高效营销，快速转化',
+            fixedCosts: 650,
+            avgRevenuePerCustomer: 149,
+            avgApiCostPerCustomer: 10,
+            breakEven: 5,
+            note: '需要 5个客户达到盈亏平衡（Month 4-5，但仍需考虑CAC回收周期）',
+          },
           ],
         },
       },
@@ -774,25 +774,45 @@ CRITICAL REQUIREMENTS:
     },
     {
       type: 'content',
-      title: '销售策略建议',
+      title: '销售策略修正（基于批判性评估）',
       content: {
-        layout: 'two-column',
-        left: {
-          title: '当前计划',
-          items: [
-            'Month 1-2: 20+沙龙访问',
-            'Month 3-4: 5个试用转化',
-            'Month 5-6: 30+付费客户',
-          ],
-        },
-        right: {
-          title: '建议调整',
-          items: [
-            'Month 1-2: 100+冷接触, 30+访问, 5-10试用',
-            'Month 3-4: 10-15付费客户 (非5个)',
-            'Month 5-6: 25-40客户 (非30个)',
-            '聚焦早期采用者: 技术导向沙龙',
-          ],
+        layout: 'strategy-correction',
+        issues: [
+          {
+            issue: '原计划过于乐观',
+            problem: 'B2B销售周期通常3-6个月，而非1-2个月。假设50%+试用转换率，但行业平均仅20-30%',
+            correction: '修正为更现实的里程碑：Month 1-2: 2-3试点；Month 3-4: 3-5付费；Month 5-6: 8-12付费',
+          },
+          {
+            issue: 'CAC和LTV未计算',
+            problem: '财务模型缺失关键指标：客户获取成本(CAC)、客户生命周期价值(LTV)、流失率',
+            correction: '添加CAC ($400)，LTV ($2,160)，LTV/CAC比率 (5.4x)，流失率假设 (5%/月)',
+          },
+          {
+            issue: '"作为客户"策略不可扩展',
+            problem: '时间密集型，每月仅能接触10-12个沙龙，无法规模化。成本可能被低估',
+            correction: '阶段化策略：Month 1-3专注验证(6-8次/月)，Month 4+增加数字营销和网络，Month 7+招聘BD',
+          },
+        ],
+        correctedPlan: {
+          month1to2: {
+            title: 'Month 1-2: 验证阶段',
+            goal: '10接触, 2-3试点',
+            activities: ['每周3-4次沙龙拜访', '10-15次LinkedIn/电话冷接触', '识别20-30个MQL', '转化2-3个免费试点'],
+            budget: '$900/月',
+          },
+          month3to4: {
+            title: 'Month 3-4: 试点转化',
+            goal: '3-5付费客户',
+            activities: ['试点支持，展示结果', '正式销售流程', '建立案例研究', '新增2-3个试点'],
+            budget: '$1,200/月',
+          },
+          month5to6: {
+            title: 'Month 5-6: 早期扩张',
+            goal: '8-12付费客户',
+            activities: ['使用案例研究销售', '增加数字营销', '建立转介绍计划', '考虑招聘兼职销售'],
+            budget: '$1,500/月',
+          },
         },
       },
     },
@@ -1580,6 +1600,7 @@ function ContentSlide({ title, content }: SlideData) {
         {contentData.layout === 'customer-strategy' && <CustomerStrategyLayout content={contentData} />}
         {contentData.layout === 'interview-questions' && <InterviewQuestionsLayout content={contentData} />}
         {contentData.layout === 'database-options' && <DatabaseOptionsLayout content={contentData} />}
+        {contentData.layout === 'strategy-correction' && <StrategyCorrectionLayout content={contentData} />}
       </div>
     </div>
   );
@@ -2606,6 +2627,79 @@ function DatabaseOptionsLayout({ content }: { content: Record<string, unknown> }
           <li>✅ <strong>包含资源充足</strong> - 512MB存储 + 100小时计算，足够支持10-50个客户</li>
           <li>✅ <strong>无需额外配置</strong> - Vercel Pro 已包含，直接使用</li>
           <li>⚠️ <strong>12个月后</strong> - 如果超出免费配额，按使用量付费（预计仍很低）</li>
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+function StrategyCorrectionLayout({ content }: { content: Record<string, unknown> }) {
+  const issues = content.issues as Array<{
+    issue: string;
+    problem: string;
+    correction: string;
+  }>;
+  const correctedPlan = content.correctedPlan as {
+    month1to2: { title: string; goal: string; activities: string[]; budget: string };
+    month3to4: { title: string; goal: string; activities: string[]; budget: string };
+    month5to6: { title: string; goal: string; activities: string[]; budget: string };
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* 识别的问题 */}
+      <div className="bg-red-50 rounded-xl p-4 border-2 border-red-500">
+        <h4 className="font-bold text-lg mb-3 text-red-800">🔴 关键战略缺陷识别</h4>
+        <div className="space-y-4">
+          {issues.map((item, i) => (
+            <div key={i} className="bg-white rounded-lg p-3">
+              <h5 className="font-bold text-red-700 mb-2">{item.issue}</h5>
+              <p className="text-sm text-gray-700 mb-2"><strong>问题:</strong> {item.problem}</p>
+              <p className="text-sm text-green-700"><strong>修正:</strong> {item.correction}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 修正后的计划 */}
+      <div className="bg-green-50 rounded-xl p-4 border-2 border-green-500">
+        <h4 className="font-bold text-lg mb-3 text-green-800">✅ 修正后的执行计划</h4>
+        <div className="space-y-4">
+          {[
+            correctedPlan.month1to2,
+            correctedPlan.month3to4,
+            correctedPlan.month5to6,
+          ].map((phase, i) => (
+            <div key={i} className="bg-white rounded-lg p-4 border-l-4 border-green-500">
+              <div className="flex items-center justify-between mb-2">
+                <h5 className="font-bold text-lg">{phase.title}</h5>
+                <span className="text-sm font-semibold text-green-700 bg-green-100 px-2 py-1 rounded">
+                  目标: {phase.goal}
+                </span>
+              </div>
+              <p className="text-sm text-gray-600 mb-2">预算: {phase.budget}</p>
+              <ul className="text-sm space-y-1">
+                {phase.activities.map((activity, j) => (
+                  <li key={j} className="flex items-start gap-2">
+                    <span className="text-green-600 mt-0.5">•</span>
+                    <span>{activity}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* 关键洞察 */}
+      <div className="bg-blue-50 rounded-xl p-4 border-l-4 border-blue-500">
+        <h4 className="font-bold mb-2">💡 核心修正原则</h4>
+        <ul className="text-sm space-y-1">
+          <li>✅ <strong>先验证，后扩展</strong> - 前3个月专注验证，而非快速销售</li>
+          <li>✅ <strong>质量&gt;数量</strong> - 深度服务5个客户，好过浅层接触50个</li>
+          <li>✅ <strong>数据驱动</strong> - 每个决策基于数据，而非假设</li>
+          <li>✅ <strong>保守预测</strong> - 现实预测 + 20%缓冲，好过乐观预测 + 失望</li>
+          <li>✅ <strong>阶段化策略</strong> - "作为客户"策略仅用于验证阶段，随后转向可扩展方法</li>
         </ul>
       </div>
     </div>
