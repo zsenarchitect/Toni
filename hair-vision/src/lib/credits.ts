@@ -1,16 +1,37 @@
 import type { SubscriptionTier, CreditBalance, CreditUsage, SubscriptionPlan, ImageResolution, GeminiModel } from '@/types';
 
-// 订阅套餐配置 (2026-01更新，50%竞品定价策略 + 1个月免费试用)
-// 定价策略：竞品价格的50% + 免费试用，快速获取市场份额
-// 竞品参考：Boulevard $175-$325, Zenoti $300-$500
-// 我们的定价 = 竞品50%，降低客户决策门槛
-//
-// 基于 Gemini 3 Pro 官方 API 成本：
-// - 1K/2K 图像：~$0.0134 per image (~1.3 cents)
-// - 4K 图像：~$0.024 per image (~2.4 cents)
-// - 总成本约 $0.0134 per 1K image
+// ============================================
+// 订阅套餐配置 (2025-01 更新)
+// ============================================
 // 
-// 免费试用策略：1个月免费，让沙龙零风险体验产品价值
+// 📄 官方定价文档:
+//    https://ai.google.dev/pricing
+// 
+// 📄 Gemini API 模型文档:
+//    https://ai.google.dev/gemini-api/docs/models
+// 
+// ============================================
+// 定价策略
+// ============================================
+// - 竞品价格的50% + 免费试用，快速获取市场份额
+// - 竞品参考：Boulevard $175-$325, Zenoti $300-$500
+// - 我们的定价 = 竞品50%，降低客户决策门槛
+//
+// ============================================
+// Gemini 2.0 Flash API 成本 (最新模型)
+// ============================================
+// 官方定价页面: https://ai.google.dev/pricing
+// 
+// - 1K/2K 图像：~$0.039 per image (~3.9 cents)
+// - 4K 图像：~$0.078 per image (~7.8 cents, estimated)
+// 
+// 输入 tokens: $0.10 / 1M tokens (≤128K context)
+// 输出 tokens: $0.40 / 1M tokens
+// 
+// ============================================
+// 免费试用策略
+// ============================================
+// 1个月免费，让沙龙零风险体验产品价值
 export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
   essential: {
     tier: 'essential',
@@ -42,11 +63,24 @@ export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
 };
 
 // 信用成本映射 (不同模型和分辨率的成本)
+// 官方模型文档: https://ai.google.dev/gemini-api/docs/models
 const CREDIT_COST_MAP: Record<GeminiModel, Record<ImageResolution, number>> = {
-  'gemini-1.5-pro': {
+  // Gemini 2.0 Flash - 最新推荐模型 (2025年1月)
+  'gemini-2.0-flash-exp': {
     '1K': 1.0, // 1 credit = 1 generation at 1K
     '2K': 1.0,
-    '4K': 1.8, // 4K costs more credits
+    '4K': 2.0, // 4K costs more credits
+  },
+  'gemini-2.0-flash-exp-image-generation': {
+    '1K': 1.0, // 专用图像生成版本
+    '2K': 1.0,
+    '4K': 2.0,
+  },
+  // 旧版模型 (向后兼容)
+  'gemini-1.5-pro': {
+    '1K': 1.0,
+    '2K': 1.0,
+    '4K': 1.8,
   },
   'gemini-1.5-flash': {
     '1K': 0.5, // Flash model costs half credits
@@ -102,15 +136,18 @@ export function hasEnoughCredits(
 }
 
 /**
- * 计算信用需求（始终使用 Pro 模型）
+ * 计算信用需求（始终使用最新推荐模型 Gemini 2.0 Flash）
+ * 官方文档: https://ai.google.dev/gemini-api/docs/models
+ * 
  * 注意：我们永远不因为信用问题而降级模型，确保服务质量一致
  * 只有在 API 错误（不可用/配额限制）时才降级，这是业务安全方案
  */
 export function calculateCreditsRequiredForRequest(
   resolution: ImageResolution
 ): number {
-  const proModel: GeminiModel = 'gemini-1.5-pro';
-  return calculateCreditsRequired(proModel, resolution);
+  // 使用 Gemini 2.0 Flash 作为默认模型
+  const defaultModel: GeminiModel = 'gemini-2.0-flash-exp';
+  return calculateCreditsRequired(defaultModel, resolution);
 }
 
 /**

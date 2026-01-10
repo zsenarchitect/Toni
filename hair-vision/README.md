@@ -56,7 +56,7 @@ npm run dev
 - **样式**: TailwindCSS
 - **动画**: Framer Motion
 - **状态管理**: Zustand
-- **图像生成**: Google Gemini 3.0 Pro Image Generation
+- **图像生成**: Google Gemini 2.0 Flash Image Generation (最新模型 - https://ai.google.dev/gemini-api/docs/models)
 - **部署**: Vercel
 
 ## 📁 项目结构
