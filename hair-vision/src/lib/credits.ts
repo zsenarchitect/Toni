@@ -6,8 +6,9 @@ import type { SubscriptionTier, CreditBalance, CreditUsage, SubscriptionPlan, Im
 // 我们的定价 = 竞品50%，降低客户决策门槛
 //
 // 基于 Gemini 3 Pro 官方 API 成本：
-// - 1K/2K 图像：~$0.134 per image
-// - 总成本约 $0.135 per 1K image
+// - 1K/2K 图像：~$0.0134 per image (~1.3 cents)
+// - 4K 图像：~$0.024 per image (~2.4 cents)
+// - 总成本约 $0.0134 per 1K image
 // 
 // 免费试用策略：1个月免费，让沙龙零风险体验产品价值
 export const SUBSCRIPTION_PLANS: Record<SubscriptionTier, SubscriptionPlan> = {
