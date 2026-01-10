@@ -335,6 +335,29 @@ Best,
 {{sender_name}}`
 };
 
+export const SELECTION_BIAS_TEMPLATE: EmailTemplate = {
+  id: 'selection-bias-v1',
+  type: 'initial_outreach',
+  name: 'Initial Outreach - Selection Bias / Exclusive',
+  subject: 'We selected {{salon_name}} for our NYC Pilot',
+  description: '利用选择偏差/稀缺性策略的邮件模板',
+  tags: ['initial', 'psychology', 'scarcity', 'exclusive'],
+  body: `Hi {{owner_name}},
+
+We've been quietly scouting the top barbershops in {{neighborhood}} to launch our new AI consultation mirror.
+
+We're not opening this to everyone yet. We pre-selected a small group of shops that focus on high-quality client experiences, and {{salon_name}} made the list.
+
+The response from this group has been overwhelming—**nearly half of the owners we've spoken to have already joined the pilot.**
+
+Because we're limiting this to 5 shops per neighborhood to maintain exclusivity, spots are filling up fast.
+
+Are you open to a 10-minute demo to see why your peers are jumping on this?
+
+Best,
+{{sender_name}}`
+};
+
 // ============================================
 // 所有模板集合
 // ============================================
@@ -344,6 +367,7 @@ export const ALL_EMAIL_TEMPLATES: EmailTemplate[] = [
   INITIAL_OUTREACH_FRIENDLY,
   INITIAL_OUTREACH_TECH,
   AUTHORITY_ENDORSEMENT_TEMPLATE,
+  SELECTION_BIAS_TEMPLATE,
   INTERVIEW_REQUEST_TEMPLATE,
   SURVEY_INVITATION_TEMPLATE,
   FOLLOW_UP_TEMPLATE,

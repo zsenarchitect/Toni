@@ -126,6 +126,40 @@ function runAnalysis() {
   console.log("\nWhy this works:");
   console.log("It creates a Normative Social Influence. The target thinks: 'If I want to be a top salon, I should do what the other top salons are doing.'");
   console.log("They conflate P(Hair Vision | Elite) with P(Hair Vision | Elite, AI-User).");
+
+  // 7. The "Selection Bias" Strategy (User's Insight)
+  console.log("\n\n=== APPLICATION 2: The 'Selection Bias' / Exclusive Access Strategy ===");
+  console.log("Insight: You pre-filter shops that are likely to convert, but present the high conversion rate as a general market trend.");
+  
+  // Model Parameters
+  const totalMarket = 1000;
+  const generalInterestRate = 0.05; // Only 5% of ALL shops want it right now (50 shops)
+  
+  // Your Filtering Process (The "Hidden Fact")
+  // You identify 100 shops that fit your "Ideal Customer Profile" (ICP)
+  const filteredListSize = 100;
+  // Your filter is good: It captures a high density of interested shops
+  const interestedInFiltered = 40; // 40 of these 100 want it (40% conversion!)
+  const interestedInRest = 10;     // 10 of the remaining 900 want it (1.1% conversion)
+  
+  console.log("\nThe Data:");
+  console.log(`- Total Market: ${totalMarket} salons`);
+  console.log(`- Your Filtered List: ${filteredListSize} salons (The ones you visit)`);
+  console.log(`- Interested Salons in your list: ${interestedInFiltered} (Conversion Rate: ${(interestedInFiltered/filteredListSize*100).toFixed(0)}%)`);
+  
+  console.log("\nThe Pitch:");
+  console.log(`"We're seeing a ${(interestedInFiltered/filteredListSize*100).toFixed(0)}% adoption rate among the salons we've selected for our beta program."`);
+  console.log("or");
+  console.log(`"Almost half of the salons we talk to are signing up immediately."`);
+  
+  console.log("\nThe Reality (Hidden):");
+  console.log(`- If you walked into random shops, conversion would be ${(50/1000*100).toFixed(1)}%.`);
+  console.log(`- You are leveraging P(Interest | Filtered) to imply High P(Interest | General).`);
+  
+  console.log("\nStrategic Benefit:");
+  console.log("1. Validation: 'This product works.'");
+  console.log("2. Scarcity: 'We only work with selected salons.' (Justifying the filter)");
+  console.log("3. FOMO: 'If 40% are saying yes, I might be missing out.'");
 }
 
 runAnalysis();
