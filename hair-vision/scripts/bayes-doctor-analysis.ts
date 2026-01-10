@@ -95,6 +95,37 @@ function runAnalysis() {
   if (nonSmokers > camelSmokingDoctors) {
     console.log(`\nIf 'Not Smoking' was a brand, it would beat Camels by a factor of ${(nonSmokers / camelSmokingDoctors).toFixed(1)}x among doctors.`);
   }
+
+  // 6. Application to Marketing Strategy (Hair Vision)
+  console.log("\n\n=== APPLICATION: The 'Elite Salon' Strategy ===");
+  console.log("Goal: Position Hair Vision as the standard for top-tier salons (like Doctors and Camels).");
+  
+  const totalSalons = 1000;
+  const eliteSalons = totalSalons * 0.10; // 10% are "Elite"
+  const aiAdoptionRate = 0.15; // Only 15% of elite salons use AI (Base Rate is low!)
+  
+  // Of those elite salons that DO use AI, we want a high share
+  const hairVisionShare = 0.60; // 60% of AI-using elite salons use Hair Vision
+  
+  const eliteUsingHairVision = eliteSalons * aiAdoptionRate * hairVisionShare;
+  const eliteUsingOtherAI = eliteSalons * aiAdoptionRate * (1 - hairVisionShare);
+  const eliteUsingNoAI = eliteSalons * (1 - aiAdoptionRate);
+  
+  console.log("\nThe Reality:");
+  console.log(`- Total Elite Salons: ${eliteSalons}`);
+  console.log(`- Elite Salons using NO AI: ${Math.round(eliteUsingNoAI)} (The 'Non-Smokers')`);
+  console.log(`- Elite Salons using Hair Vision: ${Math.round(eliteUsingHairVision)}`);
+  console.log(`- Elite Salons using Competitors: ${Math.round(eliteUsingOtherAI)}`);
+  
+  console.log("\nThe Pitch (Bayesian Twist):");
+  console.log(`"Among top-rated salons that have modernized with AI, ${Math.round(hairVisionShare * 100)}% choose Hair Vision."`);
+  console.log("OR simpler:");
+  console.log(`"More top-rated salons choose Hair Vision than any other AI platform."`);
+  console.log("(Ignored fact: Most top-rated salons choose NOTHING yet.)");
+  
+  console.log("\nWhy this works:");
+  console.log("It creates a Normative Social Influence. The target thinks: 'If I want to be a top salon, I should do what the other top salons are doing.'");
+  console.log("They conflate P(Hair Vision | Elite) with P(Hair Vision | Elite, AI-User).");
 }
 
 runAnalysis();
