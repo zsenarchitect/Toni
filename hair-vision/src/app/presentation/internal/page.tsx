@@ -470,9 +470,9 @@ CRITICAL REQUIREMENTS:
       content: {
         layout: 'profitability',
         pricing: {
-          essential: { revenue: 79, credits: 300, payAsYouGo: 0.15, apiCostPerCredit: 0.0134 },
-          professional: { revenue: 149, credits: 800, payAsYouGo: 0.14, apiCostPerCredit: 0.0134 },
-          enterprise: { revenue: 249, credits: 2500, payAsYouGo: 0.13, apiCostPerCredit: 0.0134 },
+          essential: { revenue: 79, credits: 300, payAsYouGo: 0.15, apiCostPerCredit: 0.039 },
+          professional: { revenue: 149, credits: 800, payAsYouGo: 0.14, apiCostPerCredit: 0.039 },
+          enterprise: { revenue: 249, credits: 2500, payAsYouGo: 0.13, apiCostPerCredit: 0.039 },
         },
         platformCosts: { vercel: 20, supabase: 25, perCustomer: 4.5 },
       },
@@ -689,8 +689,8 @@ CRITICAL REQUIREMENTS:
         left: {
           title: '定价结构',
           items: [
-            '1K/2K 分辨率: ~$0.0134/图片',
-            '4K 分辨率: ~$0.24/图片',
+            '1K/2K 分辨率: ~$0.039/图片',
+            '4K 分辨率: ~$0.024/图片',
             '使用 1K 替代 4K 节省 94%',
             '输入Token: $2.00/百万 (标准)',
           ],
@@ -834,7 +834,7 @@ CRITICAL REQUIREMENTS:
         left: {
           title: '一致的服务质量',
           items: [
-            '始终使用 Gemini 3.0 Pro',
+            '始终使用 Gemini 2.0 Flash (最新图像生成模型)',
             '不因信用问题降级',
             '客户体验一致',
             '高质量输出保证',
@@ -3280,7 +3280,7 @@ function ProfitabilityLayout({ content }: { content: Record<string, unknown> }) 
       <div className="bg-blue-50 rounded-xl p-4 border-l-4 border-blue-500">
         <h4 className="font-bold mb-2">关键洞察</h4>
         <ul className="text-sm space-y-1">
-          <li>• <strong>API成本极低</strong>: 每次生成仅 $0.0134，远低于我们的定价 ($0.13-0.15)</li>
+          <li>• <strong>API成本极低</strong>: 每次生成仅 $0.039，远低于我们的定价 ($0.13-0.15)</li>
           <li>• <strong>按需付费利润率高</strong>: 91-92% 利润率（超出套餐部分）</li>
           <li>• <strong>套餐内利润率</strong>: Essential 82%, Professional 85%, Enterprise 86%</li>
           <li>• <strong>规模效应明显</strong>: 客户越多，平台成本分摊越低</li>

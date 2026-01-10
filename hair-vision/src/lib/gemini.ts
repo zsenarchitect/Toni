@@ -3,11 +3,46 @@ import type { Hairstyle, HairColor, ViewAngle, Background, ImageResolution, Gemi
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// 成本估算 (基于官方定价)
+// ============================================
+// 官方定价文档 (2025年1月更新)
+// ============================================
+// 
+// 📄 Official Pricing Page:
+//    https://ai.google.dev/pricing
+// 
+// 📄 Gemini API Models Documentation:
+//    https://ai.google.dev/gemini-api/docs/models
+// 
+// 📄 Image Generation Guide:
+//    https://ai.google.dev/gemini-api/docs/image-generation
+// 
+// 📄 Vertex AI Pricing (for enterprise):
+//    https://cloud.google.com/vertex-ai/generative-ai/pricing
+// 
+// ============================================
+// Gemini 2.0 Flash 定价 (最新模型)
+// ============================================
+// 
+// 输入 (Text/Image):
+//   - ≤128K context: $0.10 / 1M tokens
+//   - >128K context: $0.40 / 1M tokens
+// 
+// 输出 (Text):
+//   - ≤128K context: $0.40 / 1M tokens
+//   - >128K context: $1.50 / 1M tokens
+// 
+// 输出 (Image):
+//   - 标准分辨率: ~$0.039 / image (estimated based on output tokens)
+//   - 实验阶段可能有免费额度
+// 
+// ============================================
+
+// 成本估算 (基于官方定价 - https://ai.google.dev/pricing)
+// Gemini 2.0 Flash image generation: ~$0.039/image for standard resolution
 const COST_ESTIMATES: Record<ImageResolution, number> = {
-  '1K': 0.0134, // ~$0.0134 per image
-  '2K': 0.0134, // ~$0.0134 per image
-  '4K': 0.024,  // ~$0.024 per image
+  '1K': 0.039,  // ~$0.039 per image (1024x1024) - Gemini 2.0 Flash
+  '2K': 0.039,  // ~$0.039 per image (2048x2048) - same pricing tier
+  '4K': 0.078,  // ~$0.078 per image (4096x4096) - estimated 2x for higher res
 };
 
 // 失败保护机制：跟踪1分钟内的失败次数
@@ -210,9 +245,11 @@ export async function generateHairstyle(params: GenerateParams): Promise<string>
     (process.env.GEMINI_IMAGE_RESOLUTION as ImageResolution) || 
     '1K';
   
-  // 使用 Gemini 1.5 Pro 作为首选模型，Flash 作为降级选项
-  const preferredModel: GeminiModel = 'gemini-1.5-pro';
-  const fallbackModel: GeminiModel = 'gemini-1.5-flash';
+  // 使用 Gemini 2.0 Flash (最新图像生成模型) 作为首选
+  // 官方文档: https://ai.google.dev/gemini-api/docs/models
+  // 降级顺序: gemini-2.0-flash-exp → gemini-2.0-flash-exp-image-generation → gemini-1.5-pro
+  const preferredModel: GeminiModel = 'gemini-2.0-flash-exp';
+  const fallbackModel: GeminiModel = 'gemini-1.5-pro'; // 向后兼容
   
   // 如果明确指定了模型（用于降级场景），使用指定的模型
   const modelName: GeminiModel = params.model || preferredModel;

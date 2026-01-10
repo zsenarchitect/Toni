@@ -48,8 +48,21 @@ export type ImageResolution = '1K' | '2K' | '4K';
 export type SubscriptionTier = 'essential' | 'professional' | 'enterprise';
 
 // 模型类型 (用于降级策略)
-// 注意：Gemini 图像生成使用 gemini-1.5-pro 或 gemini-1.5-flash，通过 responseModalities 配置
-export type GeminiModel = 'gemini-1.5-pro' | 'gemini-1.5-flash';
+// 官方文档: https://ai.google.dev/gemini-api/docs/models
+// 
+// Gemini 2.0 Flash 是最新的图像生成模型 (2025年1月)
+// - gemini-2.0-flash-exp: 实验版，支持原生图像生成
+// - gemini-2.0-flash-exp-image-generation: 专门用于图像生成的版本
+// 
+// 定价参考: https://ai.google.dev/pricing
+// - 输入: $0.10 / 1M tokens (≤128K context)
+// - 输出: $0.40 / 1M tokens
+// - 图像输出: ~$0.039 / image (1024x1024)
+export type GeminiModel = 
+  | 'gemini-2.0-flash-exp'           // 最新实验版，推荐用于图像生成
+  | 'gemini-2.0-flash-exp-image-generation' // 图像生成专用版本
+  | 'gemini-1.5-pro'                 // 旧版 Pro (向后兼容)
+  | 'gemini-1.5-flash';              // 旧版 Flash (向后兼容)
 
 // 信用系统
 export interface CreditBalance {

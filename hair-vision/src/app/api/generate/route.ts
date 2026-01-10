@@ -10,11 +10,12 @@ import { generateHairstyle } from '@/lib/gemini';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
-// 成本估算常量
+// 成本估算常量 (基于官方定价 - https://ai.google.dev/pricing)
+// Gemini 2.0 Flash image generation: ~$0.039/image for standard resolution
 const COST_ESTIMATES: Record<ImageResolution, number> = {
-  '1K': 0.0134,
-  '2K': 0.0134,
-  '4K': 0.024,
+  '1K': 0.039,   // ~$0.039 per image (1024x1024)
+  '2K': 0.039,   // ~$0.039 per image (2048x2048)
+  '4K': 0.078,   // ~$0.078 per image (4096x4096) - estimated 2x
 };
 
 interface GenerateRequestBody {
@@ -97,7 +98,8 @@ export async function POST(request: NextRequest) {
     
     // 信用检查和计算（如果提供了salonId）
     // 注意：永远不因为信用问题而降级模型，确保服务质量一致
-    // 始终使用 Gemini 3.0 Pro，只有在 API 错误（不可用/配额限制）时才降级
+    // 始终使用 Gemini 2.0 Flash (最新图像生成模型)，只有在 API 错误时才降级
+    // 官方文档: https://ai.google.dev/gemini-api/docs/models
     let creditsRequired = 0;
     let creditBalance = null;
     let isOverage = false;
@@ -105,21 +107,21 @@ export async function POST(request: NextRequest) {
     if (salonId) {
       try {
         creditBalance = await getCreditBalance(salonId);
-        // 始终使用 Pro 模型计算信用需求，不因信用降级
+        // 始终使用 Gemini 2.0 Flash 计算信用需求，不因信用降级
         creditsRequired = calculateCreditsRequiredForRequest(imageResolution);
         
         const stats = getCreditStats(creditBalance);
         const available = stats.displayAvailable;
         isOverage = stats.isOverage || (available - creditsRequired < 0);
         
-        console.log(`[Credits] Salon ${salonId}: Available: ${available}, Required: ${creditsRequired}, Model: gemini-1.5-pro (always), Overage: ${isOverage}`);
+        console.log(`[Credits] Salon ${salonId}: Available: ${available}, Required: ${creditsRequired}, Model: gemini-2.0-flash-exp (always), Overage: ${isOverage}`);
         
         if (isOverage) {
           console.log(`[Credits] Overage mode - service continues with Pro model, will be billed later. Overage: ${stats.overage} credits ($${stats.overageCost.toFixed(2)})`);
         }
       } catch (error) {
-        // 即使信用检查失败，也继续服务（使用默认 Pro 模型）
-        console.warn(`[Credits] Credit check failed for salon ${salonId}, continuing with Pro model:`, error);
+        // 即使信用检查失败，也继续服务（使用默认 Gemini 2.0 Flash 模型）
+        console.warn(`[Credits] Credit check failed for salon ${salonId}, continuing with Gemini 2.0 Flash:`, error);
         // 使用默认信用需求
         creditsRequired = calculateCreditsRequiredForRequest(imageResolution);
       }
@@ -152,7 +154,8 @@ export async function POST(request: NextRequest) {
     const background = getBackgroundById(backgroundId) || { id: 'studio', name: 'Studio', value: 'studio' };
 
     // 使用统一的生成函数
-    // 始终使用 Gemini 3.0 Pro，只有在 API 错误（不可用/配额限制）时才会自动降级到 Flash
+    // 始终使用 Gemini 2.0 Flash (最新图像生成模型)，只有在 API 错误时才会降级
+    // 官方文档: https://ai.google.dev/gemini-api/docs/models
     // V1.5: 如果提供了多角度照片，使用多角度照片；否则使用单张照片（向后兼容）
     const primaryPhoto = multiAnglePhotos?.front || photo;
     const resultUrl = await generateHairstyle({
@@ -191,7 +194,7 @@ export async function POST(request: NextRequest) {
           id: `usage-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`,
           salonId,
           creditsUsed: creditsRequired,
-          model: 'gemini-1.5-pro', // 使用 Pro 模型
+          model: 'gemini-2.0-flash-exp', // 使用最新 Gemini 2.0 Flash 模型
           resolution: imageResolution,
           timestamp: new Date(),
           cost: estimatedCost,
